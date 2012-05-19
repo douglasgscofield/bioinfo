@@ -19,19 +19,21 @@ pileup2pro.pl  - Convert pileup to profile format as used for input to mlRho.  T
         mlRho estimates population genetic parameters from NGS data sequenced from a 
         diploid genome.
 
-        Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
-            the population mutation and recombination rates from shotgun-sequenced
-            diploid genomes.  Molecular Ecology 19 Supplement 1:277-284.
+        http://guanine.evolbio.mpg.de/mlRho
 
-            http://guanine.evolbio.mpg.de/mlRho
+        Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for 
+            estimating the population mutation and recombination rates from 
+            shotgun-sequenced diploid genomes.  Molecular Ecology 19 Supplement 
+            1:277-284.
 
-        It implements methods described in
+        mlRho implements methods described in
 
-        Lynch M. 2008. Estimation of nucleotide diversity, disequilibrium coefficients, 
-            and mutation rates from high-coverage genome-sequencing projects. Molecular
-            Biology and Evolution 25:2421-2431. 
+        Lynch M. 2008. Estimation of nucleotide diversity, disequilibrium 
+            coefficients, and mutation rates from high-coverage genome-sequencing 
+            projects. Molecular Biology and Evolution 25:2421-2431. 
 
-        Profile format contains reference names, coordinates and raw numbers of bases:
+        Profile format contains reference names, coordinates and raw numbers of 
+        bases:
 
         >contig_1
         1	0	2	0	0
