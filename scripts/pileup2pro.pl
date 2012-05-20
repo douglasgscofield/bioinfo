@@ -51,6 +51,7 @@
 # TODO
 
 use strict;
+use POSIX qw/isdigit/;
 use Getopt::Long;
 
 my $in_file;
@@ -62,6 +63,7 @@ my $ref_base_column = 2;
 my $cvrg_column = 3;
 my $read_bases_column = 4;
 my $stdio;
+my $quiet;
 my $help;
 my $current_reference = ""; # the name of the current reference sequence
 my $N_references = 0; # the number of reference sequences seen
@@ -150,7 +152,6 @@ while (<IN>) {
     use constant SNPs_zeroes => ('A' => 0, 'C' => 0, 'G' => 0, 'T' => 0);
     my %SNPs = SNPs_zeroes;
     if ($fields[ $ref_base_column ] eq "*") {
-        print "skipping indicated indel line '*'\n" if $track_indels;
         next; # skip indel lines
     }
 
