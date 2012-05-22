@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# TODO:
+# add -minlen and -single options like those in deshuffleFastq.pl
+
 use Getopt::Long;
 
 my $stdout = 0;
