@@ -70,7 +70,7 @@ on minimum read length:
   
 This will only include read pairs in the output where both reads are at least
 30bp long.  Any read that meets this criterion but has a mate that does not is
-written to `FD.se.fq.gz`.  If the -`single `option is not specified, such reads are
+written to `FD.se.fq.gz`.  If the `-single` option is not specified, such reads are
 dropped along with their mates.
 
 These were originally built on the the `shuffleSequences_fastq.pl` and
