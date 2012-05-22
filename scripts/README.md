@@ -1,9 +1,10 @@
 <style type="text/css">
+body { padding:0px; }
 .Reference {line-height:1.2; padding-left:4em; text-indent:-2em; padding-right:1em}
 </style>
 
 Various small bioinformatics scripts
-====================================
+------------------------------------
 
 ### samHeader2bed.pl
 
@@ -28,15 +29,15 @@ generating the pileup:
 mlRho (http://guanine.evolbio.mpg.de/mlRho) estimates population genetic
 parameters from NGS data sequenced from a diploid genome.
 
-<div style="line-height:1.2; padding-left:4em; text-indent:-2em; padding-right:1em">
+<div class="Reference">
 
-Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
+<p>Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
 the population mutation and recombination rates from equenced diploid genomes.
-*Molecular Ecology* 19s1:277-284.
+*Molecular Ecology* 19s1:277-284.</p>
 
-Lynch M. 2008. Estimation of nucleotide diversity, disequilibrium coefficients,
+<p>Lynch M. 2008. Estimation of nucleotide diversity, disequilibrium coefficients,
 and mutation rates from high-coverage genome-sequencing projects. *Molecular
-Biology and Evolution* 25:2421-2431. 
+Biology and Evolution* 25:2421-2431.</p>
 
 </div>
 
