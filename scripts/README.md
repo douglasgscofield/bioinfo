@@ -1,5 +1,5 @@
 <style type="text/css">
-.Reference {line-height 1.2; padding-left:4em; text-indent:-2em; padding-right:1em}
+.Reference {line-height:1.2; padding-left:4em; text-indent:-2em; padding-right:1em}
 </style>
 
 Various small bioinformatics scripts
@@ -28,7 +28,7 @@ generating the pileup:
 mlRho (http://guanine.evolbio.mpg.de/mlRho) estimates population genetic
 parameters from NGS data sequenced from a diploid genome.
 
-<div class="Reference">
+<div style="line-height:1.2; padding-left:4em; text-indent:-2em; padding-right:1em">
 
 Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
 the population mutation and recombination rates from equenced diploid genomes.
