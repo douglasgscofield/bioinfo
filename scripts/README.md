@@ -29,17 +29,15 @@ generating the pileup:
 mlRho (http://guanine.evolbio.mpg.de/mlRho) estimates population genetic
 parameters from NGS data sequenced from a diploid genome.
 
-<div class="Reference">
-
-<p>Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
-the population mutation and recombination rates from equenced diploid genomes.
+<p style="padding-left:4em; text-indent:-2em; padding-right:1em">Haubold B, P
+Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating the
+population mutation and recombination rates from equenced diploid genomes.
 *Molecular Ecology* 19s1:277-284.</p>
 
-<p>Lynch M. 2008. Estimation of nucleotide diversity, disequilibrium coefficients,
-and mutation rates from high-coverage genome-sequencing projects. *Molecular
-Biology and Evolution* 25:2421-2431.</p>
-
-</div>
+<p style="padding-left:4em; text-indent:-2em; padding-right:1em">Lynch M. 2008.
+Estimation of nucleotide diversity, disequilibrium coefficients, and mutation
+rates from high-coverage genome-sequencing projects. *Molecular Biology and
+Evolution* 25:2421-2431.</p>
 
 Profile format contains reference names, coordinates and raw numbers of bases:
 
