@@ -40,7 +40,7 @@ Profile format contains reference names, coordinates and raw numbers of bases:
     ...
 
 Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
-the population mutation and recombination rates from equenced diploid genomes.
+the population mutation and recombination rates from sequenced diploid genomes.
 *Molecular Ecology* 19s1:277-284.
 
 Lynch M. 2008.  Estimation of nucleotide diversity, disequilibrium
