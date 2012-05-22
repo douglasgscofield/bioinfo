@@ -48,3 +48,31 @@ pileup2pro.pl  - Convert pileup to profile format as used for input to mlRho.
         10	2	0	0	0
         ...
 
+
+shuffleFastq.pl, deshuffleFastq.pl  - Convert FastQ-format files from separate
+        read 1 and read 2 files to interleaved files, and back.  Input is 
+        automatically un-gzipped if required with no particular filename 
+        requirements, and output is gzipped if the filename ends with .gz.  All 
+        the gzipping/ungzipping is done in pipes.  With the '-' option, 
+        shuffleFastq.pl will write to stdout and deshuffleFastq.pl will read from 
+        stdin.
+
+             shuffleFastq.pl  FA.1.fq FA.2.fq FA.i.fq.gz
+
+             deshuffleFastq.pl  FB.i.fq.gz FB.1.fq.gz FB.2.fq.gz
+
+             cat FC.i.fq | deshuffleFastq.pl - FC.1.fq.gz FC.2.fq.gz
+
+        etc.  deshuffleFastq.pl has a couple other options for filtering reads based
+        on minimum read length:
+
+             deshuffleFastq.pl -minlen 30 -single FD.se.fq.gz FD.i.fq.gz FD.1.fq.gz FD.2.fq.gz
+  
+        This will only include read pairs in the output where both reads are at
+        least 30bp long.  Any read that meets this criterion but has a mate that
+        does not is written to FD.se.fq.gz.  If the -single option is not specified,
+        such reads are dropped along with their mates.
+
+        These were originally built on the the shuffleSequences_fastq.pl and 
+        deshuffleSequences_fastq.pl scripts distributed with velvet.
+
