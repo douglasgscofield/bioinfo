@@ -85,7 +85,7 @@ if ($stdio or ! defined($out_file)) {
 }
 
 if (! $noheader) {
-    print OUT "#chrom\tchromStart\tchromeEnd\n";
+    print OUT "#chrom\tchromStart\tchromEnd\n";
 }
 
 while (<IN>) {
