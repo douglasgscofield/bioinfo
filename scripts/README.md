@@ -1,7 +1,9 @@
 Various small bioinformatics scripts
-------------------------------------
+====================================
 
-### samHeader2bed.pl
+
+samHeader2bed.pl
+----------------
 
 Read a SAM header and produce a BED file containing reference sequences
 satisfying min/max length criteria.  Useful if you want to do something like
@@ -11,7 +13,8 @@ call SNPs in contigs >= 1kb:
     samtools mpileup -l min1000.bed -u -f ref.fa your.bam | bcftools view ...
 
 
-### pileup2pro.pl
+pileup2pro.pl
+-------------
 
 Convert pileup to profile format as used for input to mlRho.  This is a format
 in which bases present at each position in a mapping to a reference sequence
@@ -48,7 +51,8 @@ coefficients, and mutation rates from high-coverage genome-sequencing projects.
 *Molecular Biology and Evolution* 25:2421-2431.
 
 
-### shuffleFastq.pl, deshuffleFastq.pl
+shuffleFastq.pl, deshuffleFastq.pl
+----------------------------------
 
 Convert FastQ-format files from separate read 1 and read 2 files to interleaved
 files, and back.  Input is automatically un-gzipped if required with no
@@ -74,5 +78,6 @@ written to `FD.se.fq.gz`.  If the `-single` option is not specified, such reads 
 dropped along with their mates.
 
 These were originally built on the the `shuffleSequences_fastq.pl` and
-`deshuffleSequences_fastq.pl` scripts distributed with velvet.
+`deshuffleSequences_fastq.pl` scripts distributed with
+[velvet](http://www.ebi.ac.uk/~zerbino/velvet).
 
