@@ -87,6 +87,38 @@ coefficients, and mutation rates from high-coverage genome-sequencing projects.
 *Molecular Biology and Evolution* 25:2421-2431.
 
 
+
+extractFastaSeqs.pl
+-------------------
+
+Extract named FASTA sequences.  Names are given in a separate names file, one
+per line.  Names of sequences in the FASTA file are any characters after the
+initial `>` character in the header of a FASTA sequence, so FASTA sequence
+names in the header as interpreted here are only delimited by end-of-line.
+
+
+All of these usages are equivalent:
+
+````bash
+extractFastaSeqs.pl --names subset-names.txt --in full.fa --out subset.fa
+extractFastaSeqs.pl -n subset-names.txt -i full.fa - > subset.fa
+cat full.fa | extractFastaSeqs.pl -n subset-names.txt - > subset.fa
+extractFastaSeqs.pl subset-names.txt full.fa subset.fa
+`````
+
+**OPTIONS**
+
+
+    -                       read FASTA sequences from stdin and/or write
+                            extracted sequences to stdout
+    -n FILE, --names FILE   file containing names of FASTA sequences to extract
+    -i FILE, --in FILE      input FASTA sequences
+    -o FILE, --out FILE     output FASTA sequences
+
+    -?, --help              help message
+
+
+
 shuffleFastq.pl, deshuffleFastq.pl
 ----------------------------------
 
