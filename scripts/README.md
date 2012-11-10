@@ -17,10 +17,10 @@ samtools view -H your.bam | samHeader2bed.pl --min-length 1000 - > min1000.bed
 samtools mpileup -l min1000.bed -u -f ref.fa your.bam | bcftools view ...
 ````
 
-Or you want to gather pileups for successive &approx;1 Gbp chunks of contigs:
+Or you want to gather pileups for successive ~1 Gbp chunks of contigs:
 
 ````bash
-samtools view -H your.bam | samHeader2bed.pl -o chunk.bed --chunk-size 1000000000 
+samtools view -H your.bam | samHeader2bed.pl -o chunk.bed --chunk-size 1000000000 -
 for BED in chunk.bed.* ; do
    samtools mpileup -l $BED -u -f ref.fa your.bam | gzip -c > $BED.mpileup.gz
 done

@@ -100,8 +100,8 @@ print_usage_and_exit("") if $chunksize and not $out_file;
 print_usage_and_exit("") if $minlength > $maxlength;
 
 my $IN = FileHandle->new;
-$in_file = "/dev/stdin" if $stdio or (! defined($in_file) and ! $ARGV[0]);
-$in_file = $ARGV[0] if ! $in_file;
+$in_file = $ARGV[0] if $ARGV[0] and ! $in_file;
+$in_file = "/dev/stdin" if ! defined($in_file) or $stdio;
 $IN->open("< $in_file") or die "Cannot open $in_file: $!\n";
 
 my $OUT = FileHandle->new;
