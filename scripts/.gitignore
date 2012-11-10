@@ -1,1 +1,8 @@
 *.swp
+t.*
+*.bak
+*.sam
+*.fa
+*.dict
+*.bed.*
+*.log
