@@ -91,10 +91,12 @@ coefficients, and mutation rates from high-coverage genome-sequencing projects.
 extractFastaSeqs.pl
 -------------------
 
-Extract named FASTA sequences.  Names are given in a separate names file, one
-per line.  Names of sequences in the FASTA file are any characters after the
-initial `>` character in the header of a FASTA sequence, so FASTA sequence
-names in the header as interpreted here are only delimited by end-of-line.
+Extract named FASTA sequences.  Names must be given one per line in the names
+file.  Names of sequences in the FASTA file are any characters after the
+initial '>' character in the header of a FASTA sequence, followed by whitespace
+or an end of line, and must be matched in their entirety.  Use `--header` to
+match against the entire header of the FASTA sequence.  Use `--reverse` to
+extract sequences that *do not match* any of the names.
 
 
 All of these usages are equivalent:
@@ -108,12 +110,14 @@ extractFastaSeqs.pl subset-names.txt full.fa subset.fa
 
 **OPTIONS**
 
-
     -                       read FASTA sequences from stdin and/or write
                             extracted sequences to stdout
     -n FILE, --names FILE   file containing names of FASTA sequences to extract
     -i FILE, --in FILE      input FASTA sequences
     -o FILE, --out FILE     output FASTA sequences
+    --header                match entire contents of the FASTA header
+    --reverse               output FASTA sequences that *do not match* any of
+                            names given.
 
     -?, --help              help message
 

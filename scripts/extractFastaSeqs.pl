@@ -1,19 +1,29 @@
 #!/usr/bin/perl
 
+# Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
+# douglas.scofield@plantphys.umu.se
+# douglasgscofield@gmail.com
+#
+# No warranty is implied or assumed by this code.  Please send bugs, suggestions etc.
+
 use strict;
 use warnings;
 use Getopt::Long;
+use File::Basename qw();
+my $script = File::Basename::basename($0);
 
 my $names_file = "";
 my $in_file = "";
 my $out_file = "";
-my $flag_contigmatched = 0;
+my $opt_header = 0;
+my $opt_reverse = 0;
+my $contigmatched = 0;
 my $Nmatched = 0;
 my $Nnames = 0;
 my $Nseqs = 0;
 my $Nlines = 0;
 my $Nletters = 0;
-my $Nletters_matched = 0;
+my $Nletters_output = 0;
 my $stdio;
 my $help;
 
@@ -31,8 +41,10 @@ SYNOPSIS
 
     Names must be given one per line in the names file.  Names of sequences 
     in the FASTA file are any characters after the initial '>' character in 
-    the header of a FASTA sequence, so FASTA sequence names in the header as
-    interpreted here are only delimited by end-of-line.
+    the header of a FASTA sequence, followed by whitespace or an end of line,
+    and must be matched in their entirety.  Use --header to match against the 
+    entire header of the FASTA sequence.  Use --reverse to extract sequences 
+    that _do not match_ any of the names.
 
 OPTIONS
 
@@ -41,6 +53,9 @@ OPTIONS
     -n FILE, --names FILE   file containing names of FASTA sequences to extract
     -i FILE, --in FILE      input FASTA sequences
     -o FILE, --out FILE     output FASTA sequences
+    --header                match entire contents of the FASTA header
+    --reverse               output FASTA sequences that _do not match_ any of
+                            names given.
 
     -?, --help              help message
 
@@ -59,6 +74,8 @@ GetOptions(
     "in=s" => \$in_file,
     "out=s" => \$out_file,
     "names=s" => \$names_file,
+    "header" => \$opt_header,
+    "reverse" => \$opt_reverse,
     "help|?" => \$help,
 ) or print_usage_and_exit(1);
 
@@ -86,7 +103,7 @@ my %NAMES;
 while (<NAMES>) {
     ++$Nnames;
     chomp;
-    print STDERR "$_ seen again in names file\n" if defined $NAMES{$_};
+    print STDERR "$script: $_ seen again in $names_file, line $.\n" if defined $NAMES{$_};
     ++$NAMES{$_};
 }
 
@@ -96,21 +113,25 @@ while (<FASTA>) {
     my $linelength = 0;
     if (/^>/) {
         ++$Nseqs;
-        if (defined($NAMES{substr($_, 1)})) {
-            $flag_contigmatched = 1;
+        my $header = substr($_, 1);
+        my @header_fields = split /\s\s*/, $header, 2;
+        if (($opt_header and defined($NAMES{$header}))
+            or (! $opt_header and defined($NAMES{$header_fields[0]}))) {
+            $contigmatched = 1;
             ++$Nmatched;
         } else {
-            $flag_contigmatched = 0;
+            $contigmatched = 0;
         }
     } else {
         $linelength = length;
         $Nletters += $linelength;
     }
-    if ($flag_contigmatched) {
-        $Nletters_matched += $linelength;
+    if ($opt_reverse xor $contigmatched) {
+        $Nletters_output += $linelength;
         print OUT "$_\n";
     }
 }
 print STDERR "$Nseqs FASTA sequences in $Nlines lines, total length $Nletters bp\n";
-print STDERR "$Nnames names, of these $Nmatched matched FASTA sequences, total length $Nletters_matched bp\n";
+print STDERR "$Nnames names, of these $Nmatched matched FASTA sequences\n";
+print STDERR "Output $Nletters_output bp\n";
 
