@@ -61,9 +61,9 @@ OPTIONS
                           representing approximately INT bp; reference sequences
                           are only described complete, so each BED is likely to 
                           describe more than INT bp.  Individual BED files are
-                          named FILE.x where FILE is specified with --out, which
-                          is required, and x is the integer sequence of file
-                          creation
+                          named FILE.xx.bed where FILE is specified with --out,
+                          which is required, and x is the integer sequence of 
+                          file creation
     --min-length INT      do not include reference sequences shorter than INT
     --max-length INT      do not include reference sequences longer than INT
     --no-header           do not print header on output
@@ -110,7 +110,7 @@ if ($chunksize) {
     $chunk_prefix = $out_file;
     $N_chunk = 1;
     $this_chunk_size = $this_chunk_seqs = 0;
-    $out_file = $chunk_prefix . ".$N_chunk";
+    $out_file = sprintf("%s.%.2d.bed", $chunk_prefix, $N_chunk);
 } else {
     $out_file = "/dev/stdout" if $stdio or ! defined($out_file);
 }
@@ -136,7 +136,8 @@ while (<$IN>) {
     if ($must_open_chunk) {
         $must_open_chunk = 0;
         ++$N_chunk;
-        $out_file = $chunk_prefix . ".$N_chunk";
+        #$out_file = $chunk_prefix . ".$N_chunk";
+        $out_file = sprintf("%s.%.2d.bed", $chunk_prefix, $N_chunk);
         $OUT->open("> $out_file") or die "Cannot open next chunk $out_file: $!\n";
         print $OUT "#chrom\tchromStart\tchromEnd\n" if ! $noheader;
     }

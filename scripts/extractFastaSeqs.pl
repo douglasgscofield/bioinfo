@@ -17,6 +17,7 @@ my $in_file = "";
 my $out_file = "";
 my $opt_header = 0;
 my $opt_reverse = 0;
+my $opt_quitonseen = 0;
 my $contigmatched = 0;
 my $Nmatched = 0;
 my $Nnames = 0;
@@ -56,6 +57,7 @@ OPTIONS
     --header                match entire contents of the FASTA header
     --reverse               output FASTA sequences that _do not match_ any of
                             names given.
+    --quit-on-seen          quit once all sequences in the names file are seen
 
     -?, --help              help message
 
@@ -76,6 +78,7 @@ GetOptions(
     "names=s" => \$names_file,
     "header" => \$opt_header,
     "reverse" => \$opt_reverse,
+    "quit-on-seen" => \$opt_quitonseen,
     "help|?" => \$help,
 ) or print_usage_and_exit(1);
 
@@ -101,27 +104,38 @@ open(OUT, ">$out_file") or die("couldn't open FASTA output: $!");
 my %NAMES;
 
 while (<NAMES>) {
-    ++$Nnames;
     chomp;
-    print STDERR "$script: $_ seen again in $names_file, line $.\n" if defined $NAMES{$_};
-    ++$NAMES{$_};
+    if (defined $NAMES{$_}) {
+        print STDERR "$script: $_ seen again in $names_file, line $.\n";
+    } else {
+        ++$Nnames;
+        $NAMES{$_} = 0;
+    }
 }
+
+my $Nnames_seen = 0;
 
 while (<FASTA>) {
     ++$Nlines;
     chomp;
     my $linelength = 0;
     if (/^>/) {
-        ++$Nseqs;
         my $header = substr($_, 1);
         my @header_fields = split /\s\s*/, $header, 2;
-        if (($opt_header and defined($NAMES{$header}))
-            or (! $opt_header and defined($NAMES{$header_fields[0]}))) {
+        my $name_to_match = $opt_header ? $header : $header_fields[0];
+        if (defined($NAMES{$name_to_match})) {
             $contigmatched = 1;
             ++$Nmatched;
+            ++$Nnames_seen if ($NAMES{$name_to_match} == 0);
+            ++$NAMES{$name_to_match};
         } else {
             $contigmatched = 0;
+            if ($opt_quitonseen and $Nnames_seen == $Nnames) {
+                --$Nlines;  # take back this line
+                last;
+            }
         }
+        ++$Nseqs;
     } else {
         $linelength = length;
         $Nletters += $linelength;
@@ -132,6 +146,7 @@ while (<FASTA>) {
     }
 }
 print STDERR "$Nseqs FASTA sequences in $Nlines lines, total length $Nletters bp\n";
-print STDERR "$Nnames names, of these $Nmatched matched FASTA sequences\n";
+print STDERR "$Nnames unique names, and these matched $Nmatched FASTA sequences\n";
 print STDERR "Output $Nletters_output bp\n";
+print STDERR "Quit after seeing all $Nnames_seen names\n" if $opt_quitonseen;
 

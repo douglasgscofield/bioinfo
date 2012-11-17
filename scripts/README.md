@@ -36,9 +36,9 @@ done
                           representing approximately INT bp; reference sequences
                           are only described complete, so each BED is likely to 
                           describe more than INT bp.  Individual BED files are
-                          named FILE.x where FILE is specified with --out, which
-                          is required, and x is the integer sequence of file
-                          creation
+                          named FILE.xx.bed where FILE is specified with --out, 
+                          which is required, and xx is the integer sequence of 
+                          file creation
     --min-length INT      do not include reference sequences shorter than INT
     --max-length INT      do not include reference sequences longer than INT
     --no-header           do not print header on output
@@ -118,6 +118,8 @@ extractFastaSeqs.pl subset-names.txt full.fa subset.fa
     --header                match entire contents of the FASTA header
     --reverse               output FASTA sequences that *do not match* any of
                             names given.
+    --quit-on-seen          quit once all sequences in the names file are seen
+
 
     -?, --help              help message
 
