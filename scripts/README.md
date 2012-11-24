@@ -54,13 +54,13 @@ Convert pileup to profile format as used for input to mlRho.  This is a format
 in which bases present at each position in a mapping to a reference sequence
 are enumerated.  This script simply converts the format, so any filtering on
 base/mapping quality, etc. that you may wish to do should be done when
-generating the pileup:
+generating the pileup.
 
 ````bash
-samtools mpileup -q1 -f ref.fa your.bam | pileup2pro.pl > mlRho-input.txt
+samtools mpileup -B -q1 -f ref.fa your.bam | pileup2pro.pl > mlRho-input.txt
 ````
 
-mlRho (http://guanine.evolbio.mpg.de/mlRho) estimates population genetic
+mlRho (<http://guanine.evolbio.mpg.de/mlRho>) estimates population genetic
 parameters from NGS data sequenced from a diploid genome.  See references below.
 
 Profile format contains reference names, coordinates and raw numbers of bases:
@@ -77,6 +77,24 @@ Profile format contains reference names, coordinates and raw numbers of bases:
     9	0	0	0	2
     10	2	0	0	0
     ...
+
+**OPTIONS**
+
+
+    -                          read input from stdin, write to stdout
+    --in FILE                  read input from FILE, else from stdin
+    --out FILE                 write output to FILE, else to stdout
+    --which-bams INT[,INT...]  produce profile output for the INT-th BAM(s) in 
+                               order as provided on the samtools mpileup command
+                               line, starting with 1; otherwise produce profile
+                               output for all BAMs 
+    --has-mapping-quality      must be specified if -s used for samtools mpileup
+    --quiet                    don't print progress to stderr
+    --help, -?                 help message
+
+Pileup format created from multiple BAM files has 3 columns per BAM file; this
+script will merge all columns while creating profile output up line unless the
+`--which-bams` option is given.
 
 Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
 the population mutation and recombination rates from sequenced diploid genomes.

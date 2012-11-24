@@ -1,0 +1,1 @@
+ --in pileup2pro_test_04.input --has-mapping-quality --which-bam 1,2,3,4,5

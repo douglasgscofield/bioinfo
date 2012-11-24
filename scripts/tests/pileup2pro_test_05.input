@@ -1,0 +1,50 @@
+seq1-s	1	A	0	*	*	1	^>.	d	>	0	*	*	1	^:.	_	:	0	*	*
+seq1-s	2	C	0	*	*	1	.	e	>	0	*	*	1	.	_	:	0	*	*
+seq1-s	3	C	0	*	*	1	.	e	>	0	*	*	1	.	_	:	0	*	*
+seq1-s	4	A	0	*	*	1	.	f	>	0	*	*	1	.	e	:	0	*	*
+seq1-s	5	A	0	*	*	1	.	f	>	0	*	*	1	.	c	:	0	*	*
+seq1-s	6	A	0	*	*	1	.	f	>	0	*	*	1	.	e	:	0	*	*
+seq1-s	7	C	0	*	*	1	.	f	>	0	*	*	1	.	e	:	0	*	*
+seq1-s	8	T	0	*	*	1	.	f	>	0	*	*	1	.	e	:	0	*	*
+seq1-s	9	A	0	*	*	1	.	`	>	0	*	*	1	.	c	:	0	*	*
+seq1-s	10	C	0	*	*	1	.	e	>	0	*	*	1	.	e	:	0	*	*
+seq1-s	11	T	0	*	*	1	.	c	>	0	*	*	1	.	`	:	0	*	*
+seq1-s	12	T	0	*	*	1	.	e	>	0	*	*	1	.	g	:	0	*	*
+seq1-s	13	C	0	*	*	1	.	e	>	0	*	*	1	.	g	:	0	*	*
+seq1-s	14	T	0	*	*	1	.	c	>	0	*	*	1	.	i	:	0	*	*
+seq1-s	15	C	0	*	*	1	.	f	>	0	*	*	1	.	i	:	0	*	*
+seq1-s	16	G	0	*	*	1	.	f	>	0	*	*	1	.	i	:	0	*	*
+seq1-s	17	T	0	*	*	1	.	e	>	0	*	*	1	.	h	:	0	*	*
+seq1-s	18	T	1	^].	_	]	1	.	f	>	0	*	*	2	.^F,	ib	:F	0	*	*
+seq1-s	19	T	1	.	b	]	1	.	e	>	0	*	*	2	.,	ha	:F	0	*	*
+seq1-s	20	G	1	.	b	]	1	.	d	>	1	^].	d	]	2	.,	iZ	:F	0	*	*
+seq1-s	21	T	1	.	c	]	1	.	d	>	1	.	b	]	2	.,	h\	:F	0	*	*
+seq1-s	22	C	1	.	e	]	1	.	f	>	1	.	d	]	2	.,	h\	:F	0	*	*
+seq1-s	23	C	1	.	e	]	1	.	f	>	1	.	c	]	2	.,	hU	:F	0	*	*
+seq1-s	24	T	1	.	e	]	1	.	f	>	1	.	d	]	2	.,	iX	:F	0	*	*
+seq1-s	25	T	1	.	e	]	1	.	f	>	1	.	e	]	2	.,	i[	:F	1	^F.	b	F
+seq1-s	26	G	1	.	g	]	1	.	f	>	1	.	e	]	2	.,	iY	:F	1	.	b	F
+seq1-s	27	T	1	.	g	]	1	.	e	>	1	.	e	]	2	.,	hY	:F	1	.	a	F
+seq1-s	28	T	1	.	g	]	1	.	f	>	1	.	e	]	2	.,	ia	:F	1	.	e	F
+seq1-s	29	C	1	.	g	]	1	.	b	>	1	.	d	]	2	.,	hc	:F	1	.	e	F
+seq1-s	30	T	1	.	g	]	1	.	f	>	1	.	e	]	2	.,	hd	:F	1	.	e	F
+seq1-s	31	T	1	.	i	]	1	.	d	>	1	.	e	]	2	.,	ha	:F	1	.	e	F
+seq1-s	32	A	1	.	f	]	1	.	f	>	1	.	`	]	2	.,	h\	:F	1	.	e	F
+seq1-s	33	T	1	.	h	]	1	.	f	>	1	.	e	]	2	.,	hc	:F	1	.	g	F
+seq1-s	34	T	1	.	i	]	1	.	f	>	1	.	a	]	2	.,	i`	:F	1	.	g	F
+seq1-s	35	C	1	.	i	]	1	.	f	>	1	.	c	]	2	T,	i^	:F	1	.	g	F
+seq1-s	36	T	1	.	i	]	1	.	d	>	1	.	c	]	2	.,	ie	:F	1	.	g	F
+seq1-s	37	G	1	.	i	]	1	.	c	>	1	.	c	]	2	.,	ie	:F	1	.	g	F
+seq1-s	38	G	1	.	i	]	1	.	Y	>	1	.	c	]	2	.,	ic	:F	1	.	i	F
+seq1-s	39	T	1	.	e	]	1	.	d	>	1	.	_	]	2	.,	hd	:F	1	.	f	F
+seq1-s	40	T	1	.	g	]	1	.	a	>	1	.	e	]	2	.,	id	:F	1	.	g	F
+seq1-s	41	T	1	.	h	]	1	.	d	>	1	.	e	]	2	C,	fe	:F	1	.	h	F
+seq1-s	42	A	1	.	h	]	1	.	d	>	1	.	e	]	2	.,	fe	:F	1	.	i	F
+seq1-s	43	G	1	.	h	]	1	.	d	>	1	.	e	]	2	.,	h^	:F	1	.	i	F
+seq1-s	44	C	1	.	i	]	1	.	f	>	1	.	e	]	2	.,	ia	:F	1	.	i	F
+seq1-s	45	T	1	.	i	]	1	.	f	>	1	.	e	]	2	.,	ie	:F	1	.	i	F
+seq1-s	46	A	1	.	h	]	1	.	f	>	1	.	e	]	2	G,	i^	:F	1	.	i	F
+seq1-s	47	A	1	.	h	]	1	.	f	>	1	.	e	]	2	.,	ga	:F	1	.	i	F
+seq1-s	48	A	1	.	i	]	1	.	e	>	1	.	e	]	2	.,	h^	:F	1	.	i	F
+seq1-s	49	A	2	.^].	if	]]	1	.	e	>	1	.	e	]	2	.,	hb	:F	1	.	i	F
+seq1-s	50	T	2	..	if	]]	1	.	f	>	1	.	e	]	2	.,	ib	:F	1	.	i	F
