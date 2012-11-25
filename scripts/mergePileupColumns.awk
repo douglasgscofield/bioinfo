@@ -1,3 +1,5 @@
+#!/usr/bin/awk -f
+
 # Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
 # douglas.scofield@plantphys.umu.se
 # douglasgscofield@gmail.com
@@ -5,9 +7,8 @@
 # No warranty is implied or assumed by this code.  Please send bugs, suggestions etc.
 #
 # Join mpileup columns into single columns when multiple BAMs were specified on the
-# samtools mpileup command line.  Correctly handles 0-coverage BAMs.  When no coverage
-# is provided by any BAM, 
-# specify
+# samtools mpileup command line.  Correctly handles 0-coverage BAMs.  See 
+# https://github.com/douglasgscofield/bioinfo/tree/master/scripts#mergepileupcolumnsawk
 
 BEGIN {
     FS = "\t";
@@ -62,3 +63,4 @@ BEGIN {
         exit 1;
     }
 }
+

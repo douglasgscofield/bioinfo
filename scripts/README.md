@@ -147,7 +147,7 @@ mapping quality column.  Merging output from `samtools mpileup -s`:
 
 
 ````bash
-samtools mpileup -s -f ref.fa y1.bam y2.bam | awk -f mergePileupColumns.awk > merged.pile
+samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns.awk > merged.pile
 ````
 
 If the `-s` option was used for `samtools mpileup`, then set the `mpileup_s` variable
@@ -155,7 +155,7 @@ on the command line:
 
 
 ````bash
-samtools mpileup -s -f ref.fa y1.bam y2.bam | awk -f mergePileupColumns.awk -v mpileup_s=1 > merged.pile
+samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns.awk -v mpileup_s=1 > merged.pile
 ````
 
 
