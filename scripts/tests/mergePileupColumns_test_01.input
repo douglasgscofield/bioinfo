@@ -1,0 +1,108 @@
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	2	C	0	*	*	2	.,	eU	>:	0	*	*	1	.	_	:	0	*	*
+MA_20601	3	C	0	*	*	2	.,	eV	>:	0	*	*	1	.	_	:	0	*	*
+MA_20601	4	A	0	*	*	2	.,	fT	>:	0	*	*	1	.	e	:	0	*	*
+MA_20601	5	A	0	*	*	2	.,	fQ	>:	0	*	*	1	.	c	:	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	1	A	0	*	*	0	*	*	0	*	*	0	*	*	0	*	*
+MA_20601	6	A	0	*	*	2	.,	fQ	>:	0	*	*	1	.	e	:	0	*	*
+MA_20601	7	C	0	*	*	2	.,	fT	>:	0	*	*	1	.	e	:	0	*	*
+MA_20601	8	T	0	*	*	2	.,	fc	>:	0	*	*	1	.	e	:	0	*	*
+MA_20601	9	A	0	*	*	2	.,	`^	>:	0	*	*	1	.	c	:	0	*	*
+MA_20601	10	C	0	*	*	2	.,	ec	>:	0	*	*	1	.	e	:	0	*	*
+MA_20601	11	T	0	*	*	2	.,	cc	>:	0	*	*	1	.	`	:	0	*	*
+MA_20601	12	T	0	*	*	2	.,	ec	>:	0	*	*	1	.	g	:	0	*	*
+MA_20601	13	C	0	*	*	2	.,	ec	>:	0	*	*	1	.	g	:	0	*	*
+MA_20601	14	T	0	*	*	2	.,	cc	>:	0	*	*	1	.	i	:	0	*	*
+MA_20601	15	C	0	*	*	3	.,^F,	f`c	>:F	0	*	*	1	.	i	:	0	*	*
+MA_20601	16	G	0	*	*	3	.,,	f^f	>:F	0	*	*	1	.	i	:	0	*	*
+MA_20601	17	T	0	*	*	3	.,,	eef	>:F	0	*	*	1	.	h	:	0	*	*
+MA_20601	18	T	1	^].	_	]	3	.,,	fec	>:F	1	^!,	c	!	2	.^F,	ib	:F	0	*	*
+MA_20601	19	T	1	.	b	]	3	.,,	eef	>:F	1	,	^	!	2	.,	ha	:F	0	*	*
+MA_20601	20	G	1	.	b	]	3	.,,	d`f	>:F	2	,^].	dd	!]	2	.,	iZ	:F	0	*	*
+MA_20601	21	T	1	.	c	]	3	.,,	def	>:F	2	,.	db	!]	2	.,	h\	:F	0	*	*
+MA_20601	22	C	1	.	e	]	3	.,,	fcd	>:F	2	,.	`d	!]	2	.,	h\	:F	0	*	*
+MA_20601	23	C	1	.	e	]	3	.,,	fae	>:F	2	,.	dc	!]	2	.,	hU	:F	0	*	*
+MA_20601	24	T	1	.	e	]	3	.,,	faf	>:F	2	,.	`d	!]	2	.,	iX	:F	0	*	*
+MA_20601	25	T	1	.	e	]	3	.,,	fdf	>:F	2	,.	de	!]	2	.,	i[	:F	1	^F.	b	F
+MA_20601	26	G	1	.	g	]	3	.,,	fde	>:F	2	,.	de	!]	2	.,	iY	:F	1	.	b	F
+MA_20601	27	T	1	.	g	]	3	.,,	eee	>:F	2	,.	de	!]	2	.,	hY	:F	1	.	a	F
+MA_20601	28	T	1	.	g	]	3	.,,	f^f	>:F	2	,.	be	!]	2	.,	ia	:F	1	.	e	F
+MA_20601	29	C	1	.	g	]	3	.,,	bYd	>:F	2	,.	bd	!]	2	.,	hc	:F	1	.	e	F
+MA_20601	30	T	1	.	g	]	4	.,,^:,	fbfd	>:F:	2	,.	`e	!]	2	.,	hd	:F	1	.	e	F
+MA_20601	31	T	1	.	i	]	4	.,,,	deed	>:F:	2	,.	Te	!]	2	.,	ha	:F	1	.	e	F
+MA_20601	32	A	1	.	f	]	4	.,,,	fbfd	>:F:	2	,.	``	!]	2	.,	h\	:F	1	.	e	F
+MA_20601	33	T	1	.	h	]	4	.,,,	fdd^	>:F:	2	,.	Ze	!]	2	.,	hc	:F	1	.	g	F
+MA_20601	34	T	1	.	i	]	4	.,,,	f`fd	>:F:	2	,.	^a	!]	2	.,	i`	:F	1	.	g	F
+MA_20601	35	C	1	.	i	]	4	.t,,	fbfd	>:F:	2	,.	[c	!]	2	T,	i^	:F	1	.	g	F
+MA_20601	36	T	1	.	i	]	4	.,,,	dcfc	>:F:	2	,.	Mc	!]	2	.,	ie	:F	1	.	g	F
+MA_20601	37	G	1	.	i	]	5	.,,,^!.	cdfcc	>:F:!	2	,.	]c	!]	2	.,	ie	:F	1	.	g	F
+MA_20601	38	G	1	.	i	]	5	.,,,.	Yefbc	>:F:!	2	,.	]c	!]	2	.,	ic	:F	1	.	i	F
+MA_20601	39	T	1	.	e	]	5	.,,,.	dcfcY	>:F:!	2	,.	K_	!]	2	.,	hd	:F	1	.	f	F
+MA_20601	40	T	1	.	g	]	5	.,,,.	acfTc	>:F:!	2	,.	]e	!]	2	.,	id	:F	1	.	g	F
+MA_20601	41	T	1	.	h	]	5	.c,c.	dedfc	>:F:!	2	,.	_e	!]	2	C,	fe	:F	1	.	h	F
+MA_20601	42	A	1	.	h	]	5	.,,,.	ddfec	>:F:!	2	,.	]e	!]	2	.,	fe	:F	1	.	i	F
+MA_20601	43	G	1	.	h	]	5	.,,,.	deff`	>:F:!	2	,.	ce	!]	2	.,	h^	:F	1	.	i	F
+MA_20601	44	C	1	.	i	]	5	.,,,.	feffc	>:F:!	2	,.	Te	!]	2	.,	ia	:F	1	.	i	F
+MA_20601	45	T	1	.	i	]	5	.,,,.	feefa	>:F:!	2	,.	^e	!]	2	.,	ie	:F	1	.	i	F
+MA_20601	46	A	1	.	h	]	5	.g,gG	fdfcc	>:F:!	2	,.	\e	!]	2	G,	i^	:F	1	.	i	F
+MA_20601	47	A	1	.	h	]	5	.,,,.	fdfdc	>:F:!	2	,.	de	!]	2	.,	ga	:F	1	.	i	F
+MA_20601	48	A	1	.	i	]	5	.,,,.	e\fec	>:F:!	2	,.	de	!]	2	.,	h^	:F	1	.	i	F
+MA_20601	49	A	2	.^].	if	]]	5	.,,,.	edffc	>:F:!	2	,.	de	!]	2	.,	hb	:F	1	.	i	F
+MA_20601	50	T	2	..	if	]]	5	.,,,.	fdcfa	>:F:!	2	,.	de	!]	2	.,	ib	:F	1	.	i	F
+MA_20601	51	G	2	..	hf	]]	5	.,,,.	edffc	>:F:!	2	,.	^d	!]	2	.,	ie	:F	1	.	i	F
+MA_20601	52	T	2	..	hf	]]	5	.,,,.	eeffc	>:F:!	2	,.	de	!]	2	.,	fe	:F	1	.	i	F
+MA_20601	53	T	2	..	hf	]]	5	.,,,.	faff`	>:F:!	2	,.	da	!]	2	.,	he	:F	1	.	i	F
+MA_20601	54	A	2	..	hf	]]	5	.,,,.	ecffc	>:F:!	2	,.	Ye	!]	2	.,	ge	:F	1	.	i	F
+MA_20601	55	A	2	..	hf	]]	6	.,,,.^F,	eefdcc	>:F:!F	2	,.	dd	!]	2	.,	ge	:F	1	.	i	F
+MA_20601	56	G	2	..	if	]]	6	.,,,.,	ceffcb	>:F:!F	2	,.	e^	!]	2	.,	h^	:F	1	.	i	F
+MA_20601	57	T	2	..	hf	]]	6	.,,,.,	daffT\	>:F:!F	2	,.	dd	!]	2	.,	ad	:F	1	.	h	F
+MA_20601	58	T	2	..	ff	]]	6	.,,,.,	`bff[`	>:F:!F	2	,.	cd	!]	2	.,	gd	:F	1	.	i	F
+MA_20601	59	C	2	..	hf	]]	6	.,,,.,	fdffZb	>:F:!F	2	,.	^d	!]	3	.,^F.	f^_	:FF	1	.	i	F
+MA_20601	60	T	2	..	hf	]]	6	.,,,.,	Yafe``	>:F:!F	2	,.	\e	!]	3	.,.	hd_	:FF	1	.	i	F
+MA_20601	61	T	2	..	if	]]	6	.,,,.,	fdff]`	>:F:!F	2	g.	Le	!]	3	.,.	fc[	:FF	1	.	i	F
+MA_20601	62	C	2	..	if	]]	6	.t,,.,	fdfecb	>:F:!F	2	t.	`e	!]	3	T,.	fdc	:FF	1	.	i	F
+MA_20601	63	A	2	..	if	]]	7	.,,,.,^:,	cdffca]	>:F:!F:	2	,.	ee	!]	3	.,.	gdc	:FF	1	.	i	F
+MA_20601	64	G	2	..	if	]]	7	.$t,,.,,	fcfecYd	>:F:!F:	2	,.	ee	!]	3	T,.	hce	:FF	1	.	i	F
+MA_20601	65	A	2	..	if	]]	7	,,,.,,^F,	dfaTadY	:F:!F:F	2	,.	e`	!]	3	.,.	hce	:FF	1	.	i	F
+MA_20601	66	T	2	..	if	]]	7	,,,.,,,	cffaTa\	:F:!F:F	2	,.	ae	!]	3	.,.	dd]	:FF	1	.	i	F
+MA_20601	67	C	2	..	if	]]	7	,,,.,,,	dff`^da	:F:!F:F	2	,.	cd	!]	3	.,.	gde	:FF	1	.	i	F
+MA_20601	68	C	2	..	if	]]	7	,,,.,,,	\ff`ddb	:F:!F:F	2	,.	ee	!]	3	.,.	hdg	:FF	1	.	i	F
+MA_20601	69	T	2	..	if	]]	7	,,,.,,,	eef^acb	:F:!F:F	2	,.	\e	!]	3	.,.	hdg	:FF	1	.	i	F
+MA_20601	70	C	2	..	cf	]]	7	,,,.,,,	cefbdfd	:F:!F:F	4	,.^].^].	ceff	!]]]	3	.,.	iTf	:FF	1	.	i	F
+MA_20601	71	T	3	..^].	gf_	]]]	7	,,,.,,,	eff`df\	:F:!F:F	4	,...	fcff	!]]]	3	.,.	icg	:FF	1	.	i	F
+MA_20601	72	T	3	...	ff_	]]]	7	,,,.,,,	effbedd	:F:!F:F	4	,...	e^ff	!]]]	3	.,.	idi	:FF	2	.^F,	if	FF
+MA_20601	73	T	3	...	hfa	]]]	7	,,,.,,,	cffc^d`	:F:!F:F	4	,...	cdff	!]]]	3	.,.	idi	:FF	2	.,	if	FF
+MA_20601	74	C	3	...	hfc	]]]	7	,,,.,,,	dffceeY	:F:!F:F	4	,...	ceff	!]]]	3	.,.	hah	:FF	2	.,	if	FF
+MA_20601	75	A	3	...	hfc	]]]	7	,,,.,,,	eef`eeb	:F:!F:F	4	,...	ccff	!]]]	3	.,.	fdh	:FF	2	.,	if	FF
+MA_20601	76	G	3	...	hfc	]]]	7	,,t.,t,	efdcaeZ	:F:!F:F	4	,...	cefe	!]]]	3	.,.	h^h	:FF	2	.,	if	FF
+MA_20601	77	T	3	...	hfe	]]]	7	,,,.,,,	efe\`ee	:F:!F:F	4	,...	^dff	!]]]	3	.,.	idh	:FF	2	.,	if	FF
+MA_20601	78	T	3	...	gfe	]]]	7	,,,.,,,	dff`dca	:F:!F:F	4	,...	^eff	!]]]	3	.,.	fdi	:FF	2	.,	if	FF
+MA_20601	79	C	3	...	gfe	]]]	8	,,,.,,,^F,	^ff`ffcP	:F:!F:FF	4	,...	`eff	!]]]	3	.,.	hdd	:FF	2	.,	if	FF
+MA_20601	80	T	3	...	hfe	]]]	8	,,,.,,,,	efc`cee_	:F:!F:FF	4	,...	``ff	!]]]	3	.,.	acf	:FF	2	.,	ie	FF
+MA_20601	81	T	3	...	ffg	]]]	8	,,,.,,,,	efe`afa_	:F:!F:FF	4	,...	bbff	!]]]	3	.,.	gdh	:FF	2	.,	if	FF
+MA_20601	82	C	3	...	hfe	]]]	8	,,,.,,,,	`ffcffa_	:F:!F:FF	4	,$...	bdff	!]]]	3	.,.	g\i	:FF	2	.,	if	FF
+MA_20601	83	G	3	...	dfc	]]]	8	,,,.,,,,	cffaeff\	:F:!F:FF	3	...	def	]]]	3	.,.	fcg	:FF	2	.,	if	FF
+MA_20601	84	A	3	...	gf^	]]]	8	,,,.,,,,	effYffe_	:F:!F:FF	3	...	`ff	]]]	3	.,.	ddd	:FF	2	.,	ie	FF
+MA_20601	85	T	3	...	bfe	]]]	8	,,,.,,,,	effbfffT	:F:!F:FF	3	...	eff	]]]	3	.,.	ddg	:FF	2	.,	if	FF
+MA_20601	86	A	3	...	gff	]]]	8	,,,.,,,,	effcefeb	:F:!F:FF	3	...	aff	]]]	3	.,.	acf	:FF	2	.,	if	FF
+MA_20601	87	G	3	...	hfe	]]]	8	,,,.,,,,	dff`eff^	:F:!F:FF	3	...	eff	]]]	3	.,.	dai	:FF	2	.,	ie	FF
+MA_20601	88	T	3	...	dfg	]]]	8	,,,.,,,,	dff\bffa	:F:!F:FF	3	...	ccf	]]]	4	.,.^F,	edgc	:FFF	2	.,	ie	FF
+MA_20601	89	T	3	...	ffh	]]]	8	,,,C,,,,	cff`cffb	:F:!F:FF	3	...	eff	]]]	4	.,.,	edhc	:FFF	2	.,	ie	FF
+MA_20601	90	G	3	...	hfh	]]]	8	,,$a.,a,,	dfc_ccfb	:F:!F:FF	3	...	`ff	]]]	4	.,$.,	ddib	:FFF	2	.,	if	FF
+MA_20601	91	G	3	...	gfh	]]]	8	,,.,,,,^].	dfbefcab	::!F:FF]	3	...	Tff	]]]	3	..,	bhc	:FF	2	.,	if	FF
+MA_20601	92	G	3	...	ieh	]]]	8	,,.,,,,.	df_cfe^b	::!F:FF]	3	...	]fe	]]]	3	..,	ciY	:FF	2	.,	if	FF
+MA_20601	93	T	3	...	cfg	]]]	8	,,.,,,,.	ae^dcdT]	::!F:FF]	3	...	\ee	]]]	3	..,	`bb	:FF	2	.,	id	FF
+MA_20601	94	C	3	...	gfi	]]]	8	,,.,,,,.	^f\efcb`	::!F:FF]	3	...	\ef	]]]	3	..,	^eb	:FF	2	.,	if	FF
+MA_20601	95	C	3	...	fff	]]]	8	,,.,,,,.	cfbefda`	::!F:FF]	4	...^F,	cff^	]]]F	3	..,	`gb	:FF	2	.,	if	FF
+MA_20601	96	A	3	...	fei	]]]	8	,,.,,,,.	ef_ffb\^	::!F:FF]	4	...,	_ffR	]]]F	3	..,	`c`	:FF	2	.,	ic	FF
+MA_20601	97	T	3	...	hfh	]]]	8	,,.,,,,.	af\bebdc	::!F:FF]	4	...,	cffP	]]]F	3	..,	_gY	:FF	2	.,	ie	FF
+MA_20601	98	C	3	...	eff	]]]	8	,,.,,,,.	df^ffdab	::!F:FF]	4	...,	^ff\	]]]F	3	..,	bf^	:FF	2	.,	ie	FF
+MA_20601	99	T	3	...	gff	]]]	8	,,C,,,,.	ef^fed`c	::!F:FF]	5	...,^F,	bdfda	]]]FF	3	..,	ch\	:FF	2	.,	ie	FF
+MA_20601	100	A	3	...	eff	]]]	8	,,G,,,,.	efYaebdc	::!F:FF]	5	...,,	effT_	]]]FF	3	..,	bbc	:FF	2	.,	ic	FF

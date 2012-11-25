@@ -1,5 +1,7 @@
-Various small bioinformatics scripts
-====================================
+Bioinformatics scripts
+======================
+
+These have been useful to me, I hope they can be useful to you!
 
 
 samHeader2bed.pl
@@ -92,9 +94,9 @@ Profile format contains reference names, coordinates and raw numbers of bases:
     --quiet                    don't print progress to stderr
     --help, -?                 help message
 
-Pileup format created from multiple BAM files has 3 columns per BAM file; this
-script will merge all columns while creating profile output up line unless the
-`--which-bams` option is given.
+Pileup format created from multiple BAM files has 3 (or 4, with `-s`) columns per 
+BAM file; this script will merge all columns while creating profile output up line
+unless the `--which-bams` option is given.
 
 Haubold B, P Pfaffelhuber, and M Lynch. 2010. mlRho - a program for estimating
 the population mutation and recombination rates from sequenced diploid genomes.
@@ -103,6 +105,58 @@ the population mutation and recombination rates from sequenced diploid genomes.
 Lynch M. 2008.  Estimation of nucleotide diversity, disequilibrium
 coefficients, and mutation rates from high-coverage genome-sequencing projects.
 *Molecular Biology and Evolution* 25:2421-2431.
+
+
+
+mergePileupColumns.awk
+----------------------
+
+Merge columns of `samtools mpileup` listing pileup for several BAMs into a
+single set of base call, base quality and (optionally) mapping quality columns.
+
+**Note:** merging columns from separate `samtools mpileup` runs is not addressed by this script.
+
+If multiple BAMs are given to a `mpileup` command, then the output includes 
+separate coverage, base call and base quality scores for each BAM file.
+With the `-s` option to `samtools mpileup`, the output for each BAM also 
+includes a mapping quality score.  It is simple but not entirely straightforward 
+to merge these columns into a single set of pileup columns.  Consider the 
+following pileup line:
+
+    ref1  1  A  4  ..,,  ffif  0  *  *  3  ,CC  gcd
+
+The second BAM provides no coverage at this position, but if the `*` characters
+are simply concatenated onto the base call and base quality strings, these two
+columns now appear to indicate a gap and a valid base quality (with Phred+33 scaling)
+or invalid base quality (with Phred+66 scaling), respectively, with counts that
+no longer match the coverage:
+
+    ref1  1  A  7  ..,,*,CC  ffif*gcd     <== incorrect merge
+    ref1  1  A  7  ..,,,CC   ffifgcd      <== correct merge
+
+An additional wrinkle is introduced by an odd quirk in `samtools mpileup -s` output.
+If a BAM provides no coverage at a position, its output does not include the
+mapping quality column.  Merging output from `samtools mpileup -s`:
+
+    ref1  1  A  4  ..,,  ffif  ]]]2  0  *  *  3  ,CC  gcd  +FF    <== missing column
+    
+    ref1  1  A  7  ..,,,CC   ffifgcd  ]]]2+FF                     <== correct merge
+
+
+**USAGE**
+
+
+````bash
+samtools mpileup -s -f ref.fa y1.bam y2.bam | awk -f mergePileupColumns.awk > merged.pile
+````
+
+If the `-s` option was used for `samtools mpileup`, then set the `mpileup_s` variable
+on the command line:
+
+
+````bash
+samtools mpileup -s -f ref.fa y1.bam y2.bam | awk -f mergePileupColumns.awk -v mpileup_s=1 > merged.pile
+````
 
 
 

@@ -14,12 +14,14 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 [scripts](https://github.com/douglasgscofield/bioinfo/tree/master/scripts)
 -------
 
-Various small bioinformatics scripts:
+A handful of bioinformatics scripts:
 
 **`samHeader2bed.pl`** reads a SAM header and produces BED file(s) after applying a few filtering criteria.
 
 **`pileup2pro.pl`** reads `samtools mpileup` format and produces a profile file suitable for input to
 [mlRho][].
+
+**`mergePileupColumns.awk`** merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
 **`extractFastaSeqs.pl`** extracts named sequences from a FASTA file, or everything but.
 
