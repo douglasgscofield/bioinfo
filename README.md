@@ -1,7 +1,7 @@
 Bioinformatics tools
 ====================
 
-Each folder has its own README.md file with more details.
+More details are provided within each subfolder.
 
 [pileVar](https://github.com/douglasgscofield/bioinfo/tree/master/pileVar)
 -------
@@ -16,17 +16,25 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
-**`samHeader2bed.pl`** reads a SAM header and produces BED file(s) after applying a few filtering criteria.
+`windowWig.awk`
+reads a data stream (for example, coverage values by position within reference sequences) and
+produces a USCS [WIG][] file that summarizes median values within nonoverlapping windows. 
 
-**`pileup2pro.pl`** reads `samtools mpileup` format and produces a profile file suitable for input to
-[mlRho][].
+`samHeader2Bed.pl` 
+reads a SAM header and produces BED file(s) after applying a few filtering criteria.
 
-**`mergePileupColumns.awk`** merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
+`pileup2pro.pl`
+reads `samtools mpileup` format and produces a profile file suitable for input to [mlRho][].
 
-**`extractFastaSeqs.pl`** extracts named sequences from a FASTA file, or everything but.
+`mergePileupColumns.awk`
+merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
-**`shuffleFastq.pl`** and **`deshuffleFastq.pl`** convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
+`extractFastaSeqs.pl`
+extracts named sequences from a FASTA file, or everything but.
 
+`shuffleFastq.pl` and `deshuffleFastq.pl`
+convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
+
+[WIG]:    http://genome.ucsc.edu/goldenPath/help/wiggle.html
 [mlRho]:  http://guanine.evolbio.mpg.de/mlRho
-
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet
