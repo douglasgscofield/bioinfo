@@ -20,6 +20,11 @@ A handful of bioinformatics scripts:
 reads a data stream (for example, coverage values by position within reference sequences) and
 produces a USCS [WIG][] file that summarizes median values within nonoverlapping windows. 
 
+`intervalBed.awk`
+reads a data stream with reference-position marked boolean values (for example, 
+presence-absence by position within reference sequences) and produces a BED file 
+describing intervals in which the values are true.
+
 `samHeader2Bed.pl` 
 reads a SAM header and produces BED file(s) after applying a few filtering criteria.
 

@@ -126,8 +126,8 @@ multiply-mapped (mapping quality 0) reads:
 
 ```bash
 samtools mpileup -sAB -d1000 -q0 -f ref.fa your.bam | smorgas --mapping-quality | \
-    awk FS="\t" OFS="\t" '{ if (($4 / $3) >= 0.1) print; }' | cut -f1,2,5 | boolify col=3 header=1 | \
-    intervalBed.awk header=1 trackname=highQualityMappings \
+    awk FS="\t" OFS="\t" '{ if (($4 / $3) >= 0.1) print; }' | cut -f1,2,4 | boolify col=3 header=1 | \
+    intervalBed.awk header=1 trackname=multipleMappings \
         trackdesc="At least 10% multiply-mapped reads"  > dupmapped-10-percent.bed
 ```
 
