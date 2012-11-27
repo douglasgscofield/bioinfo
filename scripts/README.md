@@ -3,8 +3,74 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+windowWig.awk
+---------------
 
-samHeader2bed.pl
+Say you have a data stream (optionally containing a header line) with the 
+following format:
+
+    reference1  1        value1
+    reference1  2        value2
+    ...
+    reference1  1100102  value3
+    reference2  1        value4
+    reference2  2        value5
+    ...
+
+Such data might represent, say, mapped-read coverage values by position
+within reference sequences.  This script will create a USCS [WIG][] `fixedStep`
+file by summarizing values within fixed-size windows across positions within
+references.  It currently summarizes values by their median (see below for
+more details) but this can easily be changed.  Also, there are some 
+common-sense ordering requirements on the input data, see below.
+
+As a quick example, say you want to produce a WIG file summarizing median
+coverage across a reference genome, you want to use all read mappings, and
+the mappings are contained within a few separate BAM files.  A fast pipeline
+(see below for `mergePileupColumns.awk`) for doing this is:
+
+````bash
+samtools mpileup -AB -d 1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | cut -f1,2,4 | windowWig.awk > cov.wig
+````
+
+Output in the WIG file will look something like:
+
+    fixedStep chrom=reference1 start=1 step=50 span=50
+    9
+    19
+    17
+    15
+    16
+    23
+    ...
+
+This script walks the data stream, crossing each reference in column 1
+in windowsize (default 50) chunks based on the position in the 2nd column, 
+computing the median of the values in column 3 within each window.  The 
+median is calculated based on the number of values seen within each window, 
+not in the size of the window; the median of a window containing a single 
+value is that single value; windows which contain no values are reported to 
+have a median of 0.  For quantities like coverage which have a strong 
+near-distance correlation within the input, this policy should be fine.  The
+script can easily be modified to do whatever you'd like...
+
+**Caveats**: Positions (column 2) must be sorted in increasing order within each 
+reference (column 1).  They need not be consecutive. Note that the positions 
+within each reference are assumed to be 
+monotonically increasing in steps of 1 starting from ref_start_pos,
+regardless of whether the data stream actually contains values for
+every position.  A value is printed for every window across a reference 
+starting from 1 by default, through the last reported position within the
+reference.  Every position, so defined, within every reference is
+guaranteed to be covered by a single reported window.
+
+I use some somewhat recent [gawk][] extensions (notably `asort()`).
+
+[WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
+[gawk]: http://www.gnu.org/software/gawk
+
+
+samHeader2Bed.pl
 ----------------
 
 Read a SAM header and produce a BED file or files from the reference sequence
@@ -15,15 +81,15 @@ sequence included in each BED file, etc.  Options may be combined.
 Say you want to call SNPs in contigs &ge; 1 kbp:
 
 ````bash
-samtools view -H your.bam | samHeader2bed.pl --min-length 1000 - > min1000.bed
+samtools view -H your.bam | samHeader2Bed.pl --min-length 1000 - > min1000.bed
 samtools mpileup -l min1000.bed -u -f ref.fa your.bam | bcftools view ...
 ````
 
-Or you want to gather pileups for successive ~1 Gbp chunks of contigs:
+Or you want to gather pileups for successive ~10 Mbp chunks of contigs:
 
 ````bash
-samtools view -H your.bam | samHeader2bed.pl -o chunk.bed --chunk-size 1000000000 -
-for BED in chunk.bed.* ; do
+samtools view -H your.bam | samHeader2Bed.pl -o chunk --chunk-size 10000000 -
+for BED in chunk.*.bed ; do
    samtools mpileup -l $BED -u -f ref.fa your.bam | gzip -c > $BED.mpileup.gz
 done
 `````
