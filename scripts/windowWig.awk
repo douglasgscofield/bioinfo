@@ -1,4 +1,4 @@
-#!/usr/bin/gawk -f
+#!/usr/bin/awk -f
 #
 # Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
 # douglas.scofield@plantphys.umu.se
@@ -33,48 +33,52 @@
 # reference.  Every position, so defined, within every reference is guaranteed
 # to be covered by a single reported window.
 #
-# I use some gawk extensions: 
-#    delete cov;
-#    asort()
-#    maybe the PROCINFO["sorted_in"] mechanism??
-# awk is so fast...
-#
 # CHANGELOG
-# 2012-11-27 : generalize a bit
+# 2012-11-27 : generalize a bit, remove gawk dependencies
 # 2012-11-26 : first version of the script
 #
 # TODO
 # --- handle command-line arguments?  bet it's easy but awk and i, we are
 #     just starting out...
 # --- on option, skip 'comment lines' in input stream
-# --- remove gawk dependencies?
+# -x- remove gawk dependencies?
 # -x- generalize and put on github
 
-# array sorting function: compare values for sort on numerical value in ascending order, 
-# break ties by using index value
-function cmp_numeric(i1, v1, i2, v2)
+# quicksort array values, from http://awk.info/?quicksort
+# gawk provides asort() but we're living gawk free these days
+function qsort(array, left, right,     i, last)
 {
-    return (v1 != v2) ? (v1 - v2) : (i1 - i2)  
+	if (left >= right)
+		return;
+	swap(array, left, left+int((right - left + 1) * rand()));
+	last = left;
+	for (i = left + 1; i <= right; ++i)
+		if (array[i] < array[left])
+			swap(array, ++last, i);
+	swap(array, left, last);
+	qsort(array, left, last - 1);
+	qsort(array, last + 1, right);
+}
+function swap(array, i, j,     t)
+{
+	t = array[i]; array[i] = array[j]; array[j] = t;
 }
 
-# compute the median value of values within array; the rest of the arguments
-# are for printing the verbose message
-function compute_window_median(array, r, wbegin, wend, wsize, verb)
+# compute the median value of values within array, which has size n; 
+# the rest of the arguments are for printing the verbose message
+function compute_window_median(array, array_size, r, wbegin, wend, wsize, verb)
 {
-    n = asort(array);
-    if (n < wsize) 
+    qsort(array, 1, array_size);
+    if (array_size < wsize) 
         if (verb) {
-            print r ": window from " wbegin " to " wend " has less than " wsize " positions: " n > "/dev/stderr";
+            print r ": window from " wbegin " to " wend " has less than " wsize " positions: " array_size > "/dev/stderr";
         }
-    if (n == 1) {
-        #print "index is " n > "/dev/stderr";
-        ans = array[n];
-    } else if ((n % 2) == 1) {
-        #print "index is " int(n/2) > "/dev/stderr";
-        ans = array[int(n / 2)];
+    if (array_size == 1) {
+        ans = array[array_size];
+    } else if ((array_size % 2) == 1) {
+        ans = array[int(array_size / 2)];
     } else {
-        #print "index is " (n/2) " and " (n/2 + 1) > "/dev/stderr";
-        ans = (array[n / 2] + array[n / 2 + 1]) / 2;
+        ans = (array[array_size / 2] + array[array_size / 2 + 1]) / 2;
     }
     return ans;
 }
@@ -90,9 +94,6 @@ BEGIN {
     ref_start_pos = 1; # the position at which references start, 1 by convention
     windowsize = 50;
     verbose = 0;
-
-    # how we sort the values within each window
-    PROCINFO["sorted_in"] = "cmp_numeric";
 
     # operational variables to track our position
     ref = "";     # current reference
@@ -115,8 +116,8 @@ BEGIN {
 
     if ($(ref_col) != ref || $(pos_col) >= iend) { # we're exiting the window, compute median, print it, start over
 
-        medcov = compute_window_median(cov, ref, ibegin, iend, windowsize, verbose);
-        print medcov;
+        median_val = compute_window_median(val, n_pos, ref, ibegin, iend, windowsize, verbose);
+        print median_val;
 
         if ($(ref_col) != ref) {  # we're here because we hit a new reference
             if (verbose) {
@@ -140,21 +141,22 @@ BEGIN {
             iend = ibegin + windowsize;
         }
 
-        delete cov; # clear the array; split("", cov); is a portable alternative
+        split("", val); # clear the array
         n_pos = 0;
     }
 
-    # we're (now) within the window, add the median coverage value, go to the next data line
+    # we're (now) within the window, add the median value, go to the next data line
     ++n_pos;
-    cov[n_pos] = $(val_col);
+    val[n_pos] = $(val_col);
 }
 
 END {
     if (n_pos > 0) { # we're exiting the file and still need to compute median
-        medcov = compute_window_median(cov, ref, ibegin, iend, windowsize, verbose);
-        print medcov;
+        median_val = compute_window_median(val, n_pos, ref, ibegin, iend, windowsize, verbose);
+        print median_val;
     }
     if (verbose) {
         print ref ": window from " ibegin " to " iend " was the last, final position " $(pos_col) ", end of input data" > "/dev/stderr";
     }
 }
+

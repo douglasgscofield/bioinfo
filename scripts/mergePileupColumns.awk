@@ -49,7 +49,7 @@ BEGIN {
     if (! base_call) {  # we found no coverage at all
         base_call = "*";
         base_qual = "*";
-        map_qual = "*";
+        map_qual = "*";  # not written unless mpileup_s nonzero
     }
 
     if (mpileup_s) {

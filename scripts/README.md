@@ -30,7 +30,7 @@ the mappings are contained within a few separate BAM files.  A fast pipeline
 for doing this could be:
 
 ````bash
-samtools mpileup -AB -d 1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | cut -f1,2,4 | windowWig.awk > cov.wig
+samtools mpileup -AB -d1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | cut -f1,2,4 | windowWig.awk > cov.wig
 ````
 
 See below for `mergePileupColumns.awk`.  Output in the WIG file will look something like:
@@ -52,7 +52,8 @@ not in the size of the window; the median of a window containing a single
 value is that single value; windows which contain no values are reported to 
 have a median of 0.  For quantities like coverage which have a strong 
 near-distance correlation within the input, this policy should be fine.  The
-script can easily be modified to do whatever you'd like...
+script can easily be modified to do whatever you'd like, check its 
+`parameters` section for values that can easily be changed.
 
 **Caveats**: Positions (column 2) must be sorted in increasing order within each 
 reference (column 1).  They need not be consecutive. Note that the positions 
@@ -63,10 +64,49 @@ actually contains values for every position.  So defined, every position from th
 start to the end of every reference is guaranteed to be covered by a single 
 reported window.
 
-I use some somewhat recent [gawk][] extensions (notably `asort()`).
+This script uses no `gawk` extensions.
 
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
-[gawk]: http://www.gnu.org/software/gawk
+
+
+intervalBed.awk
+----------------
+
+Starting with the same basic 3-column input as above, instead of continuous values
+we have boolean 0/1 values in the third column:
+
+    reference1  1   0
+    reference1  2   1
+    reference1  3   1
+    reference1  4   1
+    reference1  5   1
+    reference1  6   1
+    reference1  7   1
+    reference1  8   1
+    reference1  9   0
+    reference1  10  0
+    reference1  11  1
+    reference1  12  1
+    reference1  13  1
+    reference1  14  0
+    ...
+
+This script creates a BED file defining intervals in which the value is true, note
+that BED intervals are 0-based and [begin, end).  Output for the above is
+
+    track name=booleanIntervals description="intervals of 1s, grace distance 0"
+    reference1	1	8
+    reference1	10	13
+
+It optionally allows for a grace interval of positions through which the boolean
+value need not be true for the interval to be maintained.  The grace interval will
+only connect intervals, it will never begin or terminate a reference.  The output
+from the above data with grace distance 10 is
+
+    track name=booleanIntervals description="intervals of 1s, grace distance 10"
+    reference1	1	13
+
+More later...
 
 
 samHeader2Bed.pl
