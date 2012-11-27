@@ -27,13 +27,13 @@ common-sense ordering requirements on the input data, see below.
 As a quick example, say you want to produce a WIG file summarizing median
 coverage across a reference genome, you want to use all read mappings, and
 the mappings are contained within a few separate BAM files.  A fast pipeline
-(see below for `mergePileupColumns.awk`) for doing this is:
+for doing this could be:
 
 ````bash
 samtools mpileup -AB -d 1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | cut -f1,2,4 | windowWig.awk > cov.wig
 ````
 
-Output in the WIG file will look something like:
+See below for `mergePileupColumns.awk`.  Output in the WIG file will look something like:
 
     fixedStep chrom=reference1 start=1 step=50 span=50
     9
