@@ -57,12 +57,11 @@ script can easily be modified to do whatever you'd like...
 **Caveats**: Positions (column 2) must be sorted in increasing order within each 
 reference (column 1).  They need not be consecutive. Note that the positions 
 within each reference are assumed to be 
-monotonically increasing in steps of 1 starting from ref_start_pos,
-regardless of whether the data stream actually contains values for
-every position.  A value is printed for every window across a reference 
-starting from 1 by default, through the last reported position within the
-reference.  Every position, so defined, within every reference is
-guaranteed to be covered by a single reported window.
+monotonically increasing in steps of 1 starting from 1 (by default) through the
+last reported position within the reference, regardless of whether the data stream
+actually contains values for every position.  So defined, every position from the
+start to the end of every reference is guaranteed to be covered by a single 
+reported window.
 
 I use some somewhat recent [gawk][] extensions (notably `asort()`).
 
