@@ -52,15 +52,16 @@ BEGIN {
         map_qual = "*";  # not written unless mpileup_s nonzero
     }
 
+    if (n_bams_now != n_bams) {
+        print "Whoa, I was expecting " n_bams " BAM files, but on line " NR " you show me pileup for " n_bams_now ", seriously?!?  I'm not going to write this line to output ... " > "/dev/stderr"
+        next;
+    }
+
     if (mpileup_s) {
         print $1, $2, $3, cov, base_call, base_qual, map_qual;
     } else {
         print $1, $2, $3, cov, base_call, base_qual;
     }
 
-    if (n_bams_now != n_bams) {
-        print "Whoa, I was expecting " n_bams " BAM files, but on line " NR " you show me pileup for " n_bams_now ", seriously?!?" > "/dev/stderr"
-        exit 1;
-    }
 }
 
