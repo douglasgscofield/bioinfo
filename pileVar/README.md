@@ -4,13 +4,13 @@ pileVar.pl
 Summarize variants in `samtools mpileup` output.
 
 The initial development of this script was for the identification of variants 
-during reference-guided assembly of a chloroplast sequence.  So my first 
+during reference-guided assembly of a chloroplast sequence. So my first 
 interest was to uncover *fixed differences* between the reference and the set of reads,
 and identifying regions of ambiguity due to indels, in contrast to finding SNPs and
 other variants isolated against a background of sequence variants.
 
 It has since evolved into a bit more of a general-purpose script for summarizing
-the raw "model-free" (or with options, "naive-model") variation present within pileup.  
+the raw "model-free" (or with options, "naive-model") variation present within pileup. 
 Other tools do a good job of calling SNPs and indels (sort of) and this script 
 could be thought of as providing a null-model summary of all variants present, to
 allow for judging whether the variants it shows should or should not be called by
@@ -36,7 +36,7 @@ samtools mpileup -AB -q0 -Q0 -d1000000 -f ref.fa -D your.bam | pileVar.pl ...
 ````
 
 This is pretty close to raw pileup, without (all?) the quality adjustments
-that `samtools` will do with BAQ computation etc.  It's a good place to start
+that `samtools` will do with BAQ computation etc. It's a good place to start
 if you want to use this script as discussed above, to do a model-free summary
 of variation within your mapped reads.
 
@@ -46,15 +46,17 @@ Output
 
 #### --indel-mode
 
-Output comes in a few flavors.  The one I'm using currently is `--indel-mode`,
-which summarizes all indels present in the pileup and accompanies each summary
-with a good/bad tag based on very simple criteria:
+The output flavor I'm using currently is `--indel-mode`, which summarizes 
+all indels present in the pileup and accompanies each summary with a good/bad 
+tag based on very simple criteria:
 
 * all indel lengths and indel operations are identical (the `ilen` and `ioper` 
   columns), after converting operations for reverse-orientation reads to 
   uppercase
 * the indel frequency is greater than or equal to the `--indel-frac` frequency
   (below uses `--indel-frac 0.1`)
+
+Example output:
 
     seq     pos     ref     cvg     iqual   ifreq   ilen    ioper   n_var
     seq1    1749    C       30      bad     0.0333  -4      -4GAAA  1
@@ -92,7 +94,7 @@ it and you'd like it, [drop me a line](mailto:douglasgscofield@gmail.com).
 #### Default output
 
 Default output is a table summarizing base counts and qualities, annotated with
-notes about indels and likely fixed positions.  Various thresholds and other
+notes about indels and likely fixed positions. Various thresholds and other
 aspects of output are controlled with a number of options.
 
 ````bash
@@ -137,7 +139,7 @@ will produce
 
 ### Options
 
-Output of `./pileVar.pl --help`:
+Output of `pileVar.pl --help`:
 
 ````
 NAME
