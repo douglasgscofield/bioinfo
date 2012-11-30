@@ -175,21 +175,21 @@ OPTIONS
 
     --ploidy INT             ploidy of sample, currently ignored [default $opt_ploidy]
 
-    --no-pos-check           do not check positions for increase-by-1 consistency.  If a consensus
-                             FASTA file is being produced, this suppresses the insertion of gaps
-                             in the output (--no-coord-check is a synonym)
+    --no-pos-check           do not check positions for increase-by-1 consistency.  If a
+                             consensus FASTA file is being produced, this suppresses the 
+                             insertion of gaps in the output (--no-coord-check is a synonym)
     --hetz                   determine heterozygous positions, applying all other options
-    --hetz-min-freq FLOAT    minimum frequency for heterozygous call at a site [$opt_hetzminfreq]
-    --hetz-check             check that #alleles do not exceed ploidy, if so ignore it [$opt_hetzcheck]
+    --hetz-min-freq FLOAT    minimum frequency for heterozygous call at a site [default $opt_hetzminfreq]
+    --hetz-check             check that #alleles do not exceed ploidy, if so ignore it [default $opt_hetzcheck]
                              this all would be better replaced with a model
-    --variants-only          print out only those positions containing variants from the reference
-                             [default $opt_variantsonly]
+    --variants-only          print out only those positions containing variants from the 
+                             reference [default $opt_variantsonly]
     --consensus              call consensus sequence from reads, adds two columns to output,
                              one for consensus call, one for mean quality of call [default $opt_consensus]
     --consensus-fasta FILE   print the consensus sequence in FASTA format to the given file
     --fasta-gap-char CHAR    the character used for position-skipping gaps in the consensus
-                             FASTA file, gaps are also identified by position in the FASTA header line 
-                             [default $opt_fastagapchar]
+                             FASTA file, gaps are also identified by position in the FASTA 
+                             header line [default $opt_fastagapchar]
     --print-bases-quals      print out bases and base qualities from input mpileup
                              [default $opt_printbasesquals]
 
@@ -197,7 +197,8 @@ OPTIONS
 
     --mincov INT             minimum raw coverage to call a change to reference [default $opt_mincov]
     --minqual INT            minimum base quality cutoff [default $opt_minqual]
-    --minqualcov INT         minimum coverage of quality bases to call a change to reference [default $opt_minqualcov]
+    --minqualcov INT         minimum coverage of quality bases to call a change to 
+                             reference [default $opt_minqualcov]
     --qual                   print qualities of variants [default $opt_qual]
     --qualcalc mean|rms|sum  method for calculating qualities of variants [default $opt_qualcalc]
     --qualround INT          digit to which to round variant qualities [default $opt_qualround]
@@ -206,7 +207,7 @@ OPTIONS
 
     --indels                 track the presence of indels [default $opt_indels]
     --indel-frac FLOAT       do not report indels at a position if the fraction of 
-                             reads containing them is below FRAC [default $opt_indelfrac]
+                             reads containing them is below FLOAT [default $opt_indelfrac]
     --indel-mode             track ONLY the presence of indels [default $opt_indelmode]
 
   SNP variants:

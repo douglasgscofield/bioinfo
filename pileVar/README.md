@@ -194,7 +194,7 @@ OPTIONS
 
     --indels                 track the presence of indels [default 0]
     --indel-frac FLOAT       do not report indels at a position if the fraction of 
-                             reads containing them is below FRAC [default 0.05]
+                             reads containing them is below FLOAT [default 0.05]
     --indel-mode             track ONLY the presence of indels [default 0]
 
   SNP variants:
