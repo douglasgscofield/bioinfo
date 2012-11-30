@@ -1,39 +1,103 @@
 pileVar.pl
 ==========
 
-Call variants by processing output of samtools mpileup command.
+Summarize variants in `samtools mpileup` output.
 
-The initial development of this script is for the calling of variants during
-reference-guided assembly of a chloroplast sequence.  Thus, my first interest
-is uncovering *fixed differences* between the reference and the set of reads,
-and identifying regions of ambiguity due to indels, rather than finding SNPs
-isolated against a background of sequence variation.  Eventually I may extend
-this or write another script to handle SNP calling in pooled samples.
+The initial development of this script was for the identification of variants 
+during reference-guided assembly of a chloroplast sequence.  So my first 
+interest was to uncover *fixed differences* between the reference and the set of reads,
+and identifying regions of ambiguity due to indels, in contrast to finding SNPs and
+other variants isolated against a background of sequence variants.
 
-Built upon the structure of the very useful mpileup-format parser script
-available from Galaxy at
+It has since evolved into a bit more of a general-purpose script for summarizing
+the raw "model-free" (or with options, "naive-model") variation present within pileup.  
+Other tools do a good job of calling SNPs and indels (sort of) and this script 
+could be thought of as providing a null-model summary of all variants present, to
+allow for judging whether the variants it shows should or should not be called by
+other SNP- and indel-calling tools.
+
+Currently it prints its own simple reports, but it would be nice to have it print
+VCF to allow for comparisons.
+
+The pileup-parsing code and indeed the entire script was initially built upon the 
+structure of the very useful mpileup-format parser script available from Galaxy at
 <https://bitbucket.org/galaxy/galaxy-central/src/tip/tools/samtools/pileup_parser.pl>.
+It's moving away from that as I replace more and more of it, but that script gave me
+a great head start while I was learning about pileup.
 
 
 Input
 -----
 
-Input is **raw** mpileup output, via something like
+Input is `samtools mpileup` output, via something like
 
-    samtools mpileup -BQ0 -d 1000000 -f ref.fa -D your.bam -A > mpileup.raw.txt
+````bash
+samtools mpileup -AB -q0 -Q0 -d1000000 -f ref.fa -D your.bam | pileVar.pl ...
+````
 
-This requests no read filtering, and includes anomalous base pairs (-A).  You
-might want to drop that last one or include others, based on your pipeline.
+This is pretty close to raw pileup, without (all?) the quality adjustments
+that `samtools` will do with BAQ computation etc.  It's a good place to start
+if you want to use this script as discussed above, to do a model-free summary
+of variation within your mapped reads.
 
 
 Output
 ------
 
-Current output is a table summarizing base counts and qualities, annotated with
+#### --indel-mode
+
+Output comes in a few flavors.  The one I'm using currently is `--indel-mode`,
+which summarizes all indels present in the pileup and accompanies each summary
+with a good/bad tag based on very simple criteria:
+
+* all indel lengths and indel operations are identical (the `ilen` and `ioper` 
+  columns), after converting operations for reverse-orientation reads to 
+  uppercase
+* the indel frequency is greater than or equal to the `--indel-frac` frequency
+  (below uses `--indel-frac 0.1`)
+
+    seq     pos     ref     cvg     iqual   ifreq   ilen    ioper   n_var
+    seq1    1749    C       30      bad     0.0333  -4      -4GAAA  1
+    seq1    1750    G       26      bad     0.0769  -1      -1A     2
+    seq1    1758    A       25      bad     0.0400  3       +3TGG   1
+    seq1    1771    G       32      bad     0.0312  -1      -1T     1
+    seq1    1773    T       32      bad     0.0312  1       +1C     1
+    seq1    1776    C       35      bad     0.0857  1,-1    +1G,-1T 3
+    seq1    2076    A       54      bad     0.0741  -1      -1G     4
+    seq1    2078    A       55      bad     0.0727  -1      -1G     4
+    seq1    2281    A       29      bad     0.0345  1       +1T     1
+    seq1    2294    C       32      bad     0.0312  4       +4TGGG  1
+    seq1    3408    T       23      good    0.8261  -1      -1N     19
+    seq1    4386    A       16      good    0.3750  -29     -29GACAGAAAGATGCTAAGGACGGATTTAGC        6
+    seq1    5262    G       49      bad     0.0204  -1      -1A     1
+    seq1    5369    A       49      bad     0.0204  1       +1G     1
+    seq1    5393    G       55      bad     0.0182  1       +1A     1
+    seq1    5821    G       237     bad     0.0042  -2      -2GA    1
+    seq1    5849    G       167     good    0.1138  1       +1A     19
+    ...
+
+You could quickly generate a distribution of indel sizes with
+
+````bash
+samtools mpileup -AB -q1 -f ref.fa -D your.bam \
+    | pileVar.pl --indel-mode --indel-frac 0.1 \
+    | grep '\bgood\b' | cut -f7 \
+    | hist
+````
+
+`hist` is a little awk script that generates a histogram, if I haven't posted 
+it and you'd like it, [drop me a line](mailto:douglasgscofield@gmail.com).
+
+
+#### Default output
+
+Default output is a table summarizing base counts and qualities, annotated with
 notes about indels and likely fixed positions.  Various thresholds and other
 aspects of output are controlled with a number of options.
 
-    samtools mpileup -BQ0 -d 1000000 -f ref.fa -D your.bam -A | ./pileVar.pl
+````bash
+samtools mpileup -BQ0 -d 1000000 -f ref.fa -D your.bam -A | ./pileVar.pl
+````
 
 will produce
 
@@ -75,8 +139,7 @@ will produce
 
 Output of `./pileVar.pl --help`:
 
-~~~~
-
+````
 NAME
 
   pileVar.pl - parse SAMtools mpileup format for variant information
@@ -87,49 +150,56 @@ SYNOPSIS
 
 OPTIONS
 
-    -                        read input from STDIN, write to STDOUT
-    -in <filename>           read input from <filename>, else from STDIN
-    -out <filename>          write output to <filename>, else to STDOUT
-    -noheader                do not print header on output
-    -base_qual_offset <int>  offset of base quality ASCII value from 0 quality [default 64]
+    -                        read input from stdin, write to stdout
+    -i FILE, --input FILE    read input from FILE, else from stdin
+    -o FILE, --output FILE   write output to FILE, else to stdout
+    --mapping-quality        input has mapping quality column (samtools mpileup -s)
+    --no-header              do not print header on output
+    --base-qual-offset INT   offset of base quality ASCII value from 0 quality [default 64]
 
-    -ploidy <int>            ploidy of samples from which pileup is derived [default 1]
+    --ignore-N               do not produce output for positions with reference of N
 
-    -no_coord_check          do not check coordinates for increase-by-1 consistency.  If a consensus
+    --ploidy INT             ploidy of sample, currently ignored [default 2]
+
+    --no-pos-check           do not check positions for increase-by-1 consistency.  If a consensus
                              FASTA file is being produced, this suppresses the insertion of gaps
-                             in the output
-    -variants_only           print out only those coordinates containing variants from the reference
+                             in the output (--no-coord-check is a synonym)
+    --hetz                   determine heterozygous positions, applying all other options
+    --hetz-min-freq FLOAT    minimum frequency for heterozygous call at a site [0.1]
+    --hetz-check             check that #alleles do not exceed ploidy, if so ignore it [1]
+                             this all would be better replaced with a model
+    --variants-only          print out only those positions containing variants from the reference
                              [default 0]
-    -consensus               call consensus sequence from reads, adds two columns to output,
-                             one for consensus call, one for mean quality of call [default 1]
-    -consensus_fasta <filename>  print the consensus sequence in FASTA format to the given file
-    -fasta_gap_char <char>   the character used for coordinate-skipping gaps in the consensus
+    --consensus              call consensus sequence from reads, adds two columns to output,
+                             one for consensus call, one for mean quality of call [default 0]
+    --consensus-fasta FILE   print the consensus sequence in FASTA format to the given file
+    --fasta-gap-char CHAR    the character used for position-skipping gaps in the consensus
                              FASTA file, gaps are also identified by position in the FASTA header line 
                              [default n]
-    -print_bases_quals       print out bases and base qualities from input mpileup
+    --print-bases-quals      print out bases and base qualities from input mpileup
                              [default 0]
 
   Quality:
 
-    -mincov <int>            minimum raw coverage to call a change to reference [default 0]
-    -minqual <int>           minimum base quality cutoff [default 0]
-    -minqualcov <int>        minimum coverage of quality bases to call a change to reference [default 0]
-    -qual                    print qualities of variants [default 1]
-    -qualcalc mean|rms|sum   method for calculating qualities of variants [default rms]
-    -qualround <int>         digit to which to round variant qualities [default 1]
+    --mincov INT             minimum raw coverage to call a change to reference [default 0]
+    --minqual INT            minimum base quality cutoff [default 0]
+    --minqualcov INT         minimum coverage of quality bases to call a change to reference [default 0]
+    --qual                   print qualities of variants [default 0]
+    --qualcalc mean|rms|sum  method for calculating qualities of variants [default rms]
+    --qualround INT          digit to which to round variant qualities [default 1]
 
   Indels:
 
-    -track_indels            track the presence of indels [default 0]
-    -filter_indel_frac <fraction>  do not report indels at a coordinate if the fraction of 
-                             reads containing them is below <fraction> [default 0.05]
+    --indels                 track the presence of indels [default 0]
+    --indel-frac FLOAT       do not report indels at a position if the fraction of 
+                             reads containing them is below FRAC [default 0.05]
+    --indel-mode             track ONLY the presence of indels [default 0]
 
   SNP variants:
 
-    -fixed_frac <fraction>   minimum fraction of non-ref bases required to call a base as 
+    --fixed-frac FLOAT       minimum fraction of non-ref bases required to call a base as 
                              fixed with respect to the reference [default 0.8]
 
-    -help, -?                help message
+    --help, -?               help message
 
-~~~~
-
+````

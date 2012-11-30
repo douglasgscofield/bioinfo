@@ -38,14 +38,17 @@
 # 2012-11-26 : first version of the script
 #
 # TODO
-# --- handle command-line arguments?  bet it's easy but awk and i, we are
-#     just starting out...
+# --- handle command-line arguments?  see intervalBed.awk, turns out
+#     awk does this really nicely already with key=value pairs on
+#     the command line
 # --- on option, skip 'comment lines' in input stream
+# -x- remove verbose option, too much cruft
 # -x- remove gawk dependencies?
 # -x- generalize and put on github
 
 # quicksort array values, from http://awk.info/?quicksort
 # gawk provides asort() but we're living gawk free these days
+
 function qsort(array, left, right,     i, last)
 {
 	if (left >= right)
@@ -59,20 +62,20 @@ function qsort(array, left, right,     i, last)
 	qsort(array, left, last - 1);
 	qsort(array, last + 1, right);
 }
+
+# swap two values, utility function for qsort()
+
 function swap(array, i, j,     t)
 {
 	t = array[i]; array[i] = array[j]; array[j] = t;
 }
 
-# compute the median value of values within array, which has size n; 
+# compute the median value of values within array, which has size array_size; 
 # the rest of the arguments are for printing the verbose message
-function compute_window_median(array, array_size, r, wbegin, wend, wsize, verb)
+
+function compute_window_median(array, array_size,      ans)
 {
     qsort(array, 1, array_size);
-    if (array_size < wsize) 
-        if (verb) {
-            print r ": window from " wbegin " to " wend " has less than " wsize " positions: " array_size > "/dev/stderr";
-        }
     if (array_size == 1) {
         ans = array[array_size];
     } else if ((array_size % 2) == 1) {
@@ -93,7 +96,7 @@ BEGIN {
     header = 1;   # do we have header line(s) on the input to skip?
     ref_start_pos = 1; # the position at which references start, 1 by convention
     windowsize = 50;
-    verbose = 0;
+    no_val_value = 0;  # what do we print when there's no data?
 
     # operational variables to track our position
     ref = "";     # current reference
@@ -114,15 +117,14 @@ BEGIN {
         print "fixedStep chrom=" ref " start=" ibegin " step=" windowsize " span=" windowsize;
     }
 
-    if ($(ref_col) != ref || $(pos_col) >= iend) { # we're exiting the window, compute median, print it, start over
+    if ($(ref_col) != ref || $(pos_col) >= iend) { 
+        
+        # we're exiting the window, print window, start over
 
-        median_val = compute_window_median(val, n_pos, ref, ibegin, iend, windowsize, verbose);
+        median_val = compute_window_median(val, n_pos);
         print median_val;
 
-        if ($(ref_col) != ref) {  # we're here because we hit a new reference
-            if (verbose) {
-                print ref ": moving to a new reference sequence " $(ref_col) > "/dev/stderr";
-            }
+        if ($(ref_col) != ref) {  # we hit a new reference
             ref = $(ref_col);
             ibegin = ref_start_pos;
             print "fixedStep chrom=" ref " start=" ibegin " step=" windowsize " span=" windowsize;
@@ -131,32 +133,29 @@ BEGIN {
         }
         iend = ibegin + windowsize;
 
-        # now check whether we should skip more windows...
+        # now check whether our position did not start from ref_start_pos, or changed 
+        # nonconsecutively, and therefore we should skip more windows...
         while ($(pos_col) >= iend) {
-            if (verbose) {
-                print ref ": skipping a 0-position window from " ibegin " to " iend > "/dev/stderr";
-            }
-            print 0;
+            print no_val_value;
             ibegin = iend;
             iend = ibegin + windowsize;
         }
 
-        split("", val); # clear the array
+        # clear the array portably, from http://www.math.utah.edu/docs/info/gawk_12.html
+        split("", val); 
+
         n_pos = 0;
     }
 
-    # we're (now) within the window, add the median value, go to the next data line
+    # we're (now) within the proper window, add the value to our array
     ++n_pos;
     val[n_pos] = $(val_col);
 }
 
 END {
     if (n_pos > 0) { # we're exiting the file and still need to compute median
-        median_val = compute_window_median(val, n_pos, ref, ibegin, iend, windowsize, verbose);
+        median_val = compute_window_median(val, n_pos);
         print median_val;
-    }
-    if (verbose) {
-        print ref ": window from " ibegin " to " iend " was the last, final position " $(pos_col) ", end of input data" > "/dev/stderr";
     }
 }
 

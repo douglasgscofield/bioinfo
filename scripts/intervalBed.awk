@@ -98,6 +98,8 @@ BEGIN {
     crit_val = 1; # what val must be for interval determination
 }
 
+# print out interval taking into account the position adjustment
+
 function print_interval(r, ib, ie)
 {
     print r, (ib + out_adjust), (ie + out_adjust);
@@ -153,7 +155,7 @@ function print_interval(r, ib, ie)
                 iend = ibegin + 1;
             }
         } else if (grace && ++in_grace <= grace) {
-            # keep moving until no more grace
+            # noop; keep moving until no more grace
         } else {  # not crit_val and no grace left, print interval and reset
             print_interval(ref, ibegin, iend);
             ibegin = 0; 
