@@ -2,8 +2,8 @@
 
 # all tests assume -s provided to samtools mpileup
 
-Script=mergePileupColumns.awk
 ScriptDir=..
+Script=mergePileupColumns
 
 ScriptOptions="-v mpileup_s=1"
 

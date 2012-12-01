@@ -3,6 +3,7 @@
 
 TempID=$$
 ScriptDir=..
+Script=windowWig
 
 # Complete set of variables used in tests; reset between tests
 
@@ -42,7 +43,7 @@ fi
 Expected=windowWig_test_01.expected
 Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
-$ScriptDir/windowWig.awk $Input > $Temp1
+$ScriptDir/$Script $Input > $Temp1
 if diff $Temp1 $Expected ; then
     echo " - PASSED"
     RemoveTempFiles
@@ -68,7 +69,7 @@ fi
 Expected=windowWig_test_02.expected
 Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
-$ScriptDir/windowWig.awk $Input > $Temp1
+$ScriptDir/$Script $Input > $Temp1
 if diff $Temp1 $Expected ; then
     echo " - PASSED"
     RemoveTempFiles
@@ -94,7 +95,7 @@ fi
 Expected=windowWig_test_03.expected
 Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
-$ScriptDir/windowWig.awk $Input > $Temp1
+$ScriptDir/$Script $Input > $Temp1
 if diff $Temp1 $Expected ; then
     echo " - PASSED"
     RemoveTempFiles
