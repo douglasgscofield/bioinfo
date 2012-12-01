@@ -34,6 +34,8 @@
 # to be covered by a single reported window.
 #
 # CHANGELOG
+# 2012-12-01 : handle comments and blank lines
+# 2012-11-30 : removed verbose option
 # 2012-11-27 : generalize a bit, remove gawk dependencies
 # 2012-11-26 : first version of the script
 #
@@ -41,12 +43,32 @@
 # --- handle command-line arguments?  see intervalBed.awk, turns out
 #     awk does this really nicely already with key=value pairs on
 #     the command line
-# --- on option, skip 'comment lines' in input stream
+# -x- on option, skip 'comment lines' in input stream
 # -x- remove verbose option, too much cruft
-# -x- remove gawk dependencies?
+# -x- remove gawk dependencies
 # -x- generalize and put on github
 
-# quicksort array values, from http://awk.info/?quicksort
+BEGIN {
+    # parameters
+    FS = "\t";    # input column separator
+    ref_col = 1;  # column of reference, starting with 1 by awk convention
+    pos_col = 2;  # column of position within reference (increasing within each reference)
+    val_col = 3;  # column of value to windowize across positions within references
+    header = 1;   # do we have header line(s) on the input to skip?
+    skip_comment = 1;  # do we skip comments, lines that begin with '#'?
+    ref_start_pos = 1; # the position at which references start, 1 by convention
+    windowsize = 50;
+    no_data_value = 0;  # what do we print when there's no data?
+
+    # operational variables to track our position
+    ref = "";     # current reference
+    ibegin = -1;  # beginning of the current window
+    iend = 0;     # the position immediately beyond the current window
+    # didja notice? the current window is [ibegin, iend)
+}
+
+
+# quicksort for array values, from http://awk.info/?quicksort
 # gawk provides asort() but we're living gawk free these days
 
 function qsort(array, left, right,     i, last)
@@ -63,12 +85,14 @@ function qsort(array, left, right,     i, last)
 	qsort(array, last + 1, right);
 }
 
+
 # swap two values, utility function for qsort()
 
 function swap(array, i, j,     t)
 {
 	t = array[i]; array[i] = array[j]; array[j] = t;
 }
+
 
 # compute the median value of values within array, which has size array_size; 
 # the rest of the arguments are for printing the verbose message
@@ -86,27 +110,14 @@ function compute_window_median(array, array_size,      ans)
     return ans;
 }
 
-
-BEGIN {
-    # parameters
-    FS = "\t";    # input column separator
-    ref_col = 1;  # column of reference, starting with 1 by awk convention
-    pos_col = 2;  # column of position within reference (increasing within each reference)
-    val_col = 3;  # column of value to windowize across positions within references
-    header = 1;   # do we have header line(s) on the input to skip?
-    ref_start_pos = 1; # the position at which references start, 1 by convention
-    windowsize = 50;
-    no_val_value = 0;  # what do we print when there's no data?
-
-    # operational variables to track our position
-    ref = "";     # current reference
-    ibegin = -1;  # beginning of the current window
-    iend = 0;     # the position immediately beyond the current window
-    # didja notice? the current window is [ibegin, iend)
-}
-
 {
-    if (header && NR <= header) {  # skip header line(s)
+    if (header && NR <= header) {
+        next;
+    }
+    if (skip_comment && $0 ~ /^#/) {
+        next;
+    }
+    if ($0 ~ /^$/) {  # blank lines
         next;
     }
     if (ibegin == -1) {  # initializing...
@@ -136,7 +147,7 @@ BEGIN {
         # now check whether our position did not start from ref_start_pos, or changed 
         # nonconsecutively, and therefore we should skip more windows...
         while ($(pos_col) >= iend) {
-            print no_val_value;
+            print no_data_value;
             ibegin = iend;
             iend = ibegin + windowsize;
         }

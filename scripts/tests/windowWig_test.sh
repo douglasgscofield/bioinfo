@@ -55,3 +55,55 @@ fi
 ClearVariables
 
 
+# -------------------------------- windowWig_test_02
+
+
+ThisTest="windowWig_test_02"
+echo -n $ThisTest - input includes comment lines
+Input=windowWig_test_02.input
+CompressedInput=windowWig_test_02.input.gz
+if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
+    gzip -d -c < $CompressedInput > $Input
+fi
+Expected=windowWig_test_02.expected
+Temp1=$ThisTest.$TempID.1
+Temp2=$ThisTest.$TempID.2
+$ScriptDir/windowWig.awk $Input > $Temp1
+if diff $Temp1 $Expected ; then
+    echo " - PASSED"
+    RemoveTempFiles
+    if [ "$CompressedInput" != "" ] ; then
+        rm -f $Input
+    fi
+else
+    echo " - FAILED"
+fi
+ClearVariables
+
+
+# -------------------------------- windowWig_test_03
+
+
+ThisTest="windowWig_test_03"
+echo -n $ThisTest - input includes comment and blank lines
+Input=windowWig_test_03.input
+CompressedInput=windowWig_test_03.input.gz
+if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
+    gzip -d -c < $CompressedInput > $Input
+fi
+Expected=windowWig_test_03.expected
+Temp1=$ThisTest.$TempID.1
+Temp2=$ThisTest.$TempID.2
+$ScriptDir/windowWig.awk $Input > $Temp1
+if diff $Temp1 $Expected ; then
+    echo " - PASSED"
+    RemoveTempFiles
+    if [ "$CompressedInput" != "" ] ; then
+        rm -f $Input
+    fi
+else
+    echo " - FAILED"
+fi
+ClearVariables
+
+

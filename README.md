@@ -16,22 +16,22 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
-`windowWig.awk`
+`windowWig`
 reads a data stream (for example, coverage values by position within reference sequences) and
 produces a USCS [WIG][] file that summarizes median values within nonoverlapping windows. 
 
-`intervalBed.awk`
+`intervalBed`
 reads a data stream with reference-position marked boolean values (for example, 
-presence-absence by position within reference sequences) and produces a BED file 
+presence-absence by position within reference sequences) and produces a [BED][] file 
 describing intervals in which the values are true.
 
 `samHeader2Bed.pl` 
-reads a SAM header and produces BED file(s) after applying a few filtering criteria.
+reads a SAM header and produces [BED][] file(s) after applying a few filtering criteria.
 
 `pileup2pro.pl`
 reads `samtools mpileup` format and produces a profile file suitable for input to [mlRho][].
 
-`mergePileupColumns.awk`
+`mergePileupColumns`
 merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
 `extractFastaSeqs.pl`
@@ -40,6 +40,8 @@ extracts named sequences from a FASTA file, or everything but.
 `shuffleFastq.pl` and `deshuffleFastq.pl`
 convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
 
-[WIG]:    http://genome.ucsc.edu/goldenPath/help/wiggle.html
+
+[WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
+[BED]:  http://genome.ucsc.edu/FAQ/FAQformat.html#format1
 [mlRho]:  http://guanine.evolbio.mpg.de/mlRho
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet

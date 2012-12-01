@@ -3,8 +3,9 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
-windowWig.awk
----------------
+
+windowWig
+---------
 
 Say you have a data stream (optionally containing a header line) with the 
 following format:
@@ -31,7 +32,7 @@ for doing this could be:
 
 ```bash
 samtools mpileup -AB -d1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | \
-    cut -f1,2,4 | windowWig.awk > cov.wig
+    cut -f1,2,4 | windowWig > cov.wig
 ```
 
 See below for `mergePileupColumns.awk`.  Output in the WIG file will look something like:
@@ -52,11 +53,33 @@ median is calculated based on the number of values seen within each window,
 not in the size of the window; the median of a window containing a single 
 value is that single value; windows which contain no values are reported to 
 have a median of 0.  For quantities like coverage which have a strong 
-near-distance correlation within the input, this policy should be fine.  The
-script can easily be modified to do whatever you'd like, check its 
-`parameters` section for values that can easily be changed.
+near-distance correlation within the input, this policy should be fine.
 
-**Caveats**: Positions (column 2) must be sorted in increasing order within each 
+
+### Options
+
+As this is an `awk` script, options may easily be set using a 
+`parameter=value` syntax on the command line, for example:
+
+````bash
+windowWig windowsize=100 header=0 < input.dat | ...
+````
+
+Shown are commonly used parameters and their default values; check the `BEGIN`
+section of the script for additional values that may be changed.
+
+`header=1` : the number of header lines in the input (0 for none)
+
+`skip_comment=1` : whether commend lines (beginning with '`#`') should be skipped (0 for no)
+
+`no_data_value=0` : what should be printed for windows which have no data?
+
+`windowsize=50` : the size of windows across which median values are calculated
+
+
+### Caveats
+
+Positions (column 2) must be sorted in increasing order within each 
 reference (column 1).  They need not be consecutive. Note that the positions 
 within each reference are assumed to be 
 monotonically increasing in steps of 1 starting from 1 (by default) through the
@@ -67,11 +90,13 @@ reported window.
 
 This script uses no `gawk` extensions.
 
+
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
 
 
-intervalBed.awk
-----------------
+
+intervalBed
+-----------
 
 Starting with the same basic 3-column input as above, instead of continuous values
 we have boolean 0/1 values in the third column:
@@ -92,15 +117,15 @@ we have boolean 0/1 values in the third column:
     reference1  14  0
     ...
 
-This script creates a BED file defining intervals in which the value is true, note
+This script creates a [BED][] file defining intervals in which the value is true, note
 that BED intervals are 0-based and [begin, end).  Output for the above is
 
-    track name=booleanIntervals description="intervals of 1s, grace distance 0"
+    track name=booleanIntervals description="intervals of 1s"
     reference1	1	8
     reference1	10	13
 
-It optionally allows for a grace interval of positions through which the boolean
-value need not be true for the interval to be maintained.  The grace interval will
+It optionally allows for a grace distance through which the boolean
+value need not be true for the interval to be maintained.  The grace distance will
 only connect intervals, it will never begin or terminate a reference.  The output
 from the above data with grace distance 10 is
 
@@ -117,7 +142,7 @@ using `boolify`, then uses this script to produce the bed track with a grace of
 ```bash
 samtools mpileup -sAB -d1000 -q20 -f ref.fa your.bam | smorgas --mapping-quality | \
     cut -f1,2,5 | boolify col=3 header=1 | \
-    intervalBed.awk header=1 grace=50 trackname=highQualityMappings \
+    intervalBed header=1 grace=50 trackname=highQualityMappings \
         trackdesc="At least 1 high-quality-mapped read, grace 50bp"  > highqual.bed
 ```
 
@@ -127,13 +152,57 @@ multiply-mapped (mapping quality 0) reads:
 ```bash
 samtools mpileup -sAB -d1000 -q0 -f ref.fa your.bam | smorgas --mapping-quality | \
     awk FS="\t" OFS="\t" '{ if (($4 / $3) >= 0.1) print; }' | cut -f1,2,4 | boolify col=3 header=1 | \
-    intervalBed.awk header=1 trackname=multipleMappings \
+    intervalBed header=1 trackname=multipleMappings \
         trackdesc="At least 10% multiply-mapped reads"  > dupmapped-10-percent.bed
 ```
 
 `smorgas` is another tool available here that's under active development, and
 `boolify` is a super-simple script that turns the values in a column into 0 or 1.
 If you need it and I haven't uploaded it here yet, [drop me a line](mailto:douglasgscofield@gmail.com).
+
+
+### Options
+
+As this is an `awk` script, options may easily be set using a 
+`parameter=value` syntax on the command line, for example:
+
+````bash
+intervalBed grace=50 min_width=50 header=0 < input.dat | ...
+````
+
+Shown are commonly used parameters and their default values; check the `BEGIN`
+section of the script for additional values that may be changed.
+
+`header=1` : the number of header lines in the input (0 for none)
+
+`skip_comment=1` : whether commend lines (beginning with '`#`') should be skipped (0 for no)
+
+`grace=0` : set a grace distance (0 for none)
+
+`min_width=1` : minimum interval width to be output
+
+`track=1` : whether a BED-format `track` line should begin the output (0 for no)
+
+`trackname="booleanIntervals"` : the name used in the `track` line
+
+`trackdesc="intervals of 1s"` : the description used in the `track` line
+
+`min_width=1` : whether 
+
+
+### Caveats
+
+Positions (column 2) must be sorted in increasing order within each 
+reference (column 1).  They need not be consecutive. Note that the positions 
+within each reference are assumed to be  monotonically increasing in steps of 1 
+starting from 1 (by default) through the last reported position within the 
+reference, regardless of whether the data stream actually contains values for 
+every position.
+
+This script uses no `gawk` extensions.
+
+
+[BED]:  http://genome.ucsc.edu/FAQ/FAQformat.html#format1
 
 
 samHeader2Bed.pl
@@ -240,8 +309,8 @@ coefficients, and mutation rates from high-coverage genome-sequencing projects.
 
 
 
-mergePileupColumns.awk
-----------------------
+mergePileupColumns
+------------------
 
 Merge columns of `samtools mpileup` listing pileup for several BAMs into a
 single set of base call, base quality and (optionally) mapping quality columns.
@@ -275,11 +344,10 @@ mapping quality column.  Merging output from `samtools mpileup -s`:
     ref1  1  A  7  ..,,,CC   ffifgcd  ]]]2+FF                     <== correct merge
 
 
-**USAGE**
-
+### Usage
 
 ````bash
-samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns.awk > merged.pile
+samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns > merged.pile
 ````
 
 If the `-s` option was used for `samtools mpileup`, then set the `mpileup_s` variable
@@ -287,7 +355,7 @@ on the command line:
 
 
 ````bash
-samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns.awk -v mpileup_s=1 > merged.pile
+samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns mpileup_s=1 > merged.pile
 ````
 
 
