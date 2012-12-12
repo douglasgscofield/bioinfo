@@ -17,14 +17,15 @@ allow for judging whether the variants it shows should or should not be called b
 other SNP- and indel-calling tools.
 
 Currently it prints its own simple reports, but it would be nice to have it print
-VCF to allow for comparisons.
+[VCF][] to allow for comparisons with say [vcftools][].
 
 The pileup-parsing code and indeed the entire script was initially built upon the 
-structure of the very useful mpileup-format parser script available from Galaxy at
-<https://bitbucket.org/galaxy/galaxy-central/src/tip/tools/samtools/pileup_parser.pl>.
+structure of the very useful [mpileup-format parser script available from Galaxy](https://bitbucket.org/galaxy/galaxy-central/src/tip/tools/samtools/pileup_parser.pl).
 It's moving away from that as I replace more and more of it, but that script gave me
 a great head start while I was learning about pileup.
 
+[VCF]:       http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41
+[vcftools]:  http://vcftools.sourceforge.net/
 
 Input
 -----
@@ -44,7 +45,7 @@ of variation within your mapped reads.
 Output
 ------
 
-#### --indel-mode
+### --indel-mode
 
 The output flavor I'm using currently is `--indel-mode`, which summarizes 
 all indels present in the pileup and accompanies each summary with a good/bad 
@@ -82,16 +83,19 @@ You could quickly generate a distribution of indel sizes with
 
 ````bash
 samtools mpileup -AB -q1 -f ref.fa -D your.bam \
-    | pileVar.pl --indel-mode --indel-frac 0.1 \
-    | grep '\bgood\b' | cut -f7 \
-    | hist
+| pileVar.pl --indel-mode --indel-frac 0.1 \
+| grep '\bgood\b' \
+| cut -f7 \
+| hist
 ````
 
-`hist` is a little awk script that generates a histogram, if I haven't posted 
-it and you'd like it, [drop me a line](mailto:douglasgscofield@gmail.com).
+`hist` is a little script that generates a histogram of input data.  You
+can find it in [tinyutils][].
+
+[tinyutils]: https://github.com/douglasgscofield/tinyutils
 
 
-#### Default output
+### Default output
 
 Default output is a table summarizing base counts and qualities, annotated with
 notes about indels and likely fixed positions. Various thresholds and other
