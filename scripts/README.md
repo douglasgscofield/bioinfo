@@ -31,11 +31,13 @@ the mappings are contained within a few separate BAM files.  A fast pipeline
 for doing this could be:
 
 ```bash
-samtools mpileup -AB -d1000000 -q0 -Q0 -f ref.fa *.bam | mergePileupColumns.awk | \
-    cut -f1,2,4 | windowWig > cov.wig
+samtools mpileup -AB -d1000000 -q0 -Q0 -f ref.fa *.bam \
+| mergePileupColumns \
+| cut -f1,2,4 \
+| windowWig > cov.wig
 ```
 
-See below for `mergePileupColumns.awk`.  Output in the WIG file will look something like:
+See below for `mergePileupColumns`.  Output in the WIG file will look something like:
 
     fixedStep chrom=reference1 start=1 step=50 span=50
     9
@@ -140,25 +142,28 @@ using `boolify`, then uses this script to produce the bed track with a grace of
 50bp:
 
 ```bash
-samtools mpileup -sAB -d1000 -q20 -f ref.fa your.bam | smorgas --mapping-quality | \
-    cut -f1,2,5 | boolify col=3 header=1 | \
-    intervalBed header=1 grace=50 trackname=highQualityMappings \
-        trackdesc="At least 1 high-quality-mapped read, grace 50bp"  > highqual.bed
+samtools mpileup -sAB -d1000 -q20 -f ref.fa your.bam \
+| smorgas --mapping-quality \
+| cut -f1,2,5 \
+| boolify col=3 header=1 \
+| intervalBed header=1 grace=50 trackname=highQualityMappings \
+      trackdesc="At least 1 high-quality-mapped read, grace 50bp"  > highqual.bed
 ```
 
 Or a BED which marks intervals in which at least 10% of coverage is coming from
 multiply-mapped (mapping quality 0) reads:
 
 ```bash
-samtools mpileup -sAB -d1000 -q0 -f ref.fa your.bam | smorgas --mapping-quality | \
-    awk FS="\t" OFS="\t" '{ if (($4 / $3) >= 0.1) print; }' | cut -f1,2,4 | boolify col=3 header=1 | \
-    intervalBed header=1 trackname=multipleMappings \
-        trackdesc="At least 10% multiply-mapped reads"  > dupmapped-10-percent.bed
+samtools mpileup -sAB -d1000 -q0 -f ref.fa your.bam \
+| smorgas --mapping-quality \
+| awk FS="\t" OFS="\t" '{ if (($4 / $3) >= 0.1) print; }' \
+| cut -f1,2,4 \
+| boolify col=3 header=1 \
+| intervalBed header=1 trackname=multipleMappings \
+      trackdesc="At least 10% multiply-mapped reads"  > dupmapped-10-percent.bed
 ```
 
-`smorgas` is another tool available here that's under active development, and
-`boolify` is a super-simple script that turns the values in a column into 0 or 1.
-If you need it and I haven't uploaded it here yet, [drop me a line](mailto:douglasgscofield@gmail.com).
+[`smorgas`](https://github.com/douglasgscofield/smorgas) is under active development, and [`boolify`](https://github.com/douglasgscofield/tinyutils) is a super-simple script that turns the values in a column into 0 or 1.  Both are available here in their respective repositories.
 
 
 ### Options
