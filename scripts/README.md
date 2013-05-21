@@ -352,7 +352,7 @@ mapping quality column.  Merging output from `samtools mpileup -s`:
 ### Usage
 
 ````bash
-samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns > merged.pile
+samtools mpileup -f ref.fa y1.bam y2.bam | mergePileupColumns > merged.pile
 ````
 
 If the `-s` option was used for `samtools mpileup`, then set the `mpileup_s` variable
