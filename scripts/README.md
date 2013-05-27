@@ -3,6 +3,30 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fermi-extract-contigs.pl
+------------------------
+
+Extract Fasta-format contigs from a [fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig files.  Writs Fasta to `stdout`, with each sequence given its fermi sequence name, and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  So this:
+
+````
+@26417937:25351227_0	191	83
+TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
++
+"#$%%&'((()**+,-../0123456789:;<=>?@ABCDEFGHIJKLLMNOPQRSTUVWXYZ[\]^_`abcdeffghijklmnoopqrstttttttttttsrqpponmmmlkkjihggfedcba`_^]\[ZYXWVUTSRQPONMLKJIIHGFEDCBA@?>=<;:9876543210//.-,+*)('&&%$#"
+````
+
+Becomes this:
+
+````
+>26417937:25351227_0 length:191,n_reads:83,median_coverage:44
+TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTAT
+ATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTA
+AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
+TGCATGTAGAA
+````
+
+
+
 
 windowWig
 ---------
