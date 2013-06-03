@@ -9,7 +9,11 @@ use List::Util qw(min max);
 sub median { 
 	my $ref = shift;
 	my @a = sort { $a <=> $b } @{$ref};
-	return ($a[$#a/2] + $a[@a/2]) / 2;
+    if (scalar(@a) % 2 == 0) {
+	    return (($a[$#a/2] + $a[($#a/2)+1]) / 2);
+    } else {
+	    return ($a[$#a/2]);
+    }
 }
 	
 my $infile = $ARGV[0];
@@ -36,4 +40,6 @@ while (<INFILE>) {
 	push @stats, $length;
 }
 
-print STDERR "n_seq=" . scalar(@stats) . " min=" . min(@stats) . " max=" . max(@stats) . " median=" . median(\@stats) . "\n";
+print STDERR "n_seq=", scalar(@stats), " min=", min(@stats), " max=", max(@stats), 
+             " median=", median(\@stats), "\n";
+
