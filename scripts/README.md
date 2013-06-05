@@ -16,9 +16,9 @@ in the first line of the `show-snps -T`-formatted file, but this can also be
 supplied with the `--fasta` option, which will override the file-encoded
 reference sequence if it is provided.
 
-It also provides the `--type SNP|INDEL` option to select the set of variants
-produces, as well as the `--snpEffect` option to produce variants suitably formatted
-for the [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
+It also provides the `--type SNP|INDEL` option to subselect the set of variants
+produced if you like, as well as the `--snpEffect` option to produce variants suitably formatted
+for the still-in-infancy [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
 
 The 'VCF' format produced by this script is not actually VCF yet, but I'm working
 on it :-)
