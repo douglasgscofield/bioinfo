@@ -41,7 +41,6 @@ sub find_ref_fasta_seq($) {
         #print STDERR "find_ref_fasta_seq: we are already at the reference sequence $seq_name_to_find\n";
         return;
     }
-    return if defined($ref_fasta_seq) and $ref_fasta_seq->id eq $seq_name_to_find;
     while (my $s = $ref_fasta_io->next_seq()) {
         if ($s->id eq $seq_name_to_find) {
             $ref_fasta_seq = $s;
