@@ -88,16 +88,12 @@ sub find_ref_fasta_seq($) {
     die("couldn't find reference $seq_name_to_find");
 }
 sub complete_indel() {
-    # we don't know the ref base at the start, so just try to fake it with ""
-    # 
     if ($o_type ne "SNP") {
-        my $alt = ""; # if we don't have a reference sequence this is all we know
-
         # fetch the ref base from the reference sequence
         find_ref_fasta_seq($indel_ref);
         my $ref_base = $ref_fasta_seq->subseq($indel_ref_start - 1, $indel_ref_start - 1);
         $indel = $ref_base . $indel;
-        $alt = $ref_base;
+        my $alt = $ref_base;
         if ($indel_type eq "INSERTION") {
             #print STDOUT join("\t", $indel_ref, $indel_ref_start, $alt, $indel, $indel_type), "\n";
             print STDOUT join("\t", $indel_ref, $indel_ref_start, $alt, $indel, "INDEL"), "\n";
