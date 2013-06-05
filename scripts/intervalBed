@@ -82,7 +82,7 @@ BEGIN {
     min_width = 1;  # minimum interval width to print
     inverse = 0;  # connect 0-valued intervals instead of 1-valued intervals; UNIMPLEMENTED
     track = 1;  # do we print an initial track line on the output?
-    trackname = "booleanIntervals";
+    trackname = "intervalBed";
     # trackdesc = ;  # default is set later, set it on the command line to override
 
     # parameters but probably of less interest
@@ -137,7 +137,10 @@ function print_interval(r, ib, ie)
         iend = ibegin + 1;
         if (track) {
             if (! trackdesc) {
-                trackdesc = "intervals of " (inverse ? 0 : 1) "s";
+                if (val_col == 0)
+                    trackdesc = "intervals including all positions";
+                else
+                    trackdesc = "intervals of positions with " crit_val "s";
                 if (grace > 0)
                     trackdesc = trackdesc ", grace distance " grace;
                 if (min_width > 1)
