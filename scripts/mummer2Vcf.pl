@@ -6,6 +6,39 @@ use Getopt::Long;
 use Bio::Seq;
 use Bio::SeqIO;
 
+sub usage($) {
+    my $msg = shift;
+    print STDERR "ERROR: $msg\n" if $msg;
+    print STDERR "
+USAGE:  mummer2Vcf.pl [ options ] mummer.snps
+
+Convert Mummer SNP/indel output as produced by the 'show-snps -T' command to
+a pseudo-VCF format.  Indels are collapsed and the first reference base is
+inserted at the start of indels as required for VCF, but not all VCF columns
+are yet produced.
+
+If indels are to be output, the reference sequence(s) against which Mummer
+called SNPs and indels must be either available as the file named at the start
+of the first line in the mummer.snps file, or via the -f/--fasta option.
+
+OPTIONS:
+
+    -f|--fasta  FILE.fa     Fasta file for reference, in same order as
+                            the reference in the mummer.snps file
+    -t|--type   SNP|INDEL   Restrict the output to just SNPs or indels;
+                            if the output is just SNPs, no reference
+                            file is required
+    -s|--snpEffect          Instead of VCF-ish, produce file formatted for
+                            eventual input to my R function snpEffect(),
+                            for determining SNP effects based on GFF
+                            annotation
+    -h|--help               This help output
+    mummer.snps             SNPs/indels as output by the Mummer command
+                            'show-snps -T'
+";
+    exit 1;
+}
+
 my $indel = "";
 my $indel_type = "";
 my $indel_ref = "";
@@ -14,21 +47,25 @@ my $indel_query = "";
 my $indel_query_start = 0;
 my $fasta_file = "";
 my $o_type = "";
-my $o_snpEffect = 0;;
+my $o_snpEffect = 0;
+my $o_help = 0;
 my $ref_fasta_io;
 my $ref_fasta_seq;
 
 GetOptions('fasta=s' => \$fasta_file,
            'type=s' => \$o_type,
-           'snpEffect' => \$o_snpEffect) or die("couldn't deal with options");
-die("--type must be SNP or INDEL") if $o_type and $o_type ne "INDEL" and $o_type ne "SNP";
+           'snpEffect' => \$o_snpEffect,
+           'help' => \$o_help) or usage("");
+usage("") if $o_help;
+usage("--type must be SNP or INDEL") if $o_type and $o_type ne "INDEL" and $o_type ne "SNP";
 
 if ($o_type ne "SNP") {
-    my $firstline = <>;
+    # only open the Fasta file if we're including indels in the output
     if ($fasta_file eq "") {
+        my $firstline = <>;
         ($fasta_file, undef) = split /\s+/, $firstline;
     }
-    die("must specify Fasta reference with -f/--fasta <file>") if $fasta_file eq "";
+    usage("must specify Fasta reference with -f/--fasta <file>") if $fasta_file eq "";
     $ref_fasta_io = Bio::SeqIO->new(-file => "<$fasta_file", -format => "fasta");
 }
 
@@ -86,7 +123,7 @@ sub complete_snp($$$$) {
 }
 
 while (<>) {
-    last if (/^NUCMER/);  # skip all lines til NUCMER
+    last if (/^NUCMER/);  # skip all lines up to NUCMER, as produced in proper Mummer output
 }
 if ($o_snpEffect) {
     # print snpEffect header, first 4 (strictly middle 3) are required
@@ -94,6 +131,8 @@ if ($o_snpEffect) {
 } else {
     # print VCF header
 }
+# Note: all --type processing is handled in the complete_{indel,snp}() subroutines.  We
+# still track indels even when we don't output them.
 while (<>) {
     next if /(^NUCMER|^\s*$|^\[)/;  # skip headers and blank lines
     my @line = split;
