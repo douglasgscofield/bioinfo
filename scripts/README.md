@@ -3,10 +3,38 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
-fermi-extract-contigs.pl
+mummer2Vcf.pl
+-------------
+
+Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/)
+`show-snps -T` command to a rough substitute for a 
+[VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).
+VCF requires the first reference base to be output for indels and Mummer
+doesn't output this, so this script requires a file containing the Fasta-format
+reference sequence, in SNP order.  It will open the file named as the reference
+in the first line of the `show-snps -T`-formatted file, but this can also be
+supplied with the `--fasta` option, which will override the file-encoded
+reference sequence if it is provided.
+
+It also provides the `--type SNP|INDEL` option to select the set of variants
+produces, as well as the `--snpEffect` option to produce variants suitably formatted
+for the [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
+
+The 'VCF' format produced by this script is not actually VCF yet, but I'm working
+on it :-)
+
+This script requires BioPerl 1.6.1.
+
+
+fermiExtractContigs.pl
 ------------------------
 
-Extract Fasta-format contigs from a [fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig files.  Writs Fasta to `stdout`, with each sequence given its fermi sequence name, and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  So this:
+Extract Fasta-format contigs from a
+[fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig
+files.  Writs Fasta to `stdout`, with each sequence given its fermi sequence
+name, and a description that includes sequence length, number of non-redundant
+reads that built the scaftig, and median coverage of non-redundant reads along
+the scafftig.  So this:
 
 ````
 @26417937:25351227_0	191	83
@@ -24,6 +52,8 @@ ATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTA
 AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
 TGCATGTAGAA
 ````
+
+This script required BioPerl 1.6.1.
 
 
 
