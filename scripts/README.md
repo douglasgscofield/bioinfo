@@ -180,7 +180,10 @@ that BED intervals are 0-based and [begin, end).  Output for the above is
     reference1	1	8
     reference1	10	13
 
-It optionally allows for a grace distance through which the boolean
+If the option `val_col=0` is given, then no third column of boolean values is
+required, the presence of each position is given an implied 'true'.
+
+The script also optionally allows for a grace distance through which the boolean
 value need not be true for the interval to be maintained.  The grace distance will
 only connect intervals, it will never begin or terminate a reference.  The output
 from the above data with grace distance 10 is
