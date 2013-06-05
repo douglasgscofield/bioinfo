@@ -51,7 +51,11 @@
 # connect identifiable intervals and will never implicitly include the
 # beginning or end of references.
 #
+# With the option val_col=0, no column of boolean values is required,
+# 'true' is implied for each position present on input
+#
 # CHANGELOG
+# 2013-06-06 : support val_col=0
 # 2012-12-01 : handle comments and blank lines
 # 2012-11-30 : minimum width interval
 # 2012-11-27 : create the script
@@ -121,11 +125,14 @@ function print_interval(r, ib, ie)
     if ($0 ~ /^$/) {  # blank lines
         next;
     }
+    if (val_col == 0) {
+        crit_val = 1;
+    }
 
     if (ibegin == -1) {  # initializing...
         ref = $(ref_col);
         pos = $(pos_col);
-        val = $(val_col);
+        val = (val_col == 0 ? 1 : $(val_col));
         ibegin = (val == crit_val) ? pos : 0;
         iend = ibegin + 1;
         if (track) {
@@ -153,7 +160,7 @@ function print_interval(r, ib, ie)
     }
 
     pos = $(pos_col);
-    val = $(val_col);
+    val = (val_col == 0 ? 1 : $(val_col));
 
     if (ibegin) {  # working on an interval
         if (val == crit_val) {
