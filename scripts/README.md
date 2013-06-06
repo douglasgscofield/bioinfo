@@ -155,7 +155,7 @@ intervalBed
 -----------
 
 Starting with the same basic 3-column input as above, instead of continuous values
-we have boolean 0/1 values in the third column:
+we have boolean 0/1 values in the third column (the header line is optional):
 
     REF         POS VAL
     reference1  1   0
