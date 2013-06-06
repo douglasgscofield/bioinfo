@@ -16,12 +16,18 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
+`mummer2Vcf.pl`
+reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is not yet compliant [VCF][] yet but it will be.  Requires BioPerl.
+
+`fermiExtractContigs.pl`
+creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Writs Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  Requires BioPerl.
+
 `windowWig`
 reads a data stream (for example, coverage values by position within reference sequences) and
 produces a USCS [WIG][] file that summarizes median values within nonoverlapping windows. 
 
 `intervalBed`
-reads a data stream with reference-position marked boolean values (for example, 
+reads a data stream with reference-position optionally marked with boolean values (for example, 
 presence-absence by position within reference sequences) and produces a [BED][] file 
 describing intervals in which the values are true.
 
@@ -42,6 +48,9 @@ convert FastQ-format files from separate read 1/read 2 files to interleaved and 
 
 
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
+[Mummer]:  http://mummer.sourceforge.net
+[VCF]:  http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41
+[fermi]:  https://github.com/lh3/fermi
 [BED]:  http://genome.ucsc.edu/FAQ/FAQformat.html#format1
 [mlRho]:  http://guanine.evolbio.mpg.de/mlRho
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet
