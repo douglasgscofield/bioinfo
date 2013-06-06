@@ -1,14 +1,15 @@
 #!/usr/bin/awk -f
 #
-# Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
+# Copyright (c) 2012, 2013 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
 # douglas.scofield@plantphys.umu.se
 # douglasgscofield@gmail.com
 #
 # No warranty is implied or assumed by this code.  Please send bugs, suggestions etc.
 #
-# Say you have a data stream (optionally containing a header line) with the 
+# Say you have a data stream (the header line is optional) with the 
 # following format:
 #
+#     REF         POS VAL
 #     reference1  1   0
 #     reference1  2   1
 #     reference1  3   1
@@ -28,11 +29,15 @@
 #     ...
 #
 # This script will encode each stretch of 1s in the 3rd column into a BED 
-# interval, for example the above input would result in the following BED
-# lines:
+# interval, for example the above input would result in a BED containing
+# the following lines:
 #
+#     track name=intervalBed description="intervals of positions with 1s"
 #     reference1  1   8
 #     reference1  10  13
+#
+# With the option val_col=0, no column of boolean values is required, as
+# 'true' is implied for each position present on input
 #
 # Note that intervals in BED are 0-based and [begin, end).  The script
 # assumes that input positions are 1-based.  The script also assumes that
@@ -43,6 +48,7 @@
 # as if they are connected.  For the above dataset, a grace greater than or
 # equal to 2 will result in a single annotation line:
 #
+#     track name=intervalBed description="intervals of positions with 1s, grace distance 2"
 #     reference1  1   13
 # 
 # while a grace of 1 will not connect the stretches.  Grace distances
@@ -51,11 +57,20 @@
 # connect identifiable intervals and will never implicitly include the
 # beginning or end of references.
 #
-# With the option val_col=0, no column of boolean values is required,
-# 'true' is implied for each position present on input
+# All options, change with option=value on command line:
+#
+# FS, OFS      : input and output field separator characters (default "\t")
+# header       : number of header lines on input (default 1)
+# skip_comment : skip comment lines beginning with '#' (default 1, 'true')
+# grace        : intervals separated by this much will be merged (default 0)
+# min_width    : minimum width of an interval to produce (default 1)
+# track        : print an initial track line on output? (default 1, 'true')
+# trackname    : the value of 'name=' on the track line, default 'intervalBed'
+# trackdesc    : the value of 'description=' on the track line, default set
+#                from option values
 #
 # CHANGELOG
-# 2013-06-06 : support val_col=0
+# 2013-06-06 : support val_col=0 and improve documentation
 # 2012-12-01 : handle comments and blank lines
 # 2012-11-30 : minimum width interval
 # 2012-11-27 : create the script

@@ -157,6 +157,7 @@ intervalBed
 Starting with the same basic 3-column input as above, instead of continuous values
 we have boolean 0/1 values in the third column:
 
+    REF         POS VAL
     reference1  1   0
     reference1  2   1
     reference1  3   1
@@ -176,7 +177,7 @@ we have boolean 0/1 values in the third column:
 This script creates a [BED][] file defining intervals in which the value is true, note
 that BED intervals are 0-based and [begin, end).  Output for the above is
 
-    track name=booleanIntervals description="intervals of 1s"
+    track name=intervalBed description="intervals of positions with 1s"
     reference1	1	8
     reference1	10	13
 
@@ -188,8 +189,22 @@ value need not be true for the interval to be maintained.  The grace distance wi
 only connect intervals, it will never begin or terminate a reference.  The output
 from the above data with grace distance 10 is
 
-    track name=booleanIntervals description="intervals of 1s, grace distance 10"
+    track name=intervalBed description="intervals of 1s, grace distance 10"
     reference1	1	13
+
+Options can be changed with `option=value` on the command line.  The full set of
+options available is
+
+    FS, OFS      : input and output field separator characters (default "\t")
+    header       : number of header lines on input (default 1)
+    skip_comment : skip comment lines beginning with '#' (default 1, 'true')
+    grace        : intervals separated by this much will be merged (default 0)
+    min_width    : minimum width of an interval to produce (default 1)
+    track        : print an initial track line on output? (default 1, 'true')
+    trackname    : the value of 'name=' on the track line, default 'intervalBed'
+    trackdesc    : the value of 'description=' on the track line, default set
+                   from option values
+
 
 Say you want to produce a track that noted the appearance of reads that mapped to
 your reference at high quality.  This pipeline will pull out some high-quality 
