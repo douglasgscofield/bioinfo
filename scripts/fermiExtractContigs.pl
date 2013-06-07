@@ -5,7 +5,7 @@ use warnings;
 use Getopt::Long;
 use Bio::Seq;
 use Bio::SeqIO;
-use List::Util qw(min max);
+use List::Util qw(min max sum);
 
 sub usage($) {
     my $msg = shift;
@@ -96,9 +96,10 @@ while (<INFILE>) {
 	push @stats, $length;
 }
 
-print STDERR "KEPT: n_seq=", scalar(@stats), " min=", min(@stats), " max=", max(@stats), 
-             " median=", median(\@stats), "\n",
-             "REJECTED: n_seq=", scalar(@rejects), " min=", min(@rejects), " max=", max(@rejects), 
+print STDERR "KEPT: n_seq=", scalar(@stats), " total length=", sum(@stats), 
+             " min=", min(@stats), " max=", max(@stats), " median=", median(\@stats), "\n",
+             "REJECTED: n_seq=", scalar(@rejects),  " total length=", sum(@rejects),
+             " min=", min(@rejects), " max=", max(@rejects), 
              " median=", median(\@rejects), "\n",
              "N sequences rejected for length < $minlength: ", $n_minlength, "\n",
              "N sequences rejected for N reads < $minreads: ", $n_minreads, "\n",
