@@ -54,6 +54,9 @@ sub median {
 }
 	
 my $infile = $ARGV[0];
+if (! $infile) {
+    usage("");
+}
 
 open(INFILE, "gzip -f -c -d ${infile} |") or die "couldn't open $infile: $!";
 my $fasta_out = Bio::SeqIO->new(-fh => \*STDOUT, -format => "fasta");
