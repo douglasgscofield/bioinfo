@@ -31,7 +31,7 @@ fermiExtractContigs.pl
 
 Extract Fasta-format contigs from a
 [fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig
-files.  Writs Fasta to `stdout`, with each sequence given its fermi sequence
+files.  Writes Fasta to `stdout`, with each sequence given its fermi sequence
 name, and a description that includes sequence length, number of non-redundant
 reads that built the scaftig, and median coverage of non-redundant reads along
 the scafftig.  So this:

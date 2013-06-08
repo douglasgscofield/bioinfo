@@ -13,10 +13,24 @@ sub usage($) {
     print STDERR "
 USAGE:  fermiExtractContigs.pl [ options ] fermi.p5.fq.gz
 
-Convert Mummer SNP/indel output as produced by the 'show-snps -T' command to
-a pseudo-VCF format.  Indels are collapsed and the first reference base is
-inserted at the start of indels as required for VCF, but not all VCF columns
-are yet produced.
+Extract Fasta-format contigs from a fermi-format *.fq.gz FastQ-like scaftig
+files.  Writes Fasta to stdout, with each sequence given its fermi sequence
+name, and a description that includes sequence length, number of non-redundant
+reads that built the scaftig, and median coverage of non-redundant reads along
+the scaftig. So this:
+
+    @26417937:25351227_0    191 83
+    TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
+    +
+    \"#$%%&'((()**+,-../0123456789:;<=>?@ABCDEFGHIJKLLMNOPQRSTUVWXYZ[\]^_`abcdeffghijklmnoopqrstttttttttttsrqpponmmmlkkjihggfedcba`_^]\[ZYXWVUTSRQPONMLKJIIHGFEDCBA@?>=<;:9876543210//.-,+*)('&&%$#\"
+
+becomes this:
+
+    >26417937:25351227_0 length:191,n_reads:83,median_coverage:44
+    TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTAT
+    ATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTA
+    AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
+    TGCATGTAGAA
 
 OPTIONS:
 
@@ -25,6 +39,8 @@ OPTIONS:
     --mincoverage  INT     Minimum median coverage across a contig to keep it
     -h|--help              This help output
     fermi.p5.fq.gz         Fermi-format scaffold output file
+
+This script required BioPerl 1.6.1.
 ";
     exit 1;
 }
