@@ -529,7 +529,13 @@ then block size will be 60 bp.
 The options are not mutually exclusive. All four types of GC content may
 be displayed in a single run.
 
+One advantage of this script is that it doesn't use BioPerl.  A disadvantage
+of this script is that it could use a streamlining, and would be more
+useful if it produced full-composition output similar to Jim Kent's `faCount`
+program.
+
 Options:
+
     --nototal    do not print information for total input
     --concat     print block-by-block GC content for input sequences
                  as if they were one concatenated sequence
