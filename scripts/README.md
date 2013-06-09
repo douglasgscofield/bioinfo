@@ -506,3 +506,38 @@ These were originally built on the the `shuffleSequences_fastq.pl` and
 `deshuffleSequences_fastq.pl` scripts distributed with
 [velvet](http://www.ebi.ac.uk/~zerbino/velvet).
 
+
+fastaGC.pl
+----------------------------------
+
+Usage:
+
+    fastaGC.pl [options] [file ...]
+
+By default `fastaGC.pl` will print length, GC and base content information
+across all FASTA sequences in the input file(s). More detailed
+information may be requested with options. For all information, GC
+content is printed in the form of a tab-separated table suitable for
+import into whatever other program can read tables.
+
+Some options can print GC content on a block-by-block basis. These
+options break input sequences into blocks, where each block is one line
+of FASTA sequence. The scale of a block for these options is dependent
+upon the input format. If sequences are broken into 60-character lines,
+then block size will be 60 bp.
+
+The options are not mutually exclusive. All four types of GC content may
+be displayed in a single run.
+
+Options:
+    --nototal    do not print information for total input
+    --concat     print block-by-block GC content for input sequences
+                 as if they were one concatenated sequence
+    --block      print mean GC content across all input sequences
+                 on a block-by-block basis
+    --seq        print GC content for each individual sequence
+                 in the input file(s)
+    --verbose    print progress (every 1000 sequences), and print
+                 headers prior to the output of each table of GC content
+    --help, -?   brief help message
+    
