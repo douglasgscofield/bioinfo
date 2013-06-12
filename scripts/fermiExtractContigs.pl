@@ -10,8 +10,9 @@ use List::Util qw(min max sum);
 sub usage($) {
     my $msg = shift;
     print STDERR "ERROR: $msg\n" if $msg;
-    print STDERR "
-USAGE:  fermiExtractContigs.pl [ options ] fermi.p5.fq.gz
+    print STDERR <<'__USAGE__';
+
+Usage:  fermiExtractContigs.pl [ options ] fermi.p5.fq.gz
 
 Extract Fasta-format contigs from a fermi-format *.fq.gz FastQ-like scaftig
 files.  Writes Fasta to stdout, with each sequence given its fermi sequence
@@ -41,7 +42,9 @@ OPTIONS:
     fermi.p5.fq.gz         Fermi-format scaffold output file
 
 This script required BioPerl 1.6.1.
-";
+
+__USAGE__
+
     exit 1;
 }
 
