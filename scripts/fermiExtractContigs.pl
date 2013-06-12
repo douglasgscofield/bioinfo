@@ -116,10 +116,14 @@ while (<INFILE>) {
 }
 
 print STDERR "KEPT: n_seq=", scalar(@stats), " total length=", sum(@stats), 
-             " min=", min(@stats), " max=", max(@stats), " median=", median(\@stats), "\n",
-             "REJECTED: n_seq=", scalar(@rejects),  " total length=", sum(@rejects),
-             " min=", min(@rejects), " max=", max(@rejects), 
-             " median=", median(\@rejects), "\n",
-             "N sequences rejected for length < $minlength: ", $n_minlength, "\n",
-             "N sequences rejected for N reads < $minreads: ", $n_minreads, "\n",
-             "N sequences rejected for median coverage < $mincoverage: ", $n_mincoverage, "\n";
+             " min=", min(@stats), " max=", max(@stats), " median=", median(\@stats), "\n";
+if (scalar(@rejects) > 0) {
+    print STDERR "REJECTED: n_seq=", scalar(@rejects),  " total length=", sum(@rejects),
+                " min=", min(@rejects), " max=", max(@rejects), 
+                " median=", median(\@rejects), "\n",
+                "N sequences rejected for length < $minlength: ", $n_minlength, "\n",
+                "N sequences rejected for N reads < $minreads: ", $n_minreads, "\n",
+                "N sequences rejected for median coverage < $mincoverage: ", $n_mincoverage, "\n";
+} else {
+    print STDERR "REJECTED: none\n";
+}
