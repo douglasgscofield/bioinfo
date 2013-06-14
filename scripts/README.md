@@ -57,6 +57,29 @@ This script required BioPerl 1.6.1.
 
 
 
+fermiExtractContigs_simple.sh
+------------------------
+
+Extract Fasta-format contigs from a
+[fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig
+files.  Writes Fasta to `stdout`, with each sequence given its fermi sequence name and a description that includes sequence length and number of non-redundant reads that built the scaftig.  So this:
+
+````
+@26417937:25351227_0	191	83
+TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
++
+"#$%%&'((()**+,-../0123456789:;<=>?@ABCDEFGHIJKLLMNOPQRSTUVWXYZ[\]^_`abcdeffghijklmnoopqrstttttttttttsrqpponmmmlkkjihggfedcba`_^]\[ZYXWVUTSRQPONMLKJIIHGFEDCBA@?>=<;:9876543210//.-,+*)('&&%$#"
+````
+
+Becomes this:
+
+````
+>26417937:25351227_0 length:191,n_reads:83
+TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
+````
+
+**Differences from `fermiExtractContigs.pl`**: In the interests of speed and simplicity, this script does no wrapping of the fermi-generated sequences, likewise it does not include median coverage along the entire length of the sequence.  If these limitations are not suitable for your task, consider using the `fermiExtractContigs.pl` script above.
+
 
 windowWig
 ---------
@@ -508,7 +531,7 @@ These were originally built on the the `shuffleSequences_fastq.pl` and
 
 
 fastaGC.pl
-----------------------------------
+----------
 
 Usage:
 
@@ -546,4 +569,27 @@ Options:
     --verbose    print progress (every 1000 sequences), and print
                  headers prior to the output of each table of GC content
     --help, -?   brief help message
-    
+
+
+
+
+gmhmmp2Table.pl
+---------------
+
+Usage:
+
+    gmhmmp2Table.pl file.in > file.out
+
+
+Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx), an ORF-prediction program, and produce a table summarizing each of the predicted ORFs.
+
+
+gmhmmp2Fasta.pl
+---------------
+
+Usage:
+
+    gmhmmp2Fasta.pl file.in > file.out
+
+
+Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx), an ORF-prediction program, and produce a Fasta file containing the sequence of each of the predicted ORFs.
