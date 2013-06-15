@@ -46,6 +46,16 @@ extracts named sequences from a FASTA file, or everything but.
 `shuffleFastq.pl` and `deshuffleFastq.pl`
 convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
 
+`fastaGC.pl`
+analyses GC content of Fasta-format sequences a few different ways.
+
+`convertSequence.pl`and `convertAlignment.pl`
+convert between sequence and alignment formats using BioPerl.  If you need to line-wrap a Fasta file, use
+
+    convertSequence -f fasta file.fa -of fasta - > outfile.fa
+
+`gmhmmp2Fasta.pl` and `gmhmmp2Table.pl`
+extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
 
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
 [Mummer]:  http://mummer.sourceforge.net
@@ -54,3 +64,4 @@ convert FastQ-format files from separate read 1/read 2 files to interleaved and 
 [BED]:  http://genome.ucsc.edu/FAQ/FAQformat.html#format1
 [mlRho]:  http://guanine.evolbio.mpg.de/mlRho
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet
+[gmhmmp]: http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx
