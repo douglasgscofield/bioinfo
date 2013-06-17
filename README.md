@@ -57,6 +57,9 @@ convert between sequence and alignment formats using BioPerl.  If you need to li
 `gmhmmp2Fasta.pl` and `gmhmmp2Table.pl`
 extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
 
+`cutadaptReportScript.sh`
+collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
+
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
 [Mummer]:  http://mummer.sourceforge.net
 [VCF]:  http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41
@@ -65,3 +68,4 @@ extract Fasta sequences and a summary table from output produced by the ORF-find
 [mlRho]:  http://guanine.evolbio.mpg.de/mlRho
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet
 [gmhmmp]: http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx
+[cutadapt]: https://code.google.com/p/cutadapt/

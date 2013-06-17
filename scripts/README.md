@@ -626,3 +626,14 @@ Usage:
 
 
 Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx), an ORF-prediction program, and produce a Fasta file containing the sequence of each of the predicted ORFs.
+
+
+cutadaptReportScript.sh
+-----------------------
+
+Usage:
+
+    cutadaptReportScript.sh reads-a.cutReport [ reads-b.cutReport ... ] > cutadapt_report_table.txt
+
+
+Collect the results of `*.cutReport` files produced by the [cutadapt](https://code.google.com/p/cutadapt/) adapter-trimming tool.  This is a useful way to quickly assess which are the set of adapters used in different read sets.  Running `cutadapt` requires a set of putative adapter sequences, and it is the results for that specific set that are reported with this script.  Written in collaboration with Amaryllis Vidalis in the EMG department at Umeå University.  **Requires the same set of adapters are specified in the same order for each collected run.**
