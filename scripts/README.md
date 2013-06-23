@@ -57,6 +57,7 @@ Output to stdout is either
 * `33`, appears to be Illumina 1.8+ or Sanger quality encoding
 * `64`, appears to be Illumina 1.3+ to pre-1.8 quality coding
 * `59`, appears to be Solexa (pre-Illumina) base-64 quality
+* `??`, the input couldn't be interpreted
 
 The only data interpreted are read quality scores on line 4 of each read; all sequence, pairing information etc. is ignored.
 
