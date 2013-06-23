@@ -35,11 +35,11 @@ Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org
 FastQ_file="fastq_file.fq.gz"
 Quality=$(phredDetector.pl $FastQ_file)
 if [ "$Quality" = "33" ] ; then
-   # perhaps Illumina 1.8+
+   echo "perhaps Illumina 1.8+"
 elif [ "$Quality" = "64" ] ; then
-   # perhaps Illumina 1.3+ to pre-1.8
+   echo "perhaps Illumina 1.3+ to pre-1.8"
 elif [ "$Quality" = "59" ] ; then
-   # perhaps Solexa
+   echo "perhaps Solexa"
 else
    echo "Couldn't autodetect quality for $FastQ_file, return value was '$Quality'"
    exit 1
@@ -76,7 +76,7 @@ This script does not diagnose faulty FastQ files, nor does it fully diagnose
 the various versions of Solexa, Sanger, Illumina pipelines described in
 http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a minimum cutoff
 of 33, 59 or 64 for quality values.  It is thus compatible with Sanger encoding but
-does not take into account finer distinctions such as Illumina 1.3+ pipelines
+it does not take into account finer distinctions such as Illumina 1.3+ pipelines
 not typically producing quality scores 0 and 1.
 
 **Options**
