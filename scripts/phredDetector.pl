@@ -112,8 +112,8 @@ close(INFILE);
 #
 
 my $range = $max_quality - $min_quality + 1;
-print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') <= $opt_narrow, seems too narrow\n" if $range <= $opt_narrow;
-print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') >= $opt_wide, seems too wide\n" if $range >= $opt_wide;
+print STDERR "Warning: $infile, Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') <= $opt_narrow, seems too narrow, are these quality-trimmed reads?\n" if $range <= $opt_narrow;
+print STDERR "Warning: $infile, Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') >= $opt_wide, seems too wide\n" if $range >= $opt_wide;
 print STDOUT "$infile\t" if $opt_verbose;
 if ($min_quality < 33 or $max_quality > 126) {
     print STDOUT "??\n";
