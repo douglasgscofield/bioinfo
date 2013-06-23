@@ -42,7 +42,6 @@ elif [ "$Quality" = "59" ] ; then
    echo "perhaps Solexa"
 else
    echo "Couldn't autodetect quality for $FastQ_file, return value was '$Quality'"
-   exit 1
 fi
 ```
 
