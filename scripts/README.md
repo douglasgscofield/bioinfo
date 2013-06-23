@@ -67,8 +67,8 @@ comprehensive.
 
 * If (maximum quality &minus; minimum quality) &ge; 47, a warning message is printed
   to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--wide` option
-* If (maximum quality &minus; minimum quality) &le; 20, a warning message is printed
-  to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--narrow` option
+* If (maximum quality &minus; minimum quality) &le; 10, a warning message is printed
+  to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--narrow` option.  If you run this script on quality-trimmed reads, you may trigger this warning.
 * If otherwise unusual quality scores or unknown input were detected, an error
   message is printed to stderr and '??' to stdout
 
@@ -85,7 +85,7 @@ not typically producing quality scores 0 and 1.
     --reads INT   Number of reads to process to determine Phred basis [10000]
                   If 0, process *all* reads in the input file
     --wide INT    Use INT for the 'too wide' first heuristic above [47]
-    --narrow INT  Use INT for the 'too narrow' second heuristic above [20]
+    --narrow INT  Use INT for the 'too narrow' second heuristic above [10]
 
     --help | -?   Generate this help output
 

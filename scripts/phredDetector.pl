@@ -11,7 +11,7 @@ my $opt_stdin = 0;
 my $opt_help = 0;
 my $infile = "";
 my $opt_wide = 47;
-my $opt_narrow = 20;
+my $opt_narrow = 10;
 
 sub usage () {
    print STDERR "
@@ -35,7 +35,8 @@ comprehensive.
   to stderr and detected quality encoding (possibly erroneous) to stdout
 
 * If (maximum quality - minimum quality) <= $opt_narrow, a warning message is printed
-  to stderr and detected quality encoding (possibly erroneous) to stdout
+  to stderr and detected quality encoding (possibly erroneous) to stdout.  If you
+  run this script on quality-trimmed reads, you may trigger this warning.
 
 * If otherwise unusual quality scores or unknown input were detected, an error
   message is printed to stderr and '??' to stdout
@@ -66,11 +67,13 @@ GetOptions(
     "reads=i" => \$opt_reads, 
     "wide=i" => \$opt_wide, 
     "narrow=i" => \$opt_narrow, 
+    "verbose" => \$opt_verbose, 
     "help|?" => \$opt_help) or usage();
 usage() if $opt_help or (!$ARGV[0] and !$opt_stdin);
 
 if ($opt_stdin) {
     *INFILE = *STDIN;
+    $infile = "*stdin*"
 } else {
     $infile = $ARGV[0];
     open(INFILE, "gzip -f -c -d ${infile} |") or die "couldn't open input $infile: $!";
@@ -111,6 +114,7 @@ close(INFILE);
 my $range = $max_quality - $min_quality + 1;
 print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') <= $opt_narrow, seems too narrow\n" if $range <= $opt_narrow;
 print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') >= $opt_wide, seems too wide\n" if $range >= $opt_wide;
+print STDOUT "$infile\t" if $opt_verbose;
 if ($min_quality < 33 or $max_quality > 126) {
     print STDOUT "??\n";
 } elsif ($min_quality >= 64) {
