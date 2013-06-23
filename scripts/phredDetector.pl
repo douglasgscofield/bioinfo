@@ -63,9 +63,9 @@ Options:
 
 GetOptions(
     "" => \$opt_stdin, 
-    "reads" => \$opt_reads, 
-    "wide" => \$opt_wide, 
-    "narrow" => \$opt_narrow, 
+    "reads=i" => \$opt_reads, 
+    "wide=i" => \$opt_wide, 
+    "narrow=i" => \$opt_narrow, 
     "help|?" => \$opt_help) or usage();
 usage() if $opt_help or (!$ARGV[0] and !$opt_stdin);
 
