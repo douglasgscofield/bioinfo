@@ -65,17 +65,17 @@ The only data interpreted are read quality scores on line 4 of each read; all se
 few heuristics are used to detect possible problems, but these are not
 comprehensive.
 
-* If (maximum quality - minimum quality) >= 47, a warning message is printed
+* If (maximum quality &minus; minimum quality) &ge; 47, a warning message is printed
   to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--wide` option
-* If (maximum quality - minimum quality) <= 20, a warning message is printed
+* If (maximum quality &minus; minimum quality) &le; 20, a warning message is printed
   to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--narrow` option
 * If otherwise unusual quality scores or unknown input were detected, an error
   message is printed to stderr and '??' to stdout
 
 This script does not diagnose faulty FastQ files, nor does it fully diagnose
 the various versions of Solexa, Sanger, Illumina pipelines described in
-http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a minimum cutoff
-of 33, 59 or 64 for quality values.  It is thus compatible with Sanger encoding but
+http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a decreasing minimum cutoff
+from 64, to 59, to 33.  It is thus compatible with Sanger encoding but
 it does not take into account finer distinctions such as Illumina 1.3+ pipelines
 not typically producing quality scores 0 and 1.
 
