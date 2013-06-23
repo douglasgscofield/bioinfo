@@ -126,7 +126,7 @@ fermiExtractContigs_simple.sh
 
 Extract Fasta-format contigs from a
 [fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig
-files.  Writes Fasta to `stdout`, with each sequence given its fermi sequence name and a description that includes sequence length and number of non-redundant reads that built the scaftig.  So this:
+files.  Does not use Perl.  Writes Fasta to `stdout`, with each sequence given its fermi sequence name and a description that includes sequence length and number of non-redundant reads that built the scaftig.  So this:
 
 ````
 @26417937:25351227_0	191	83

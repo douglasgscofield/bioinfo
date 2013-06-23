@@ -23,7 +23,10 @@ reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` an
 attempts to determine the [Phred-scale quality encoding](http://en.wikipedia.org/wiki/FASTQ_format) used in a FastQ-format file.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences) to `stdout`.  Does not require BioPerl.
 
 `fermiExtractContigs.pl`
-creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Writs Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  Requires BioPerl.
+creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Writes Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  Requires BioPerl.
+
+`fermiExtractContigs_simple.sh`
+creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Unlike `fermiExtractContigs.pl`, this does not use Perl.  Writes Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length and the number of non-redundant reads that built the scaftig.
 
 `windowWig`
 reads a data stream (for example, coverage values by position within reference sequences) and
