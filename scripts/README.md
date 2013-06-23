@@ -52,22 +52,23 @@ BioPerl is not required.  Usage is:
 
 Input must be in FastQ format, if a filename is given it may be gzipped (*.gz)
 
-Output to stdout is either '33', '64' or '59', depending on whether
-Phred-scaled quality scores of base 33, base 64, or Solexa base 64 (beginning
-with 59 ';') are detected.  The only data interpreted are read quality scores
-on line 4 of each read; all sequence, pairing information etc. is ignored.
+Output to stdout is either
 
-If all bases on input are of unusually high quality, then a Phred base of 59 or
+* `33`, appears to be Illumina 1.8+ or Sanger quality encoding
+* `64`, appears to be Illumina 1.3+ to pre-1.8 quality coding
+* `59`, appears to be Solexa (pre-Illumina) base-64 quality
+
+The only data interpreted are read quality scores on line 4 of each read; all sequence, pairing information etc. is ignored.
+
+**Caveat:** If all bases on input are of unusually high quality, then a Phred base of 59 or
 64 may be reported when a Phred scale based on 33 was the one actually used.  A
 few heuristics are used to detect possible problems, but these are not
 comprehensive.
 
-* If (maximum quality - minimum quality) >= 50, a warning message is printed
-  to stderr and detected quality encoding (possibly erroneous) to stdout
-
+* If (maximum quality - minimum quality) >= 47, a warning message is printed
+  to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--wide` option
 * If (maximum quality - minimum quality) <= 20, a warning message is printed
-  to stderr and detected quality encoding (possibly erroneous) to stdout
-
+  to stderr and detected quality encoding (possibly erroneous) to stdout; this value can be adjusted with the `--narrow` option
 * If otherwise unusual quality scores or unknown input were detected, an error
   message is printed to stderr and '??' to stdout
 
@@ -83,7 +84,7 @@ not typically producing quality scores 0 and 1.
     -             Read uncompressed FastQ from stdin
     --reads INT   Number of reads to process to determine Phred basis [10000]
                   If 0, process *all* reads in the input file
-    --wide INT    Use INT for the 'too wide' first heuristic above [50]
+    --wide INT    Use INT for the 'too wide' first heuristic above [47]
     --narrow INT  Use INT for the 'too narrow' second heuristic above [20]
 
     --help | -?   Generate this help output
