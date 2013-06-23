@@ -86,6 +86,7 @@ not typically producing quality scores 0 and 1.
                   If 0, process *all* reads in the input file
     --wide INT    Use INT for the 'too wide' first heuristic above [47]
     --narrow INT  Use INT for the 'too narrow' second heuristic above [10]
+    --verbose     Output includes the input filename followed by a TAB character
 
     --help | -?   Generate this help output
 
