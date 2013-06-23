@@ -74,7 +74,7 @@ usage() if $opt_help or (!$ARGV[0] and !$opt_stdin);
 
 if ($opt_stdin) {
     *INFILE = *STDIN;
-    $infile = "*stdin*"
+    $infile = "stdin"
 } else {
     $infile = $ARGV[0];
     open(INFILE, "gzip -f -c -d ${infile} |") or die "couldn't open input $infile: $!";
