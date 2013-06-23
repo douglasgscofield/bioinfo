@@ -26,6 +26,52 @@ on it :-)
 This script requires BioPerl 1.6.1.
 
 
+phredDetector.pl
+----------------
+
+Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org/wiki/FASTQ_format) used in the FastQ file presented on input.
+
+    phredDetector.pl  [ options ]  fastq_file1.fq[.gz]
+
+Input must be in FastQ format, if a filename is given it may be gzipped (*.gz)
+
+Output to stdout is either '33', '64' or '59', depending on whether
+Phred-scaled quality scores of base 33, base 64, or Solexa base 64 (beginning
+with 59 ';') are detected.  The only data interpreted are read quality scores
+on line 4 of each read; all sequence, pairing information etc. is ignored.
+
+If all bases on input are of unusually high quality, then a Phred base of 59 or
+64 may be reported when a Phred scale based on 33 was the one actually used.  A
+few heuristics are used to detect possible problems, but these are not
+comprehensive.
+
+* If (maximum quality - minimum quality) >= 50, a warning message is printed
+  to stderr and detected quality encoding (possibly erroneous) to stdout
+
+* If (maximum quality - minimum quality) <= 20, a warning message is printed
+  to stderr and detected quality encoding (possibly erroneous) to stdout
+
+* If otherwise unusual quality scores or unknown input were detected, an error
+  message is printed to stderr and '??' to stdout
+
+This script does not diagnose faulty FastQ files, nor does it fully diagnose
+the various versions of Solexa, Sanger, Illumina pipelines described in
+http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a minimum cutoff
+of 33, 59 or 64 for quality values.  It is thus compatible with Sanger encoding but
+does not take into account finer distinctions such as Illumina 1.3+ pipelines
+not typically producing quality scores 0 and 1.
+
+**Options**
+
+    -             Read uncompressed FastQ from stdin
+    --reads INT   Number of reads to process to determine Phred basis [10000]
+                  If 0, process *all* reads in the input file
+    --wide INT    Use INT for the 'too wide' first heuristic above [50]
+    --narrow INT  Use INT for the 'too narrow' second heuristic above [20]
+
+    --help | -?   Generate this help output
+
+
 fermiExtractContigs.pl
 ------------------------
 
@@ -557,7 +603,7 @@ of this script is that it could use a streamlining, and would be more
 useful if it produced full-composition output similar to Jim Kent's `faCount`
 program.
 
-Options:
+**Options**
 
     --nototal    do not print information for total input
     --concat     print block-by-block GC content for input sequences
@@ -576,8 +622,6 @@ Options:
 gmhmmp2Table.pl
 ---------------
 
-Usage:
-
     gmhmmp2Table.pl file.in > file.out
 
 
@@ -586,8 +630,6 @@ Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx)
 
 gmhmmp2Fasta.pl
 ---------------
-
-Usage:
 
     gmhmmp2Fasta.pl file.in > file.out
 
