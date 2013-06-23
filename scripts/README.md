@@ -29,7 +29,25 @@ This script requires BioPerl 1.6.1.
 phredDetector.pl
 ----------------
 
-Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org/wiki/FASTQ_format) used in the FastQ file presented on input.
+Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org/wiki/FASTQ_format) used in the FastQ file presented on input.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences) to `stdout`, so it can be used in pipeline scripts to autodetect Phred encodings:
+
+```bash
+FastQ_file="fastq_file.fq.gz"
+Quality=$(phredDetector.pl $FastQ_file)
+if [ "$Quality" = "33" ] ; then
+   # perhaps Illumina 1.8+
+elif [ "$Quality" = "64" ] ; then
+   # perhaps Illumina 1.3+ to pre-1.8
+elif [ "$Quality" = "59" ] ; then
+   # perhaps Solexa
+else
+   echo "Couldn't autodetect quality for $FastQ_file, return value was '$Quality'"
+   exit 1
+fi
+```
+
+
+BioPerl is not required.  Usage is:
 
     phredDetector.pl  [ options ]  fastq_file1.fq[.gz]
 

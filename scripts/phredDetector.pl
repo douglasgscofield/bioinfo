@@ -10,7 +10,7 @@ my $opt_verbose = 0;
 my $opt_stdin = 0;
 my $opt_help = 0;
 my $infile = "";
-my $opt_wide = 50;
+my $opt_wide = 47;
 my $opt_narrow = 20;
 
 sub usage () {
@@ -108,7 +108,7 @@ close(INFILE);
 # produced by these pipelines
 #
 
-my $range = $max_quality - $min_quality;
+my $range = $max_quality - $min_quality + 1;
 print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') <= $opt_narrow, seems too narrow\n" if $range <= $opt_narrow;
 print STDERR "Warning: Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') >= $opt_wide, seems too wide\n" if $range >= $opt_wide;
 if ($min_quality < 33 or $max_quality > 126) {
