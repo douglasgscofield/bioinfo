@@ -12,6 +12,9 @@ my $opt_help = 0;
 my $infile = "";
 my $opt_wide = 47;
 my $opt_narrow = 10;
+my $solexa = 0;
+my $opt_solexa = 0;
+my $opt_no_solexa = 0;
 
 sub usage () {
    print STDERR "
@@ -21,15 +24,16 @@ Usage:
 
 Input must be in FastQ format, if a filename is given it may be gzipped (*.gz)
 
-Output to stdout is either '33', '64' or '59', depending on whether
-Phred-scaled quality scores of base 33, base 64, or Solexa base 64 (beginning
-with 59 ';') are detected.  The only data interpreted are read quality scores
-on line 4 of each read; all sequence, pairing information etc. is ignored.
+Output to stdout is either '33' or '64' (and optionally '59'), depending on
+whether Phred-scaled quality scores of base 33, base 64, or Solexa base 64
+(beginning with 59 ';', only produced with option --solexa) are detected.
+The only data interpreted are read quality scores on line 4 of each read; all
+sequence, pairing information etc.  is ignored.
 
-If all bases on input are of unusually high quality, then a Phred base of 59 or
-64 may be reported when a Phred scale based on 33 was the one actually used.  A
-few heuristics are used to detect possible problems, but these are not
-comprehensive.
+If all bases on input are of unusually high quality, then a Phred base of 64
+(or 59 with --solexa) may be reported when a Phred scale based on 33 was the
+one actually used.  A few heuristics are used to detect possible problems, but
+these are not comprehensive.
 
 * If (maximum quality - minimum quality) >= $opt_wide, a warning message is printed
   to stderr and detected quality encoding (possibly erroneous) to stdout
@@ -44,9 +48,9 @@ comprehensive.
 This script does not diagnose faulty FastQ files, nor does it fully diagnose
 the various versions of Solexa, Sanger, Illumina pipelines described in
 http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a minimum cutoff
-of 33, 59 or 64 for quality values.  It is thus compatible with Sanger encoding but
-does not take into account finer distinctions such as Illumina 1.3+ pipelines
-not typically producing quality scores 0 and 1.
+of 33, 59 (with `--solexa`), or 64 for quality values.  It is thus compatible
+with Sanger encoding but does not take into account finer distinctions such as
+Illumina 1.3+ pipelines not typically producing quality scores 0 and 1.
 
 Options:
 
@@ -55,6 +59,12 @@ Options:
                   If 0, process *all* reads in the input file
     --wide INT    Use INT for the 'too wide' first heuristic above [$opt_wide]
     --narrow INT  Use INT for the 'too narrow' second heuristic above [$opt_narrow]
+    --solexa      Add Solexa base-64 (beginning with 59 ';') as one of the types
+                  to guess.  If this type of quality encoding is detected, '59'
+                  is produced on stdout.  Without this option, only '33', '64' or 
+                  error '??' are reported.
+    --no-solexa   Do not include Solexa base-64 ('59') as one of the quality types
+                  to guess.  This is the default.
     --verbose     Output includes the input filename followed by a TAB character
 
     --help | -?   Generate this help output
@@ -68,9 +78,12 @@ GetOptions(
     "reads=i" => \$opt_reads, 
     "wide=i" => \$opt_wide, 
     "narrow=i" => \$opt_narrow, 
+    "solexa" => \$opt_solexa, 
+    "no-solexa" => \$opt_no_solexa, 
     "verbose" => \$opt_verbose, 
     "help|?" => \$opt_help) or usage();
-usage() if $opt_help or (!$ARGV[0] and !$opt_stdin);
+usage() if $opt_help or (!$ARGV[0] and !$opt_stdin) or (! $opt_no_solexa xor $opt_solexa);
+$solexa = 1 if $opt_solexa;
 
 if ($opt_stdin) {
     *INFILE = *STDIN;
@@ -120,7 +133,7 @@ if ($min_quality < 33 or $max_quality > 126) {
     print STDOUT "??\n";
 } elsif ($min_quality >= 64) {
     print STDOUT "64\n";
-} elsif ($min_quality >= 59) {
+} elsif ($solexa and $min_quality >= 59) {
     print STDOUT "59\n";
 } elsif ($min_quality >= 33) {
     print STDOUT "33\n";

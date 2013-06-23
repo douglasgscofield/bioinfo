@@ -56,13 +56,13 @@ Output to stdout is either
 
 * `33`, appears to be Illumina 1.8+ or Sanger quality encoding
 * `64`, appears to be Illumina 1.3+ to pre-1.8 quality coding
-* `59`, appears to be Solexa (pre-Illumina) base-64 quality
+* `59`, appears to be Solexa (pre-Illumina) base-64 quality (only with `--solexa`)
 * `??`, the input couldn't be interpreted
 
 The only data interpreted are read quality scores on line 4 of each read; all sequence, pairing information etc. is ignored.
 
-**Caveat:** If all bases on input are of unusually high quality, then a Phred base of 59 or
-64 may be reported when a Phred scale based on 33 was the one actually used.  A
+**Caveat:** If all bases on input are of unusually high quality, then a Phred base of 64 (or 59 with `--solexa`)
+may be reported when a Phred scale based on 33 was the one actually used.  A
 few heuristics are used to detect possible problems, but these are not
 comprehensive.
 
@@ -73,10 +73,11 @@ comprehensive.
 * If otherwise unusual quality scores or unknown input were detected, an error
   message is printed to stderr and '??' to stdout
 
+    --solexa
 This script does not diagnose faulty FastQ files, nor does it fully diagnose
 the various versions of Solexa, Sanger, Illumina pipelines described in
 http://en.wikipedia.org/wiki/FASTQ_format.  It simply applies a decreasing minimum cutoff
-from 64, to 59, to 33.  It is thus compatible with Sanger encoding but
+from 64, to 59 (with `--solexa`), to 33.  It is thus compatible with Sanger encoding but
 it does not take into account finer distinctions such as Illumina 1.3+ pipelines
 not typically producing quality scores 0 and 1.
 
@@ -87,6 +88,12 @@ not typically producing quality scores 0 and 1.
                   If 0, process *all* reads in the input file
     --wide INT    Use INT for the 'too wide' first heuristic above [47]
     --narrow INT  Use INT for the 'too narrow' second heuristic above [10]
+    --solexa      Add Solexa base-64 (beginning with 59 ';') as one of the types
+                  to guess.  If this type of quality encoding is detected, '59'
+                  is produced on stdout.  Without this option, only '33', '64' or 
+                  error '??' are reported.
+    --no-solexa   Do not include Solexa base-64 ('59') as one of the quality types
+                  to guess.  This is the default.
     --verbose     Output includes the input filename followed by a TAB character
 
     --help | -?   Generate this help output
