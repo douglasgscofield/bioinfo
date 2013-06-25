@@ -82,7 +82,8 @@ GetOptions(
     "no-solexa" => \$opt_no_solexa, 
     "verbose" => \$opt_verbose, 
     "help|?" => \$opt_help) or usage();
-usage() if $opt_help or (!$ARGV[0] and !$opt_stdin) or (! $opt_no_solexa xor $opt_solexa);
+$opt_no_solexa = 1 if ! $opt_no_solexa and ! $opt_solexa;
+usage() if $opt_help or (!$ARGV[0] and !$opt_stdin) or ! ($opt_no_solexa xor $opt_solexa);
 $solexa = 1 if $opt_solexa;
 
 if ($opt_stdin) {
