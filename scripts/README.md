@@ -116,14 +116,51 @@ TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAA
 "#$%%&'((()**+,-../0123456789:;<=>?@ABCDEFGHIJKLLMNOPQRSTUVWXYZ[\]^_`abcdeffghijklmnoopqrstttttttttttsrqpponmmmlkkjihggfedcba`_^]\[ZYXWVUTSRQPONMLKJIIHGFEDCBA@?>=<;:9876543210//.-,+*)('&&%$#"
 ````
 
-Becomes this:
+becomes this:
 
 ````
->26417937:25351227_0 length:191,n_reads:83,median_coverage:44
+>26417937:25351227_0 length:191;n_reads:83;median_coverage:44
 TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTAT
 ATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTA
 AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
 TGCATGTAGAA
+````
+
+With the `--mag` and `--mag-verbose` options, input is instead treated as the 
+[fermi MAG format](https://github.com/lh3/fermi/blob/master/fermi.1) for an overlap graph of unitigs, which is also FastQ-like 
+but with a different header format.  In MAG, the second field in the header 
+is the number of reads, and the following two fields list the left and 
+right neighbors of the unitig.  Because unitig length is not encoded in the
+header, it is calculated from each unitig.  In the example below, 13 reads were used to 
+build the unitig, and it has two neighbour unitigs to the left, one with 77 
+and one with 76 bases of exact overlap, and four neighbor unitigs to the 
+right, with 67, 60, 68 and 69 bases of exact overlap.
+
+````
+@9012595342:2229517731	13	355005708,77;958384802,76;	2817374678,67;3657728097,60;7691722363,68;9232081066,69; 
+TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTCGAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTTAGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAACTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
++
+"""""""""##########$$$$$%%&&&&&&&&&&&&&&&&&&&&&&&&&'''''''''(((((((((()))))))*******+++++++++++++++++*********)))))))***)))))))())))))))))))))))))))))))(((((((((''''''''''&&&&&&&%%%%%%%$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$########"""
+````
+
+Output with `--mag` is
+
+````
+>9012595342:2229517731 length:229;n_reads:13;median_coverage:6
+TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTC
+GAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTT
+AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
+CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
+````
+
+Output with `--mag-verbose` includes the lists of left and right neighbours:
+
+````
+>9012595342:2229517731 length:229;n_reads:13;median_coverage:6 355005708,77;958384802,76; 2817374678,67;3657728097,60;7691722363,68;9232081066,69;
+TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTC
+GAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTT
+AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
+CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
 ````
 
 This script required BioPerl 1.6.1.
@@ -151,7 +188,7 @@ Becomes this:
 TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
 ````
 
-**Differences from `fermiExtractContigs.pl`**: In the interests of speed and simplicity, this script does no wrapping of the fermi-generated sequences, likewise it does not include median coverage along the entire length of the sequence.  If these limitations are not suitable for your task, consider using the `fermiExtractContigs.pl` script above.
+**Differences from `fermiExtractContigs.pl`**: In the interests of speed and simplicity, this script does no wrapping of the fermi-generated sequences, likewise it does not include median coverage along the entire length of the sequence, nor can it extract the proper fields from fermi's MAG-format headers.  If these limitations are not suitable for your task, consider using the `fermiExtractContigs.pl` script above.
 
 
 windowWig
