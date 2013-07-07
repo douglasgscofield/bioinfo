@@ -12,13 +12,23 @@ sub usage($) {
     print STDERR "ERROR: $msg\n" if $msg;
     print STDERR <<'__USAGE__';
 
-Usage:  fermiExtractContigs.pl [ options ] fermi.p5.fq.gz
+Usage:  fermiExtractContigs.pl [ options ] file.{fq,mag}.gz
 
-Extract Fasta-format contigs from a fermi-format *.fq.gz FastQ-like scaftig
-files.  Writes Fasta to stdout, with each sequence given its fermi sequence
-name, and a description that includes sequence length, number of non-redundant
-reads that built the scaftig, and median coverage of non-redundant reads along
-the scaftig. So this:
+Extract Fasta-format contigs from Fermi's FastQ-like output files.  Fermi is an
+overlap assembler developed by Heng Li (https://github.com/lh3/fermi).  
+
+Fermi produces two formats of FastQ-like output: scaftig sequences in files
+named *.fq.gz, and unitig sequences in files named *.mag.gz which use an
+overlap graph file format called MAG.  This script can read both formats, with
+scaftigs being the default input and MAG format interpreted with the --mag or
+--mag-verbose options.
+
+Output of this script is annotated, line-wrapped Fasta format, to stdout.  For
+scaftig files, the FastQ-like read name line includes two additional
+tab-separated fields encoding the length of the scaftig and the number of
+non-redundant reads that built the scaftig.  This script includes these in the
+Fasta description, and also calculates the median non-redundant read coverage
+along the contig by interpreting the encoded coverage in fourth line.  So this:
 
     @26417937:25351227_0	191	83
     TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
@@ -33,15 +43,15 @@ becomes this:
     AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
     TGCATGTAGAA
 
-With the --mag and --mag-verbose options, input is instead treated as the fermi
-MAG format for an overlap graph of unitigs, which is also FastQ-like but with a
-different header format.  In MAG, the second field in the header is the number
-of reads, and the following two fields list the left and right neighbors of the
-unitig.  Because unitig length is not encoded in the header, it is calculated
-from each unitig.  In the example below, 13 reads were used to build the
-unitig, and it has two neighbour unitigs to the left, one with 77 and one with
-76 bases of exact overlap, and four neighbor unitigs to the right, with 67, 60,
-68 and 69 bases of exact overlap.
+MAG-format input presents different fields in the read name line.  In MAG, the
+second field is the number of non-redundant reads, and the following two fields
+list the left and right neighbors of the unitig in the overlap graph structure.
+Unitigs may have multiple left or right neighbours, or none, in which case the
+neighbour information is a single '.'.  Because unitig length is not encoded in
+the header, it is calculated from each unitig.  In the example below, 13 reads
+were used to build the unitig, and it has two neighbour unitigs to the left,
+one with 77 and one with 76 bases of exact overlap, and four neighbor unitigs
+to the right, with 67, 60, 68 and 69 bases of exact overlap.
 
     @9012595342:2229517731	13	355005708,77;958384802,76;	2817374678,67;3657728097,60;7691722363,68;9232081066,69;
     TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTCGAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTTAGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAACTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
@@ -67,18 +77,20 @@ Output with --mag-verbose includes the lists of left and right neighbours:
 
 OPTIONS:
 
-    --mag                  Input is fermi MAG format for unitigs instead of 
-                           scaffold FastQ
-    --mag-verbose          Input is fermi MAG format, include lists of left and
-                           right unitig neighbours
-    --minlength    INT     Minimum length of a contig to keep it
-    --minreads     INT     Minimum number of reads forming a contig to keep it
-    --mincoverage  INT     Minimum median coverage across a contig to keep it
-    -h|--help              This help output
-    fermi.p5.fq.gz         Fermi-format scaffold output file
-    fermi.p0.mag.gz        Fermi-format scaffold output file
+    --mag                 Input is fermi MAG format for unitigs instead of 
+                          scaffold FastQ
+    --mag-verbose         Input is fermi MAG format, include lists of left and
+                          right unitig neighbours in output
+    --minlength    INT    Minimum length of a contig to keep it
+    --minreads     INT    Minimum number of reads forming a contig to keep it
+    --mincoverage  INT    Minimum median coverage across a contig to keep it
+    -h|--help             This help output
 
-This script required BioPerl 1.6.1.
+    file.fq.gz            Fermi-format scaffold file as input
+    file.mag.gz           Fermi-format MAG unitig file as input
+
+This script required BioPerl 1.6.1 to compose and write the Fasta-format
+output.
 
 __USAGE__
 
