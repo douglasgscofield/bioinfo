@@ -131,12 +131,14 @@ print STDERR "Warning: $infile, Phred quality range $range ('".chr($min_quality)
 print STDERR "Warning: $infile, Phred quality range $range ('".chr($min_quality)."' to '".chr($max_quality)."') >= $opt_wide, seems too wide\n" if $range >= $opt_wide;
 print STDOUT "$infile\t" if $opt_verbose;
 if ($min_quality < 33 or $max_quality > 126) {
-    print STDOUT "??\n";
+    print STDOUT "??";
 } elsif ($min_quality >= 64) {
-    print STDOUT "64\n";
+    print STDOUT "64";
 } elsif ($solexa and $min_quality >= 59) {
-    print STDOUT "59\n";
+    print STDOUT "59";
 } elsif ($min_quality >= 33) {
-    print STDOUT "33\n";
+    print STDOUT "33";
 }
+print STDOUT "\tmin:$min_quality\tmax:$max_quality" if $opt_verbose; 
+print STDOUT "\n";
 
