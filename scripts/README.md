@@ -25,6 +25,20 @@ on it :-)
 
 This script requires BioPerl 1.6.1.
 
+seqStats.pl
+-----------
+
+    seqStats.pl [ --interleaved ] [ - | fastq_file.fq[.gz] ]
+
+Produce very simple output of FastQ-format sequence statistics: the number of sequences, the total base count also in Mbp, and the mean read length.  If the `--interleaved` option is provided, it also prints out an `npairs` line that is calculated simply by dividing the number of FastQ sequences by 2.
+
+```bash
+$ seqStats.pl file.1.fq.gz
+nseq	975215
+nbase	98496715
+nMbp	98.496715
+meanlen	101
+```
 
 phredDetector.pl
 ----------------
