@@ -46,7 +46,7 @@ reads `samtools mpileup` format and produces a profile file suitable for input t
 **mergePileupColumns**
 merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
-`extractFastaSeqs.pl**
+**extractFastaSeqs.pl**
 extracts named sequences from a FASTA file, or everything but.
 
 **shuffleFastq.pl** and **deshuffleFastq.pl**
