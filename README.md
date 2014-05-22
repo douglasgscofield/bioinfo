@@ -6,7 +6,7 @@ More details are provided within each subfolder.
 [pileVar](https://github.com/douglasgscofield/bioinfo/tree/master/pileVar)
 -------
 
-`pileVar.pl` identifies variants based on mpileup output from
+**pileVar.pl** identifies variants based on mpileup output from
 [samtools](http://samtools.sourcefourge.net).  This tool is currently geared
 toward identifying fixed differences and regions of ambiguity due to indels.
 
@@ -16,54 +16,54 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
-`mummer2Vcf.pl`
+**mummer2Vcf.pl**
 reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is not yet compliant [VCF][] yet but it will be.  Requires BioPerl.
 
-`phredDectector.pl`
+**phredDectector.pl**
 attempts to determine the [Phred-scale quality encoding](http://en.wikipedia.org/wiki/FASTQ_format) used in a FastQ-format file.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences) to `stdout`.  Does not require BioPerl.
 
-`fermiExtractContigs.pl`
+**fermiExtractContigs.pl**
 creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Writes Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length, number of non-redundant reads that built the scaftig, and median coverage of non-redundant reads along the scafftig.  Requires BioPerl.
 
-`fermiExtractContigs_simple.sh`
-creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Unlike `fermiExtractContigs.pl`, this does not use Perl.  Writes Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length and the number of non-redundant reads that built the scaftig.
+**fermiExtractContigs_simple.sh**
+creates Fasta-format contigs from a [fermi][]-format `*.fq.gz` FastQ-like scaftig files.  Unlike **fermiExtractContigs.pl**, this does not use Perl.  Writes Fasta to `stdout`, giving each Fasta sequence its fermi sequence name and a description that includes sequence length and the number of non-redundant reads that built the scaftig.
 
-`windowWig`
+**windowWig**
 reads a data stream (for example, coverage values by position within reference sequences) and
 produces a USCS [WIG][] file that summarizes median values within nonoverlapping windows. 
 
-`intervalBed`
+**intervalBed**
 reads a data stream with reference-position optionally marked with boolean values (for example, 
 presence-absence by position within reference sequences) and produces a [BED][] file 
 describing intervals in which the values are true.
 
-`samHeader2Bed.pl` 
+**samHeader2Bed.pl** 
 reads a SAM header and produces [BED][] file(s) after applying a few filtering criteria.
 
-`pileup2pro.pl`
+**pileup2pro.pl**
 reads `samtools mpileup` format and produces a profile file suitable for input to [mlRho][].
 
-`mergePileupColumns`
+**mergePileupColumns**
 merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
-`extractFastaSeqs.pl`
+`extractFastaSeqs.pl**
 extracts named sequences from a FASTA file, or everything but.
 
-`shuffleFastq.pl` and `deshuffleFastq.pl`
+**shuffleFastq.pl** and **deshuffleFastq.pl**
 convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
 
-`fastaGC.pl`
+**fastaGC.pl**
 analyses GC content of Fasta-format sequences a few different ways.
 
-`convertSequence.pl`and `convertAlignment.pl`
+**convertSequence.pl** and **convertAlignment.pl**
 convert between sequence and alignment formats using BioPerl.  If you need to line-wrap a Fasta file, use
 
     convertSequence -f fasta file.fa -of fasta - > outfile.fa
 
-`gmhmmp2Fasta.pl` and `gmhmmp2Table.pl`
+**gmhmmp2Fasta.pl** and **gmhmmp2Table.pl**
 extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
 
-`cutadaptReportScript.sh`
+**cutadaptReportScript.sh**
 collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
 
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
