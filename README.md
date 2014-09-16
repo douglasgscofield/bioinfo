@@ -16,6 +16,9 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
+**stacksExtractStats.pl**
+reads a [Stacks][] log file and produce a table summarizing sample-specific statistics, specifically number of stacks and mean stack coverage.
+
 **mummer2Vcf.pl**
 reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is not yet compliant [VCF][] yet but it will be.  Requires BioPerl.
 
@@ -67,6 +70,7 @@ extract Fasta sequences and a summary table from output produced by the ORF-find
 collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
 
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
+[Stacks]:  http://creskolab.uoregon.edu/stacks/
 [Mummer]:  http://mummer.sourceforge.net
 [VCF]:  http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41
 [fermi]:  https://github.com/lh3/fermi
