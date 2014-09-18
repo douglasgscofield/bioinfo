@@ -56,10 +56,10 @@ The command
 
     ./stacksExtractStats.pl ex.log
 
-produces a tab-separated table containing a header line and columns for sample name (the pattern recognized can easily be modified), sample number in the run, total samples in the run, number of stacks identified, and mean merged coverage depth.
+produces a tab-separated table containing a header line and columns for sample name (the pattern recognized can easily be modified), sample number in the run, total samples in the run, number of RAD-Tags, number of stacks identified, and mean merged coverage depth.
 
-    samplename	nsample	totsamples	nstacks	coverage
-    XYZ_H0122_GATTAC.1	1	40	36	9.41667
+    samplename        nsample totsamples      nradtags        nstacks coverage
+    XYZ_H0122_GATTAC.1        1       40      2800    36      9.41667
 
 
 mummer2Vcf.pl

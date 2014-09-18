@@ -53,45 +53,52 @@
 #
 # produces
 #
-#     samplename	nsample	totsamples	nstacks	coverage
-#     XYZ_H0122_GATTAC.1	1	40	36	9.41667
+#     samplename	nsample	totsamples	nradtags	nstacks	coverage
+#     XYZ_H0122_GATTAC.1	1	40	2800	36	9.41667
 # 
 
 use strict;
 use warnings;
 
-print "samplename\tnsample\ttotsamples\tnstacks\tcoverage\n";
+print "samplename\tnsample\ttotsamples\tnradtags\tnstacks\tcoverage\n";
 
-my $totsamples;
+my $totsamples = 0;
 
 while (<>) {
-    my ($nsample, $samplename, $nstacks, $coverage);
+    my ($nsample, $samplename, $nstacks, $coverage, $nradtags);
     s/\R//g;  # general line ending chomper: both \n and \r\n
     # the regexp matches the first sample-specific line in the log for each sample
     if (/^Identifying unique stacks; file +([0-9]+) of +([0-9]+) \[(.*)\.cat\]$/) {
         $nsample = $1;
         $samplename = $3;
-        if (! $totsamples) {
-            $totsamples = $2;
-        } elsif ($2 != $totsamples) {
-            die "sample total at sample number $nsample, name $samplename: $2 vs. $totsamples";
-        }
+        $totsamples = $2 if $totsamples != $2;
+        # Pulling out number of RAD-Tags
+        # Pulling out "merged into" and coverage info
         while (<>) {
             s/\R//g;  # general line ending chomper: both \n and \r\n
+
+            if (/^Loaded ([0-9]+) RAD-Tags/) {
+                $nradtags = $1;
+            }
+            if (/^  [0-9]+ stacks merged into ([0-9]+) stacks;/) {
+                $nstacks = $1;
+            }
+            if (/^  Mean merged coverage depth is ([0-9.]+);.*$/) {
+                $coverage = $1;
+            }
+
+            # end processing for this sample block
+            if (/^done\.$/) {
+                print "$samplename\t$nsample\t$totsamples\t$nradtags\t$nstacks\t$coverage\n";
+                last;
+            }
+            #  below are errors in the sample block, these end processing too
             if (/^Error: Unable to form any stacks/) {
                 $nstacks = 0;
                 $coverage = 0;
-            } elsif (/^  [0-9]+ stacks merged into ([0-9]+) stacks;/) {
-                $nstacks = $1;
-                $_ = <>;
-                s/\R//g;  # general line ending chomper: both \n and \r\n
-                s/^  Mean merged coverage depth is ([0-9.]+);.*$/$1/g;
-                $coverage = $_;
-            } else {  # some other line, skip and read next
-                next;
+                print "$samplename\t$nsample\t$totsamples\t$nradtags\t$nstacks\t$coverage\n";
+                last;
             }
-            print "$samplename\t$nsample\t$totsamples\t$nstacks\t$coverage\n";
-            last;
         }
     }
 }
