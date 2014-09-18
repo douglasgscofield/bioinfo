@@ -72,8 +72,6 @@ while (<>) {
         $nsample = $1;
         $samplename = $3;
         $totsamples = $2 if $totsamples != $2;
-        # Pulling out number of RAD-Tags
-        # Pulling out "merged into" and coverage info
         while (<>) {
             s/\R//g;  # general line ending chomper: both \n and \r\n
 
