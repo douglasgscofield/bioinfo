@@ -22,6 +22,9 @@ reads a [Stacks][] log file and produce a table summarizing sample-specific stat
 **mummer2Vcf.pl**
 reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is not yet compliant [VCF][] yet but it will be.  Requires BioPerl.
 
+**subsampleReads.pl**
+randomly selects a fraction of FastQ-format reads.
+
 **phredDectector.pl**
 attempts to determine the [Phred-scale quality encoding](http://en.wikipedia.org/wiki/FASTQ_format) used in a FastQ-format file.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences) to `stdout`.  Does not require BioPerl.
 
