@@ -25,6 +25,29 @@ on it :-)
 
 This script requires BioPerl 1.6.1.
 
+subsampleReads.pl
+-----------------
+
+    subsampleReads.pl  [ options ] [ - | fastq-file fastq-file ]
+
+All files are interleaved FASTQ, and may be gzipped (*.gz).  Single-end
+reads can be handles with --single
+
+    -f|--fraction FLOAT   fraction of reads to keep; a read pair is
+                          selected if a random uniform draw <= FLOAT
+    -s|--single           reads are single-end
+    -                     read input from STDIN, write to STDOUT
+
+To handle paired-end reads in separate files for reads 1 and 2, use this
+script in a pipe like
+
+```bash
+    shuffleFastq.pl - read1.fq.gz read2.fq.gz
+    | subsampleReads.pl - -f 0.01
+    | deshuffleFastq.pl - sub1.fq.gz sub2.fq.gz
+```
+
+
 seqStats.pl
 -----------
 
