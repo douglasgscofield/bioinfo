@@ -1,10 +1,14 @@
 #!/usr/bin/perl
 
+use strict;
+use warnings;
+
 use Getopt::Long;
 
 my $minlen = 0;
 my $single = "";
 my $stdin = 0;
+my ($filename1, $filename2, $filenameIn);
 
 my $usage = "
 $0  [ interleaved-file ]  read1-outfile  read2-outfile
@@ -21,7 +25,7 @@ all files are FASTQ format
 
 GetOptions("minlen=i" => \$minlen, 
            "single=s" => \$single,
-           "" => \$stdin) or { die "$usage" };
+           "" => \$stdin) or die "$usage";
 
 die "$usage" if !$ARGV[0] and !$ARGV[1];
 

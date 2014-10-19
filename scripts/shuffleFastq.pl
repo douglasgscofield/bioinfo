@@ -1,4 +1,7 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
 
 # TODO:
 # add -minlen and -single options like those in deshuffleFastq.pl
@@ -18,7 +21,7 @@ each files can be FastQ or gzipped FastQ (*.gz) format
 -             write output to STDOUT
 ";
 
-GetOptions("" => \$stdin) or { die "$usage" };
+GetOptions("" => \$stdout) or die "$usage";
 
 die "$usage" if !$ARGV[0] and !$ARGV[1];
 
