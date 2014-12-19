@@ -1,3 +1,7 @@
+#!/usr/bin/env perl
+
+# modified slightly by Douglas Scofield, douglas.scofield@ebc.uu.se
+
 # This program accepts the output of 'show-coords -lcdTH' and displays the mapping query(s) to the reference(s)
 
 ##########################################
@@ -6,8 +10,6 @@
 #					Ghedin Lab
 #	Date: February 1, 2012
 
-
-#!/usr/bin/perl -w
 
 use strict;
 use warnings;
@@ -36,11 +38,11 @@ my $temp_query = "";
 
 #################### Command Line Arguments ####################
 
-my $HELP_INFO = q~
-  USAGE: perl cv.pl [options] <coords-output>
+my $HELP_INFO = "
+  USAGE: $0 [options] <coords-output>
 
   DESCRIPTION:
-    Displays mummer/nucmer mappings and prints PNG to stdout via the "show-coords -lcdTH" 
+    Displays mummer/nucmer mappings and prints PNG to stdout via the 'show-coords -lcdTH' 
     output. The output file is <coords-output>.png. Command line options allow for
     different features when producing the image. Within the code there are comment
     blocks which give examples of how to further customize it i.e. grouping based
@@ -79,7 +81,7 @@ my $HELP_INFO = q~
     -h
     --help	    Prints this help message
 
-~;
+";
 
 my $help;
 my $q_group;
@@ -416,3 +418,4 @@ $panel->add_track(generic => [],
 
 print OUT $panel->png;
 close OUT;
+
