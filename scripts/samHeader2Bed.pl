@@ -1,8 +1,8 @@
-#! /usr/bin/perl -w
+#!/usr/bin/env perl
 
 # Produce BED file(s) describing reference sequences from a SAM header
 #
-# Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
+# Copyright (c) 2012,2015 Douglas G. Scofield, Uppsala University
 # douglasgscofield@gmail.com
 # 
 # No warranty is implied or should be assumed with this code.
@@ -24,6 +24,7 @@
 # TODO
 
 use strict;
+use warnings;
 use FileHandle;
 use Getopt::Long;
 

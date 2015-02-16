@@ -1,7 +1,6 @@
-#! /usr/bin/perl -w
+#!/usr/bin/env perl
 
-# Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
-# douglas.scofield@plantphys.umu.se
+# Copyright (c) 2012,2015 Douglas G. Scofield, Uppsala University
 # douglasgscofield@gmail.com
 #
 # No warranty is implied or assumed by this code.  Please send bugs, suggestions etc.
@@ -51,6 +50,7 @@
 # TODO
 
 use strict;
+use warnings;
 use POSIX qw/isdigit/;
 use Getopt::Long;
 

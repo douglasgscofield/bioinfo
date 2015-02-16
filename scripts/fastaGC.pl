@@ -1,13 +1,14 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 ###########################################################################
 #
-# copyright (c) 2011 Douglas G. Scofield, douglasgscofield@gmail.com
+# Copyright (c) 2011,2015 Douglas G. Scofield, Uppsala University
 #
 # Use as you see fit, include the above attribution.  No warranty is implied or
 # assumed with this code.
 
 use strict;
+use warnings;
 use Getopt::Long;
 use Pod::Usage;
 
