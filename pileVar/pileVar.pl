@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#!/usr/bin/env perl
 
 # Call variants based on output of samtools mpileup command.
 #
@@ -110,6 +110,7 @@
 # 
 
 use strict;
+use warnings;
 use POSIX;
 use Getopt::Long;
 use List::Util qw/sum/;

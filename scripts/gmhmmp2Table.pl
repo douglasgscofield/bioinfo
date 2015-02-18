@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # Process gmhmmp output into a table of ORF discoveries
 
