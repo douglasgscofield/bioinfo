@@ -1,7 +1,6 @@
 #!/usr/bin/awk -f
 
-# Copyright (c) 2012 Douglas G. Scofield, Umeå Plant Sciences Centre, Umeå, Sweden
-# douglas.scofield@plantphys.umu.se
+# Copyright (c) 2012, 2015 Douglas G. Scofield, Uppsala University
 # douglasgscofield@gmail.com
 #
 # No warranty is implied or assumed by this code.  Please send bugs, suggestions etc.
@@ -9,6 +8,10 @@
 # Join mpileup columns into single columns when multiple BAMs were specified on the
 # samtools mpileup command line.  Correctly handles 0-coverage BAMs.  See 
 # https://github.com/douglasgscofield/bioinfo/tree/master/scripts#mergepileupcolumnsawk
+#
+# Note that use of samtools mpileup flags --rf or --ff may result in 0-coverage
+# columns in mpileup output that might have 4 rather than always 3 columns.
+# The always-3-column output has '*' for both the 2nd and 3rd columns.
 
 BEGIN {
     FS = "\t";
@@ -37,11 +40,18 @@ BEGIN {
             } else {
                 i += 3;
             }
-            ++n_bams_now;
-        } else {  # no coverage, 3 columns to the right with no info
+        } else if ($(i) == 0 && $(i+1) == "*" && $(i+2) == "*") {
+            # no coverage at all, always 3 columns to the right: 0 * *
             i += 3;
-            ++n_bams_now;
+        } else {
+            # no coverage because of filtering
+            if (mpileup_s) {
+                i += 4;
+            } else {
+                i += 3;
+            }
         }
+        ++n_bams_now;
     }
     if (! n_bams) {
         n_bams = n_bams_now;
@@ -53,7 +63,7 @@ BEGIN {
     }
 
     if (n_bams_now != n_bams) {
-        print "Whoa, I was expecting " n_bams " BAM files, but on line " NR " you show me pileup for " n_bams_now ", seriously?!?  I'm not going to write this line to output ... " > "/dev/stderr"
+        print "Expecting " n_bams " BAM files, line " NR " has pileup for " n_bams_now ", skipping line" > "/dev/stderr"
         next;
     }
 
