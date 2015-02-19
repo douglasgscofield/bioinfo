@@ -669,7 +669,7 @@ mapping quality column.  Merging output from `samtools mpileup -s`:
 Yet another wrinkle occurs if there is coverage at this site, but it has all been
 removed as a result of options to `samtools mpileup`, such as `--rf` to remove some
 reads based on SAM flag values.  In these cases, coverage is 0, but there are *four*
-columns of rather confused-looking output with blanks in the base and quality
+columns of rather confused-looking output with empty base and quality
 columns and quality characters in the mapping quality column.
 
 
