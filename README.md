@@ -16,6 +16,10 @@ toward identifying fixed differences and regions of ambiguity due to indels.
 
 A handful of bioinformatics scripts:
 
+**fastaSort** sorts a file of Fasta sequences by identifier name, naturally, so that `ìd_1` is followed by `id_2`, rather than `id_10`.  Requires BioPerl and the Perl module `Sort::Naturally`, and leaves behind an `.index` file as it uses BioPerl's `Bio::DB::Fasta` module to do very quick sorting.
+
+**gffSort** is a small Bash script that sorts a GFF file first by sequence name in column 1, and then by position numerically in column 4.  It assumes you might have generated this GFF with MAKER, so it removes the `###` lines between gene models if they are present.
+
 **stacksExtractStats.pl**
 reads a [Stacks][] log file and produce a table summarizing sample-specific statistics.  It currently prints number of RAD-Tags, number of stacks and mean stack coverage, and it is written so that other statistics can easily be harvested from the output.
 
