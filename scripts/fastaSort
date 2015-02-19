@@ -5,16 +5,21 @@ use warnings;
 
 use Bio::DB::Fasta;
 use Bio::SeqIO;
-use Sort::Naturally;
+use Sort::Naturally;  # provides nsort
+
+my $remove_index = 1;
 
 my $f = shift @ARGV;
 
 my $db = Bio::DB::Fasta->new($f);
 
-my $OUT = Bio::SeqIO->new(-fh     => \*STDOUT, -format => 'Fasta');
+my $OUT = Bio::SeqIO->new(-fh => \*STDOUT, -format => 'fasta');
 
-my @ids = $db->get_all_primary_ids();
-my @sorted_ids = nsort(@ids);
+my @sorted_ids = nsort($db->get_all_primary_ids());
 
 $OUT->write_seq($db->get_Seq_by_id($_)) foreach @sorted_ids;
 
+if ($remove_index) {
+    my $idx = "$f.index";
+    unlink $idx or die "could not remove index '$idx': $!";
+}
