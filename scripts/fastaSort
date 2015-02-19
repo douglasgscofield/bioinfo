@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Bio::DB::Fasta;
+use Bio::SeqIO;
+use Sort::Naturally;
+
+my $f = shift @ARGV;
+
+my $db = Bio::DB::Fasta->new($f);
+
+my $OUT = Bio::SeqIO->new(-fh     => \*STDOUT, -format => 'Fasta');
+
+my @ids = $db->get_all_primary_ids();
+my @sorted_ids = nsort(@ids);
+
+$OUT->write_seq($db->get_Seq_by_id($_)) foreach @sorted_ids;
+

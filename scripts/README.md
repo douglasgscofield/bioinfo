@@ -3,6 +3,14 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fastaSort, gffSort
+------------------
+
+`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl` and `Sort::Naturally`, and leaves behind a `.index` file because it uses `Bio::DB::Fasta`.
+
+Sort GFF file by scaffold name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output.
+
+
 stacksExtractStats.pl
 ---------------------
 
