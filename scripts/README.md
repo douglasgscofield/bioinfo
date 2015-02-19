@@ -836,17 +836,6 @@ Usage:
 Read the multiple sequence alignment in ClustalW format from `file.in`, convert it to [PHYLIP](http://evolution.genetics.washington.edu/phylip.html) format and write it via `stdout` to `file.out`.
 
 
-gmhmmp2Fasta.pl
----------------
-
-Usage:
-
-    gmhmmp2Fasta.pl file.in > file.out
-
-
-Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx), an ORF-prediction program, and produce a Fasta file containing the sequence of each of the predicted ORFs.
-
-
 cutadaptReportScript.sh
 -----------------------
 
