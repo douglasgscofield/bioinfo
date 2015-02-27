@@ -35,7 +35,7 @@
 #     reference1  1   8
 #     reference1  10  13
 #
-# With the option val_col=0, no column of boolean values is required, as
+# With the option col=0, no column of boolean values is required, as
 # 'true' is implied for each position present on input
 #
 # Note that intervals in BED are 0-based and [begin, end).  The script
@@ -58,6 +58,12 @@
 #
 # All options, change with option=value on command line:
 #
+# col          : the column we are checking, note col=0 description above
+# crit_val     : the value against which we are checking, if the value in col
+#                is equal to or above this, we include the position in output.
+#                Default is crit_val=1.
+# strict       : if strict=1, then we must match crit_val exactly, otherwise
+#                greater than or equal to crit_val
 # FS, OFS      : input and output field separator characters (default "\t")
 # header       : number of header lines on input (default 1)
 # skip_comment : skip comment lines beginning with '#' (default 1, 'true')
@@ -69,8 +75,9 @@
 #                from option values
 #
 # CHANGELOG
+# 2015-02-27 : val_col to val, add strict
 # 2015-02-06 : minor comment tweaks
-# 2013-06-06 : support val_col=0 and improve documentation
+# 2013-06-06 : support col=0 and improve documentation
 # 2012-12-01 : handle comments and blank lines
 # 2012-11-30 : minimum width interval
 # 2012-11-27 : create the script
@@ -96,11 +103,13 @@ BEGIN {
     track = 1;  # do we print an initial track line on the output?
     trackname = "intervalBed";
     # trackdesc = ;  # default is set later, set it on the command line to override
+    strict = 0;  # are we strict about our match against crit_val (== ?)
+    crit_val = 1; # what val must we have in col for interval determination?
+    col = 3;  # column of critical values across positions within references
 
     # parameters but probably of less interest
     ref_col = 1;  # column of reference, starting with 1 by awk convention
     pos_col = 2;  # column of position within reference (increasing within each reference)
-    val_col = 3;  # column of boolean values across positions within references
     ref_start_pos = 1; # the position at which input positions start
     out_start_pos = 0; # the position at which output positions start
 
@@ -114,7 +123,6 @@ BEGIN {
     iend = 0;     # the position immediately beyond the current interval
     # didja notice? the current interval is [ibegin, iend)
     in_grace = 0; # counts the positions of grace we've been given
-    crit_val = 1; # what val must be for interval determination
 }
 
 
@@ -137,22 +145,27 @@ function print_interval(r, ib, ie)
     if ($0 ~ /^$/) {  # blank lines
         next;
     }
-    if (val_col == 0) {
+    if (col == 0) {
         crit_val = 1;
+        strict = 0;
     }
 
     if (ibegin == -1) {  # initializing...
         ref = $(ref_col);
         pos = $(pos_col);
-        val = (val_col == 0 ? 1 : $(val_col));
+        val = (col == 0 ? 1 : $(col));
         ibegin = (val == crit_val) ? pos : 0;
         iend = ibegin + 1;
         if (track) {
             if (! trackdesc) {
-                if (val_col == 0)
+                if (col == 0)
                     trackdesc = "intervals including all positions";
-                else
-                    trackdesc = "intervals of positions with " crit_val "s";
+                else {
+                    if (strict == 1)
+                        trackdesc = "intervals of column " col " equal to " crit_val;
+                    else
+                        trackdesc = "intervals of column " col " greater than or equal to " crit_val;
+                }
                 if (grace > 0)
                     trackdesc = trackdesc ", grace distance " grace;
                 if (min_width > 1)
@@ -175,10 +188,10 @@ function print_interval(r, ib, ie)
     }
 
     pos = $(pos_col);
-    val = (val_col == 0 ? 1 : $(val_col));
+    val = (col == 0 ? 1 : $(col));
 
     if (ibegin) {  # working on an interval
-        if (val == crit_val) {
+        if (val == crit_val || (! strict && val > crit_val)) {
             if (pos == iend) { # we did not skip positions
                 if (grace && in_grace) {  # use the grace we've been given
                     iend += in_grace;
@@ -205,7 +218,7 @@ function print_interval(r, ib, ie)
             if (grace)
                 in_grace = 0;
         }
-    } else if (val == crit_val) {  # begin an interval
+    } else if (val == crit_val || (! strict && val > crit_val)) {  # begin an interval
         ibegin = pos;
         iend = ibegin + 1;
     }

@@ -1,0 +1,5 @@
+track name=intervalBed description="intervals of column 4 greater than or equal to 1"
+MA_20601	17	104
+MA_20601	171	226
+MA_20601	625	693
+MA_20601	720	904
