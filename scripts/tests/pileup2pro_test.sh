@@ -33,7 +33,7 @@ RemoveTempFiles
 
 
 ThisTest="pileup2pro_test_01"
-echo $ThisTest - general test of script operation 
+echo -n $ThisTest - general test of script operation 
 Input=pileup2pro_test_01.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -44,13 +44,13 @@ Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
 $ScriptDir/pileup2pro.pl $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
-    echo "$ThisTest - PASSED"
+    echo " - PASSED"
     RemoveTempFiles
     if [ "$CompressedInput" != "" ] ; then
         rm -f $Input
     fi
 else
-    echo "$ThisTest - FAILED"
+    echo " - FAILED"
 fi
 ClearVariables
 
@@ -59,7 +59,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_02"
-echo $ThisTest - general test of script operation with restrictive --which-bams option
+echo -n $ThisTest - general test of script operation with restrictive --which-bams option
 Input=pileup2pro_test_02.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -70,13 +70,13 @@ Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
 $ScriptDir/pileup2pro.pl $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
-    echo "$ThisTest - PASSED"
+    echo " - PASSED"
     RemoveTempFiles
     if [ "$CompressedInput" != "" ] ; then
         rm -f $Input
     fi
 else
-    echo "$ThisTest - FAILED"
+    echo " - FAILED"
 fi
 ClearVariables
 
@@ -85,7 +85,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_03"
-echo $ThisTest - general test of script operation with --has-mapping-quality option
+echo -n $ThisTest - general test of script operation with --has-mapping-quality option
 Input=pileup2pro_test_03.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -96,13 +96,13 @@ Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
 $ScriptDir/pileup2pro.pl $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
-    echo "$ThisTest - PASSED"
+    echo " - PASSED"
     RemoveTempFiles
     if [ "$CompressedInput" != "" ] ; then
         rm -f $Input
     fi
 else
-    echo "$ThisTest - FAILED"
+    echo " - FAILED"
 fi
 ClearVariables
 
@@ -111,7 +111,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_04"
-echo $ThisTest - general test of script operation with --has-mapping-quality and --which-bams options
+echo -n $ThisTest - general test of script operation with --has-mapping-quality and --which-bams options
 Input=pileup2pro_test_04.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -122,13 +122,13 @@ Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
 $ScriptDir/pileup2pro.pl $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
-    echo "$ThisTest - PASSED"
+    echo " - PASSED"
     RemoveTempFiles
     if [ "$CompressedInput" != "" ] ; then
         rm -f $Input
     fi
 else
-    echo "$ThisTest - FAILED"
+    echo " - FAILED"
 fi
 ClearVariables
 
@@ -137,7 +137,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_05"
-echo $ThisTest - general test of script operation with --has-mapping-quality and restrictive --which-bams options
+echo -n $ThisTest - general test of script operation with --has-mapping-quality and restrictive --which-bams options
 Input=pileup2pro_test_05.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -148,13 +148,13 @@ Temp1=$ThisTest.$TempID.1
 Temp2=$ThisTest.$TempID.2
 $ScriptDir/pileup2pro.pl $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
-    echo "$ThisTest - PASSED"
+    echo " - PASSED"
     RemoveTempFiles
     if [ "$CompressedInput" != "" ] ; then
         rm -f $Input
     fi
 else
-    echo "$ThisTest - FAILED"
+    echo " - FAILED"
 fi
 ClearVariables
 
