@@ -1,0 +1,23 @@
+./intervalBed_test.sh
+intervalBed_test_01 - col=4 intervalBed_test.input - PASSED
+intervalBed_test_02 - col=4 strict=1 intervalBed_test.input - PASSED
+intervalBed_test_03 - col=5 intervalBed_test.input - PASSED
+intervalBed_test_04 - col=5 strict=1 intervalBed_test.input - PASSED
+intervalBed_test_05 - crit_val=3 intervalBed_test.input - PASSED
+intervalBed_test_06 - crit_val=19 intervalBed_test.input - PASSED
+intervalBed_test_07 - col=0 intervalBed_test.input - PASSED
+./mergePileupColumns_test.sh
+mergePileupColumns_test_01 - PASSED
+mergePileupColumns_test_02 - PASSED
+mergePileupColumns_test_03 - PASSED
+mergePileupColumns_test_04 - PASSED
+./pileup2pro_test.sh
+pileup2pro_test_01 - general test of script operation - PASSED
+pileup2pro_test_02 - restrictive --which-bams - PASSED
+pileup2pro_test_03 - --has-mapping-quality - PASSED
+pileup2pro_test_04 - --has-mapping-quality and --which-bams - PASSED
+pileup2pro_test_05 - --has-mapping-quality and restrictive --which-bams - PASSED
+./windowWig_test.sh
+windowWig_test_01 - general test of script operation - PASSED
+windowWig_test_02 - input includes comment lines - PASSED
+windowWig_test_03 - input includes comment and blank lines - PASSED

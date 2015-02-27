@@ -59,7 +59,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_02"
-echo -n $ThisTest - general test of script operation with restrictive --which-bams option
+echo -n $ThisTest - restrictive --which-bams
 Input=pileup2pro_test_02.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -85,7 +85,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_03"
-echo -n $ThisTest - general test of script operation with --has-mapping-quality option
+echo -n $ThisTest - --has-mapping-quality
 Input=pileup2pro_test_03.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -111,7 +111,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_04"
-echo -n $ThisTest - general test of script operation with --has-mapping-quality and --which-bams options
+echo -n $ThisTest - --has-mapping-quality and --which-bams
 Input=pileup2pro_test_04.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
@@ -137,7 +137,7 @@ ClearVariables
 
 
 ThisTest="pileup2pro_test_05"
-echo -n $ThisTest - general test of script operation with --has-mapping-quality and restrictive --which-bams options
+echo -n $ThisTest - --has-mapping-quality and restrictive --which-bams
 Input=pileup2pro_test_05.input
 if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
     gzip -d -c < $CompressedInput > $Input
