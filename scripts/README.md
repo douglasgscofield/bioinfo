@@ -841,6 +841,8 @@ Usage:
 
 Read the multiple sequence alignment in ClustalW format from `file.in`, convert it to [PHYLIP](http://evolution.genetics.washington.edu/phylip.html) format and write it via `stdout` to `file.out`.
 
+This script also -as option `--degap`, for converting an alignment to straight degapped sequences, and `--uc`/`--uppercase`, for converting an aligned sequence to uppercase.
+
 
 cutadaptReportScript.sh
 -----------------------

@@ -69,9 +69,9 @@ convert FastQ-format files from separate read 1/read 2 files to interleaved and 
 analyses GC content of Fasta-format sequences a few different ways.
 
 **convertSequence.pl** and **convertAlignment.pl**
-convert between sequence and alignment formats using BioPerl.  If you need to line-wrap a Fasta file, use
+convert between sequence and alignment formats using BioPerl.  `convertAlignment.pl` can also convert aligned sequences to degapped unaligned sequences.  If you need to line-wrap a Fasta file, use
 
-    convertSequence -f fasta file.fa -of fasta - > outfile.fa
+    convertSequence.pl -f fasta file.fa -of fasta - > outfile.fa
 
 **gmhmmp2Fasta.pl** and **gmhmmp2Table.pl**
 extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
