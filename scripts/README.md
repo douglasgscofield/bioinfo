@@ -133,11 +133,10 @@ meanlen	101
 phredDetector.pl
 ----------------
 
-Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org/wiki/FASTQ_format) used in the FastQ file presented on input.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences) to `stdout`, so it can be used in pipeline scripts to autodetect Phred encodings:
+Heuristically determine the [Phred-scaled quality score](http://en.wikipedia.org/wiki/FASTQ_format) used in the FastQ file presented on input.  Can handle gzipped input.  If everything looks reasonable, it simply prints `33`, `64` or `59` (this last for older Solexa sequences with the `--solexa` option) to `stdout`.  It can be used in pipeline scripts to autodetect Phred encodings:
 
 ```bash
-FastQ_file="fastq_file.fq.gz"
-Quality=$(phredDetector.pl $FastQ_file)
+Quality=$(phredDetector.pl --solexa fastq_file.fq.gz)
 if [ "$Quality" = "33" ] ; then
    echo "perhaps Illumina 1.8+"
 elif [ "$Quality" = "64" ] ; then
@@ -145,7 +144,7 @@ elif [ "$Quality" = "64" ] ; then
 elif [ "$Quality" = "59" ] ; then
    echo "perhaps Solexa"
 else
-   echo "Couldn't autodetect quality for $FastQ_file, return value was '$Quality'"
+   echo "Couldn't autodetect quality, return value was '$Quality'"
 fi
 ```
 
