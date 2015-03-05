@@ -1,0 +1,13 @@
+samp01	pop1	A	T	G	C
+samp02	pop1	A	T	G	C
+samp03	pop1	T	T	G	C
+samp04	pop1	T	T	C	C
+samp05	pop2	T	T	C	C
+samp06	pop2	A	G	G	C
+samp07	pop2	T	A	G	A
+samp08	pop2	T	A	G	A
+samp09	pop2	T	A	G	A
+samp10	pop2	A	T	G	C
+samp11	pop3	A	T	G	C
+samp12	pop3	A	T	A	G
+samp13	pop3	T	A	G	A
