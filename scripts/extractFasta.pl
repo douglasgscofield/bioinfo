@@ -9,11 +9,48 @@ use Getopt::Long;
 my $o_db;
 my $o_entry;
 my $o_range;
+my $o_help;
 
-GetOptions("db=s" => \$o_db,
+my $usage = "
+Extract a sequence or subsequence from a Blast database
+
+USAGE: $0 --db database --entry fasta-sequence-name [ --range L-R ]
+
+First build the blast database using
+
+    makeblastdb -parse_seqids -in sequence.fa -dbtype nucl|prot
+
+with -dbtype dependent upon your input data.
+
+Then you can extract the (sub)sequence of interest.  This is printed
+to stdout in Fasta format.  If a subsequence is requested, the range
+of the subsequence is added to the sequence identifier in the output.
+
+OPTIONS:
+
+    --db blast-db       The same name you would give to blastdbcmd,
+                        which is exactly what this script does
+
+    --entry sequence    Name of the sequence to extract from blast-db
+
+    --range LOW-HIGH    1-based positions of a subsequence to extract
+                        from the sequence, once it is found.
+
+";
+
+GetOptions("db=s"    => \$o_db,
            "entry=s" => \$o_entry,
-           "range=s" => \$o_range) or die "bad option";
-die "must supply --db and --entry, optionally --range" if not $o_db or not $o_entry;
+           "range=s" => \$o_range,
+           "help"    => \$o_help) or die $USAGE;
+if ($o_help) { print STDERR $USAGE; exit 0; }
+die "must supply --db and --entry, optionally --range, try $o --help" if not $o_db or not $o_entry;
+
+my ($start, $end);
+if ($o_range) {
+    ($start, $end) = split /-/, $o_range;
+    die "problem with range definition '$o_range'" if ! $start or ! $end or $end < $start;
+}
+
 print STDERR "Looking for sequence named '$o_entry' in blast database '$o_db'...";
 
 my $output = Bio::SeqIO->new(-fh => \*STDOUT, -format => 'Fasta');
@@ -32,8 +69,6 @@ my $seq = join("", @seq[1..$#seq]);
 $seq =~ s/\n//g;
 my ($start, $end);
 if ($o_range) {
-    ($start, $end) = split /-/, $o_range;
-    die "problem with range definition '$o_range'" if ! $start or ! $end or $end < $start;
     $seq_name = "$seq_name:$start-$end";
 }
 # create BioPerl Seq object directly from scaffold sequence
