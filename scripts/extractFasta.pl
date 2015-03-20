@@ -11,7 +11,7 @@ my $o_entry;
 my $o_range;
 my $o_help;
 
-my $usage = "
+my $USAGE = "
 Extract a sequence or subsequence from a Blast database
 
 USAGE: $0 --db database --entry fasta-sequence-name [ --range L-R ]
@@ -43,7 +43,7 @@ GetOptions("db=s"    => \$o_db,
            "range=s" => \$o_range,
            "help"    => \$o_help) or die $USAGE;
 if ($o_help) { print STDERR $USAGE; exit 0; }
-die "must supply --db and --entry, optionally --range, try $o --help" if not $o_db or not $o_entry;
+die "must supply --db and --entry, optionally --range, try $0 --help" if not $o_db or not $o_entry;
 
 my ($start, $end);
 if ($o_range) {
@@ -67,7 +67,6 @@ $entry_name =~ s/ .*$//g;
 my $seq_name = $entry_name;
 my $seq = join("", @seq[1..$#seq]);
 $seq =~ s/\n//g;
-my ($start, $end);
 if ($o_range) {
     $seq_name = "$seq_name:$start-$end";
 }
