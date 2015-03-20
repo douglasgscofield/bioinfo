@@ -63,7 +63,8 @@ print STDERR " found it!\n";
 
 my $entry_name = $seq[0];
 chomp $entry_name;
-$entry_name =~ s/ .*$//g;
+$entry_name =~ s/^>//g;  # remove starting >
+$entry_name =~ s/ .*$//g;  # remove everything after the first space, keeping only the identifier
 my $seq_name = $entry_name;
 my $seq = join("", @seq[1..$#seq]);
 $seq =~ s/\n//g;
