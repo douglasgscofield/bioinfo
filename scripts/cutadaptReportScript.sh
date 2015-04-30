@@ -4,11 +4,67 @@
 # the number of times each adapter was trimmed.  Table is produced
 # to stdout.
 
+# This script attempts to detect two different cutadapt output formats.  I'd
+# been previously using cutadapt 1.3 for my pipeline, which produced the
+# adapter's given name and cut results on a single line, version "pre":
+#
+#     Adapter 'Adapter_1_Illumina' (ACACTCTTTCCCTACACGACGCTGTTCCATCT), length 32, was trimmed 65 times.
+#
+# When I switched to cutadapt 1.8, I found these are now produced on 
+# separate lines, which I am calling version "1.8":
+#
+#     === Adapter 'Adapter_1_Illumina' ===
+#     
+#     Sequence: ACACTCTTTCCCTACACGACGCTGTTCCATCT; Type: variable 5'/3'; Length: 32; Trimmed: 12 times.
+#
+
 first=$1
 
 all_reports=("$@")
 
 TmpID=$$
+
+# First, determine if it is cutadapt 1.8 or earlier
+
+Version=
+
+if grep -q '^Adapter.*, was trimmed ' "$first"
+then
+    Version="pre"
+elif grep -q '^Sequence.*; Trimmed: ' "$first"
+then
+    Version="1.8"
+else
+    echo "Unknown cutadapt output format"
+    exit 1
+fi
+echo "Reading cutadapt output format $Version"
+
+function extract_pre()
+{
+    report=$1
+    grep ', was trimmed ' $report | cut -d" " -f2,5,8 | sed -e "s/[',]//g" -e 's/ /\t/g'
+}
+
+
+function extract_18()
+{
+    report=$1
+    while read line1; do
+        read line2; read line3;
+        echo "$line1 $line3" | cut -d' ' -f3,11,13 | sed -e "s/[';]//g" -e 's/ /\t/g'
+    done < <(grep -A 2 '^=== Adapter ' $report | grep -v '^--$')
+}
+
+function extract()
+{
+    if [[ "$Version" = "pre" ]] ; then
+        extract_pre $1
+    elif [[ "$Version" = "1.8" ]] ; then
+        extract_18 $1
+    fi
+}
+
 
 for report in ${all_reports[@]} ; do
 
@@ -18,11 +74,11 @@ for report in ${all_reports[@]} ; do
     touch $SampleOut
     if [ "$report" = "$first" ] ; then
             echo -e "adapter\tlength\t$SampleName" > $SampleOut
-            grep ", was trimmed " $report | cut -d" " -f2,5,8 | sed -e "s/[',]//g" -e 's/ /\t/g' >> $SampleOut
+            extract $report >> $SampleOut
             Tables="$SampleOut"
     else
             echo -e "$SampleName" > $SampleOut
-            grep ", was trimmed " $report | cut -d" " -f8 | sed -e "s/[',]//g" -e 's/ /\t/g' >> $SampleOut
+            extract $report | cut -f3 >> $SampleOut
             Tables="$Tables $SampleOut"
     fi
 done
