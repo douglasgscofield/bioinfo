@@ -725,6 +725,27 @@ extractFastaSeqs.pl subset-names.txt full.fa subset.fa
 
 
 
+trimFastq.pl
+----------------------------------
+
+Hard-trim a given number of bases from the 5' or 3' end (or both) from each read
+in a file of FastQ-format reads.  Both the sequence and quality strings are
+trimmed (naturally).
+
+**OPTIONS**
+
+    -                       read FastQ sequences from stdin and write FastQ
+                            sequences to stdout
+    --trim5 INT             trim INT bases from the 5' end of each read
+    --trim3 INT             trim INT bases from the 3' end of each read
+
+
+````bash
+shuffleFastQ.pl r1.fq.gz r2.fq.gz - | trimFastq.pl --trim5 10 - | deshuffleFastQ.pl --minlen 50 - r1.trimmed.fq.gz r2.trimmed.fq.gz
+````
+
+
+
 shuffleFastq.pl, deshuffleFastq.pl
 ----------------------------------
 
