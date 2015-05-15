@@ -63,7 +63,7 @@ extracts named sequences from a FASTA file, or everything but.
 extracts named FASTA sequences from a `makeblastdb -parse_seqids`-built blast database, and optionally provide a range for a subsequence.
 
 **trimFastq.pl**
-hard-trims a given amount from the 5' or 3' end (or both) from each read in a FastQ-format file.
+hard-trims a given amount from the 5' or 3' end (or both) from each read in a FastQ-format file, and optionally trims each read from the 3' end to a maximum length.
 
 **shuffleFastq.pl** and **deshuffleFastq.pl**
 convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].

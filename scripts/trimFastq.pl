@@ -8,28 +8,40 @@ use Getopt::Long;
 my $stdout = 0;
 my $trim5 = 0;
 my $trim3 = 0;
+my $trimlen = 0;
 my $FileRead_In;
 my $FileRead_Out;
 
 my $usage = "
-$0  --trim5 INT --trim3 INT [ - | interleaved-infile  interleaved-outfile ]
+$0  --trim5 INT --trim3 INT --trimlen INT [ - | interleaved-infile  interleaved-outfile ]
 
-each files can be FastQ or gzipped FastQ (*.gz) format
+Each file can be FastQ or gzipped FastQ (*.gz) format
 
--             read input from STDIN, write output to STDOUT
+    -               read input from STDIN, write output to STDOUT
 
---trim5 INT   trim INT bases from the 5' end of each read [default $trim5]
---trim3 INT   trim INT bases from the 3' end of each read [default $trim3]
+    --trim5 INT     trim INT bases from the 5' end of each read [default $trim5]
+
+       then
+
+    --trim3 INT     trim INT bases from the 3' end of each read [default $trim3]
+
+       then
+
+    --trimlen INT   trim sequences from the 3' end to have maximum length INT [default $trimlen]
+
+If you wish to enforce minimum lengths, especially for pairs, use deshuffleFastq.pl in this
+repository.
 
 ";
 
-GetOptions(""        => \$stdout,
-           "trim5=d" => \$trim5,
-           "trim3=d" => \$trim3) or die "$usage";
+GetOptions(""          => \$stdout,
+           "trim5=d"   => \$trim5,
+           "trim3=d"   => \$trim3,
+           "trimlen=d" => \$trimlen) or die "$usage";
 
 die "must specify input and output or - for stdin/stdout\n\n$usage" if ! $stdout or (!$ARGV[0] and !$ARGV[1]);
-die "must specify --trim5 or --trim3\n\n$usage" if ! $trim5 and ! $trim3;
-die "must specify positive --trim5 or --trim3\n\n$usage" if $trim5 < 0 or $trim3 < 0;
+die "must specify --trim5, --trim3 or --trimlen\n\n$usage" if ! $trim5 and ! $trim3 and ! $trimlen;
+die "must specify positive --trim5, --trim3 or --trimlen\n\n$usage" if $trim5 < 0 or $trim3 < 0 or $trimlen < 0;
 
 $FileRead_In = $ARGV[0];
 $FileRead_Out = $ARGV[1];
@@ -62,6 +74,10 @@ while(<INFILE>) {
     if ($trim3) {
         $r_2 = substr($r_2, 0, -$trim3);
         $r_4 = substr($r_4, 0, -$trim3);
+    }
+    if ($trimlen) {
+        $r_2 = substr($r_2, 0, $trimlen);
+        $r_4 = substr($r_4, 0, $trimlen);
     }
     print OUTFILE $r_1;
     print OUTFILE $r_2;
