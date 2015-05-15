@@ -67,6 +67,10 @@ while(<INFILE>) {
     my $r_2 = <INFILE>;
     my $r_3 = <INFILE>;
     my $r_4 = <INFILE>;
+    chomp $r_1;
+    chomp $r_2;
+    chomp $r_3;
+    chomp $r_4;
     if ($trim5) {
         $r_2 = substr($r_2, $trim5);
         $r_4 = substr($r_4, $trim5);
@@ -79,10 +83,10 @@ while(<INFILE>) {
         $r_2 = substr($r_2, 0, $trimlen);
         $r_4 = substr($r_4, 0, $trimlen);
     }
-    print OUTFILE $r_1;
-    print OUTFILE $r_2;
-    print OUTFILE $r_3;
-    print OUTFILE $r_4;
+    print OUTFILE "$r_1\n";
+    print OUTFILE "$r_2\n";
+    print OUTFILE "$r_3\n";
+    print OUTFILE "$r_4\n";
 }
 close(INFILE);
 close(OUTFILE);
