@@ -35,9 +35,9 @@ repository.
 ";
 
 GetOptions(""          => \$stdout,
-           "trim5=d"   => \$trim5,
-           "trim3=d"   => \$trim3,
-           "trimlen=d" => \$trimlen) or die "$usage";
+           "trim5=i"   => \$trim5,
+           "trim3=i"   => \$trim3,
+           "trimlen=i" => \$trimlen) or die "$usage";
 
 die "must specify input and output or - for stdin/stdout\n\n$usage" if ! $stdout or (!$ARGV[0] and !$ARGV[1]);
 die "must specify --trim5, --trim3 or --trimlen\n\n$usage" if ! $trim5 and ! $trim3 and ! $trimlen;
