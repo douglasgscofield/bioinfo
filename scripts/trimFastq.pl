@@ -39,7 +39,7 @@ GetOptions(""          => \$stdout,
            "trim3=i"   => \$trim3,
            "trimlen=i" => \$trimlen) or die "$usage";
 
-die "must specify input and output or - for stdin/stdout\n\n$usage" if ! $stdout or (!$ARGV[0] and !$ARGV[1]);
+die "must specify input and output or - for stdin/stdout\n\n$usage" if ! $stdout and (!$ARGV[0] and !$ARGV[1]);
 die "must specify --trim5, --trim3 or --trimlen\n\n$usage" if ! $trim5 and ! $trim3 and ! $trimlen;
 die "must specify positive --trim5, --trim3 or --trimlen\n\n$usage" if $trim5 < 0 or $trim3 < 0 or $trimlen < 0;
 
