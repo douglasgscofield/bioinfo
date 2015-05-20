@@ -58,9 +58,10 @@ my @base_quality_columns;
 
 my $which_bams = "";
 my @which_bams = ();
-my $stdio;
-my $quiet;
-my $help;
+my $o_stdio;
+my $o_quiet;
+my $o_help;
+my $o_N;
 my $current_reference = ""; # the name of the current reference sequence
 my $N_references = 0; # the number of reference sequences seen
 my $N_coordinates = 0; # the total number of coordinates seen
@@ -84,18 +85,19 @@ OPTIONS
                                order as provided on the samtools mpileup command
                                line, starting with 1; otherwise produce profile
                                output for all BAMs 
+    --N                        include 5th count column for Ns
     --quiet                    don't print progress to stderr
     --help, -?                 help message
 
   Profile2 format lists bases present at each position in a reference sequence,
-  with columns sequence, position, A, C, G, T, N:
+  with columns sequence, position, A, C, G, T:
 
-     contig_1	1	0	2	0	0	0
-     contig_1	2	2	0	0	0	0
-     contig_1	3	0	2	0	0	0
-     contig_1	4	2	0	0	0	0
-     contig_1	5	0	0	0	2	0
-     contig_1	6	0	0	2	0	0
+     contig_1	1	0	2	0	0
+     contig_1	2	2	0	0	0
+     contig_1	3	0	2	0	0
+     contig_1	4	2	0	0	0
+     contig_1	5	0	0	0	2
+     contig_1	6	0	0	2	0
 
   This script simply converts the format so any filtering on base or mapping 
   quality, etc. that you may wish to do should be done when generating the pileup.
@@ -113,26 +115,27 @@ sub print_usage_and_exit($) {
 }
 
 GetOptions(
-    "" => \$stdio, 
-    "in=s" => \$in_file,
-    "out=s" => \$out_file,
+    ""            => \$o_stdio, 
+    "in=s"        => \$in_file,
+    "out=s"       => \$out_file,
     "which-bam=s" => \$which_bams,
-    "quiet" => \$quiet,
-    "help|?" => \$help,
+    "N"           => \$o_N,
+    "quiet"       => \$o_quiet,
+    "help|?"      => \$o_help,
 ) or print_usage_and_exit("");
 
-print_usage_and_exit("") if $help;
+print_usage_and_exit("") if $o_help;
 
 @which_bams = sort split(/,/, $which_bams) if $which_bams;
 
-if ($stdio or ! (defined($in_file) or $ARGV[0])) {
+if ($o_stdio or ! (defined($in_file) or $ARGV[0])) {
     *IN = *STDIN;
 } else {
     $in_file = $ARGV[0] if ! $in_file;
     open (IN, "<$in_file") or die "Cannot open $in_file: $!";
 }
 
-if ($stdio or ! defined($out_file)) {
+if ($o_stdio or ! defined($out_file)) {
     *OUT = *STDOUT;
 } else {
     open (OUT, ">$out_file") or die "Cannot open $out_file: $!";
@@ -169,7 +172,7 @@ while (<IN>) {
     use constant SNPs_zeroes => ('A' => 0, 'C' => 0, 'G' => 0, 'T' => 0, 'N' => 0);
     my %SNPs = SNPs_zeroes;
     if ($fields[ 2 ] eq "*") {
-        print OUT $fields[0] . "\t" . $fields[1] . "\t-1\t-1\t-1\t-1\t-1\n";
+        print OUT $fields[0] . "\t" . $fields[1] . "\t-1\t-1\t-1\t-1".($o_N ? "\t-1" :"")."\n";
         #next; # skip indel lines
     }
 
@@ -199,9 +202,9 @@ while (<IN>) {
     } 
 
     print OUT $fields[0] . "\t" . $fields[1] . "\t" .
-              $SNPs{A} . "\t" . $SNPs{C} . "\t" . $SNPs{G} . "\t" .  $SNPs{T} . "\t" . $SNPs{N} . "\n";
+              $SNPs{A} . "\t" . $SNPs{C} . "\t" . $SNPs{G} . "\t" .  $SNPs{T} . ($o_N ? ("\t".$SNPs{N}) : "") . "\n";
 
-    print STDERR "seen $N_coordinates positions across $N_references reference sequences\n" if ! ($N_coordinates % 10000) and ! $quiet;
+    print STDERR "seen $N_coordinates positions across $N_references reference sequences\n" if ! ($N_coordinates % 10000) and ! $o_quiet;
 }
 
 close IN;
