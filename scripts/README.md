@@ -764,16 +764,19 @@ deshuffleFastq.pl  FB.i.fq.gz FB.1.fq.gz FB.2.fq.gz
 cat FC.i.fq | deshuffleFastq.pl - FC.1.fq.gz FC.2.fq.gz
 ````
 
-etc.  `deshuffleFastq.pl` has a couple other options for filtering reads based
+`shuffleFastq.pl` has a `--subset` option for specifying the maximum number of reads
+to take from the beginning of the files.
+
+`deshuffleFastq.pl` has a couple other options for filtering reads based
 on minimum read length:
 
 ````bash
-deshuffleFastq.pl -minlen 30 -single FD.se.fq.gz FD.i.fq.gz FD.1.fq.gz FD.2.fq.gz
+deshuffleFastq.pl --minlen 30 --single FD.se.fq.gz FD.i.fq.gz FD.1.fq.gz FD.2.fq.gz
 ````
   
 This will only include read pairs in the output where both reads are at least
 30bp long.  Any read that meets this criterion but has a mate that does not is
-written to `FD.se.fq.gz`.  If the `-single` option is not specified, such reads are
+written to `FD.se.fq.gz`.  If the `--single` option is not specified, such reads are
 dropped along with their mates.
 
 These were originally built on the the `shuffleSequences_fastq.pl` and
