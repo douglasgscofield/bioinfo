@@ -688,6 +688,63 @@ samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns mpileup_s=1 > m
 
 
 
+extractFasta
+------------
+
+Extract named FASTA sequences quickly after creating a BioPerl FASTA database
+
+SYNOPSIS
+
+    extractFasta -n seqname2 -n seqname2 -i fasta.fa -o subset.fa
+    extractFasta -fn file-of-seqnames -i fasta.fa -o subset.fa
+    extractFasta -fn file-of-seqnames -i fasta.fa > subset.fa
+
+Names must be given one per line in the names file.  Names of sequences
+in the FASTA file are any characters after the initial '>' character in
+the header of a FASTA sequence, followed by whitespace or an end of line,
+and must be matched in their entirety.
+
+OPTIONS
+
+    -n NAME      name of FASTA sequence to extract (may be used multiple times)
+    -fn FILE     file of FASTA sequence names, one per line
+    -i FILE      input FASTA sequences
+    -o FILE      output FASTA sequences (written to STDOUT if not specified)
+    -I           do not remove intermediate index file created
+    -?, --help   help message
+
+
+
+extractFasta.pl
+---------------
+
+Extract a sequence or subsequence from a Blast database
+
+USAGE: ./extractFasta.pl --db database --entry fasta-sequence-name [ --range L-R ]
+
+First build the blast database using
+
+    makeblastdb -parse_seqids -in sequence.fa -dbtype nucl|prot
+
+with -dbtype dependent upon your input data.
+
+Then you can extract the (sub)sequence of interest.  This is printed
+to stdout in Fasta format.  If a subsequence is requested, the range
+of the subsequence is added to the sequence identifier in the output.
+
+OPTIONS:
+
+    --db blast-db       The same name you would give to blastdbcmd,
+                        which is exactly what this script does
+
+    --entry sequence    Name of the sequence to extract from blast-db
+
+    --range LOW-HIGH    1-based positions of a subsequence to extract
+                        from the sequence, once it is found.
+
+
+
+
 extractFastaSeqs.pl
 -------------------
 

@@ -1,0 +1,103 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Bio::DB::Fasta;
+use Bio::SeqIO;
+
+my $o_remove_index = 1;
+my $o_i;
+my $o_o;
+my $o_fn;
+my $o_help;
+my @o_seqnames;
+
+my $usage = "
+NAME
+
+    extractFasta - extract named FASTA sequences quickly after creating a BioPerl FASTA database
+
+SYNOPSIS
+
+    extractFasta -n seqname2 -n seqname2 -i fasta.fa -o subset.fa
+    extractFasta -fn file-of-seqnames -i fasta.fa -o subset.fa
+    extractFasta -fn file-of-seqnames -i fasta.fa > subset.fa
+
+    Names must be given one per line in the names file.  Names of sequences 
+    in the FASTA file are any characters after the initial '>' character in 
+    the header of a FASTA sequence, followed by whitespace or an end of line,
+    and must be matched in their entirety.
+
+OPTIONS
+
+    -n NAME      name of FASTA sequence to extract (may be used multiple times)
+    -fn FILE     file of FASTA sequence names, one per line
+    -i FILE      input FASTA sequences
+    -o FILE      output FASTA sequences (written to STDOUT if not specified)
+    -I           do not remove intermediate index file created
+    -?, --help   help message
+
+";
+
+sub print_usage_and_exit($) {
+    my $code = shift;
+    print $usage;
+    exit $code;
+}
+
+print_usage_and_exit(1) if ! defined($ARGV[0]);
+
+GetOptions(
+    "i=s" => \$o_i,
+    "o=s" => \$o_o,
+    "fn=s" => \$o_fn,
+    "n=s" => \@o_seqnames,
+    "I"   => sub { $o_remove_index = 0 },
+    "help|?" => \$o_help,
+) or print_usage_and_exit(1);
+
+die $usage if $o_help or not $o_i or (not @o_seqnames and not $o_fn);
+
+if ($o_fn) {  # simply add contents to @o_seqnames to allow for earlier -n NAME
+    open (my $fn, "<", $o_fn) or die "could not open -fn file '$o_fn': $!";
+    while (<$fn>) {
+        chomp;
+        push @o_seqnames, $_;
+    }
+    $fn->close;
+}
+
+print_usage_and_exit(0) if $o_help;
+
+
+print STDERR "Creating/loading index for $o_i ...";
+my $DB = Bio::DB::Fasta->new($o_i);
+print STDERR "done\n";
+
+my $OUT;
+if ($o_o) {
+    $OUT = Bio::SeqIO->new(-filename => ">$o_i", -format => 'fasta');
+} else {
+    $OUT = Bio::SeqIO->new(-fh => \*STDOUT, -format => 'fasta');
+}
+
+foreach my $s (@o_seqnames) {
+    my $seq = $DB->get_Seq_by_id($s);
+    if (not $seq) {
+        print STDERR "$s not found in $o_i, skipping\n";
+    } else {
+        $OUT->write_seq($seq);
+    }
+}
+
+
+$DB->close;
+$OUT->close;
+
+if ($o_remove_index) {
+    my $idx = "${o_i}.index";
+    unlink $idx or die "could not remove index '$idx': $!";
+}
+
