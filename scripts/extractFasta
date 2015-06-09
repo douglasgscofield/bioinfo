@@ -7,7 +7,7 @@ use Getopt::Long;
 use Bio::DB::Fasta;
 use Bio::SeqIO;
 
-my $o_remove_index = 1;
+my $o_delete_index = 1;
 my $o_i;
 my $o_o;
 my $o_fn;
@@ -36,27 +36,19 @@ OPTIONS
     -fn FILE     file of FASTA sequence names, one per line
     -i FILE      input FASTA sequences
     -o FILE      output FASTA sequences (written to STDOUT if not specified)
-    -I           do not remove intermediate index file created
+    -d           do not delete intermediate index file created
     -?, --help   help message
 
 ";
-
-sub print_usage_and_exit($) {
-    my $code = shift;
-    print $usage;
-    exit $code;
-}
-
-print_usage_and_exit(1) if ! defined($ARGV[0]);
 
 GetOptions(
     "i=s" => \$o_i,
     "o=s" => \$o_o,
     "fn=s" => \$o_fn,
     "n=s" => \@o_seqnames,
-    "I"   => sub { $o_remove_index = 0 },
+    "d"   => sub { $o_delete_index = 0 },
     "help|?" => \$o_help,
-) or print_usage_and_exit(1);
+) or die $usage;
 
 die $usage if $o_help or not $o_i or (not @o_seqnames and not $o_fn);
 
@@ -96,8 +88,8 @@ foreach my $s (@o_seqnames) {
 $DB->close;
 $OUT->close;
 
-if ($o_remove_index) {
+if ($o_delete_index) {
     my $idx = "${o_i}.index";
-    unlink $idx or die "could not remove index '$idx': $!";
+    unlink $idx or die "could not delete index '$idx': $!";
 }
 
