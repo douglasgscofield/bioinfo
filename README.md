@@ -57,10 +57,13 @@ reads `samtools mpileup` format and produces a profile file suitable for input t
 merges columns from each BAM in multi-BAM `samtools mpileup` output into single columns.
 
 **extractFastaSeqs.pl**
-extracts named sequences from a FASTA file, or everything but.
+extracts named sequences from a FASTA file, or everything but.  Does not use BioPerl.
 
 **extractFasta.pl**
-extracts named FASTA sequences from a `makeblastdb -parse_seqids`-built blast database, and optionally provide a range for a subsequence.
+extracts named FASTA sequences from a `makeblastdb -parse_seqids`-built blast database, and optionally provide a range for a subsequence.  Uses BioPerl.
+
+**extractFasta**
+extracts named FASTA sequences from a FASTA file indexed with BioPerl's `Bio::DB::Fasta`
 
 **trimFastq.pl**
 hard-trims a given amount from the 5' or 3' end (or both) from each read in a FastQ-format file, and optionally trims each read from the 3' end to a maximum length.
