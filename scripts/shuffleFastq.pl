@@ -20,8 +20,8 @@ each files can be FastQ or gzipped FastQ (*.gz) format
 ";
 
 GetOptions("subset=i" => \$subset,
-           ""         => \$stdin)
-or { die "$usage" };
+           ""         => \$stdout)
+or die "$usage";
 
 die "$usage" if !$ARGV[0] and !$ARGV[1];
 
