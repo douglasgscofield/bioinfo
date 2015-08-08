@@ -7,7 +7,7 @@ use Bio::DB::Fasta;
 use Bio::SeqIO;
 use Sort::Naturally;  # provides nsort
 
-my $remove_index = 1;
+my $remove_index = 0;
 
 my $f = shift @ARGV;
 

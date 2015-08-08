@@ -6,7 +6,7 @@ These have been useful to me, I hope they can be useful to you!
 fastaSort, gffSort
 ------------------
 
-`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates and then removes an index file for the Fasta file.  If you would like to keep this index after it is created, set `$remove_index` to 0 within the script.
+`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates an index file for the Fasta file.  If you would like to remove this index after it is created, set `$remove_index` to 1 within the script.
 
 `gffSort`: Sort GFF file by sequence name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output.
 
