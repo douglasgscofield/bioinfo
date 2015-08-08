@@ -657,19 +657,26 @@ no longer match the coverage:
     ref1  1  A  7  ..,,*,CC  ffif*gcd     <== incorrect merge
     ref1  1  A  7  ..,,,CC   ffifgcd      <== correct merge
 
-An additional wrinkle is introduced by an odd quirk in `samtools mpileup -s` output.
-If a BAM provides no coverage at a position, its output does not include the
-mapping quality column.  Merging output from `samtools mpileup -s`:
+Before samtools 1.0, an additional wrinkle wass introduced by an odd quirk in
+`samtools mpileup -s` output.  If a BAM provides no coverage at a position, its
+output does not include the mapping quality column.  Merging output from
+`samtools mpileup -s`:
 
     ref1  1  A  4  ..,,  ffif  ]]]2  0  *  *  3  ,CC  gcd  +FF    <== missing column
     
     ref1  1  A  7  ..,,,CC   ffifgcd  ]]]2+FF                     <== correct merge
 
-Yet another wrinkle occurs if there is coverage at this site, but it has all been
-removed as a result of options to `samtools mpileup`, such as `--rf` to remove some
-reads based on SAM flag values.  In these cases, coverage is 0, but there are *four*
-columns of rather confused-looking output with empty base and quality
-columns and quality characters in the mapping quality column.
+Starting with samtools 1.0, a fourth asterisk is output as expected.  The
+script checks for '*' in a fourth column and skips four columns if it is there
+(samtools 1.0+), and skips three columns if it is not (samtools < 1.0).
+
+Yet another wrinkle occurs if there is coverage at this site, but it has all
+been removed as a result of options to `samtools mpileup`, such as `--rf` to
+remove some reads based on SAM flag values.  In these cases, coverage is 0, but
+there are *four* columns of rather confused-looking output with empty base and
+quality columns and quality characters in the mapping quality column.  This
+apparently will be fixed at some point
+(<http://seqanswers.com/forums/showthread.php?t=61759>).
 
 
 ### Usage

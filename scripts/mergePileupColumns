@@ -9,6 +9,9 @@
 # samtools mpileup command line.  Correctly handles 0-coverage BAMs.  See 
 # https://github.com/douglasgscofield/bioinfo/tree/master/scripts#mergepileupcolumnsawk
 #
+# The below issue is fixed in samtools 1.0+, so check to see if the 4th column also
+# has '*'.
+#
 # Note that use of samtools mpileup flags --rf or --ff may result in 0-coverage
 # columns in mpileup output that might have 4 rather than always 3 columns.
 # The always-3-column output has '*' for both the 2nd and 3rd columns.
@@ -41,8 +44,12 @@ BEGIN {
                 i += 3;
             }
         } else if ($(i) == 0 && $(i+1) == "*" && $(i+2) == "*") {
-            # no coverage at all, always 3 columns to the right: 0 * *
-            i += 3;
+            if ($($i+3) == "*") {
+                i += 4;
+            } else {
+                # pre-samtools 1.0, with no coverage at all, always 3 columns to the right: 0 * *
+                i += 3;
+            }
         } else {
             # no coverage because of filtering
             if (mpileup_s) {
