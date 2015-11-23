@@ -8,3 +8,6 @@ There is a `sites` argument that allows tracks of sites (e.g., SNP locations/fre
 `plotGFF()` requires the BioConductor packages `rtracklayer`, `IRanges` and `Biostrings`.
 
 `plotGFF()` is a simple script and was not designed to be particularly robust nor to be used for large (greater than a few hundred kbp) genomes.  For a much more sophisticated plot, see e.g. gff2ps (<http://genome.crg.es/software/gfftools/GFF2PS.html>).
+
+![](plotGFF-example.png)
+
