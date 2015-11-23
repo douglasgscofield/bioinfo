@@ -1,0 +1,6 @@
+code	color
+A	"red"
+B	"orange"
+C	"yellow"
+D	"green"
+E	"blue"
