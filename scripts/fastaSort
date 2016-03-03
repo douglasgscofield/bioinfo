@@ -9,6 +9,16 @@ use Sort::Naturally;  # provides nsort
 
 my $remove_index = 0;
 
+if (! scalar(@ARGV)) {
+    print STDERR "USAGE:  $0  file.fa  >  output.fa\n";
+    print STDERR "\n";
+    print STDERR "Sorts file.fa according to natural sort on scaffold names and writes output\n";
+    print STDERR "to stdout.  Leaves file.fa.index in place (created by Bio::DB::Fasta).\n";
+    print STDERR "\n";
+    exit 1;
+}
+
+
 my $f = shift @ARGV;
 
 my $db = Bio::DB::Fasta->new($f);
