@@ -20,6 +20,11 @@ Plot simple schematic of annotation features described in a GFF file.
 Plot spatially-distributed pie charts.
 
 
+### [R-scripts](https://github.com/douglasgscofield/bioinfo/tree/master/R-scripts)
+
+A handful of bioinformatics scripts in R.
+
+
 ### [scripts](https://github.com/douglasgscofield/bioinfo/tree/master/scripts)
 
 A handful of bioinformatics scripts:
