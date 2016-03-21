@@ -3,6 +3,32 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fillBed
+-------
+
+Perl script to fill BED intervals of Fasta sequences with a given single-character sequence.  Especially useful for converting BED intervals to `N`.  The case of the substituted sequence is conserved by default, so an interval containing `TTatccgC` would be substituted (using `-s N`) as `NNnnnnnN`.  Requires BioPerl.
+
+```
+SYNOPSIS
+
+    fillBed -i input.fa -b to_be_filled.bed -s N -p -o output.fa
+
+This script does no validation of the sequence provided with -s, but BioPerl
+will do simple validation of the alphabet when updating the modified sequence.
+
+OPTIONS
+
+    -i FILE      input FASTA sequences (read from STDIN if not specified)
+    -o FILE      output FASTA sequences (written to STDOUT if not specified)
+    -b FILE      BED-format file containing intervals
+    -s CHAR      single character to fill intervals
+    -p           preserve case of replaced characters [default 1]
+    -P           DO NOT preserve case of replaced characters
+    -?, --help   help message
+
+```
+
+
 fastaSort, gffSort
 ------------------
 

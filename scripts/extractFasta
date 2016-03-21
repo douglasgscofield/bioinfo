@@ -42,11 +42,11 @@ OPTIONS
 ";
 
 GetOptions(
-    "i=s" => \$o_i,
-    "o=s" => \$o_o,
-    "fn=s" => \$o_fn,
-    "n=s" => \@o_seqnames,
-    "d"   => \$o_delete_index,
+    "i=s"    => \$o_i,
+    "o=s"    => \$o_o,
+    "fn=s"   => \$o_fn,
+    "n=s"    => \@o_seqnames,
+    "d"      => \$o_delete_index,
     "help|?" => \$o_help,
 ) or die $usage;
 
@@ -68,12 +68,8 @@ print STDERR "Creating/loading index for $o_i ...";
 my $DB = Bio::DB::Fasta->new($o_i);
 print STDERR "done\n";
 
-my $OUT;
-if ($o_o) {
-    $OUT = Bio::SeqIO->new(-filename => ">$o_i", -format => 'fasta');
-} else {
-    $OUT = Bio::SeqIO->new(-fh => \*STDOUT, -format => 'fasta');
-}
+my $OUT = ($o_o) ? Bio::SeqIO->new(-file => ">$o_i",   -format => 'fasta')
+                 : Bio::SeqIO->new(-fh   => \*STDOUT,  -format => 'fasta');
 
 foreach my $s (@o_seqnames) {
     my $seq = $DB->get_Seq_by_id($s);

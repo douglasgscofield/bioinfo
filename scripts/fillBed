@@ -1,0 +1,104 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Long qw(:config no_ignore_case);
+use Bio::Seq;
+use Bio::SeqIO;
+
+my $o_i;
+my $o_o;
+my $o_b;
+my $o_s;
+my $o_p = 1;
+my $o_help;
+my $debug = 0;
+
+my $usage = "
+NAME
+
+    fillBed - fill BED intervals of Fasta sequences with single-character sequence
+
+SYNOPSIS
+
+    fillBed -i input.fa -b to_be_filled.bed -s N -p -o output.fa
+
+This script does no validation of the sequence provided with -s, but BioPerl
+will do simple validation of the alphabet when updating the modified sequence.
+
+OPTIONS
+
+    -i FILE      input FASTA sequences (read from STDIN if not specified)
+    -o FILE      output FASTA sequences (written to STDOUT if not specified)
+    -b FILE      BED-format file containing intervals
+    -s CHAR      single character to fill intervals
+    -p           preserve case of replaced characters [default $o_p]
+    -P           DO NOT preserve case of replaced characters
+    -?, --help   help message
+
+";
+
+GetOptions(
+    "i=s"     => \$o_i,
+    "o=s"     => \$o_o,
+    "b=s"     => \$o_b,
+    "s=s"     => \$o_s,
+    "p"       => \$o_p,
+    "P"       => sub { $o_p = 0 },
+    "help|?"  => \$o_help,
+    "debug:1" => \$debug,
+) or die $usage;
+
+die $usage if $o_help or not $o_b or not $o_s or length($o_s) != 1;
+
+print STDERR ($o_p ? "preserving case from interval\n" : "using $o_s as-is\n") if $debug;
+
+my $IN  = ($o_i) ? Bio::SeqIO->new( -file => "<$o_i", -format => 'fasta' )
+                 : Bio::SeqIO->new( -fh   => \*STDIN, -format => 'fasta' );
+
+# read BED
+my %BED;
+open (my $BED, "<", $o_b) or die "could not open BED file '$o_b': $!";
+while (<$BED>) {
+    next if /^(#|browser|track)/;  # https://genome.ucsc.edu/FAQ/FAQformat.html#format1
+    chomp;
+    my @l = split(/\t/, $_, 4);
+    if ($l[2] - $l[1] < 1) { print STDERR "$o_b: skipping invalid interval at $.\n"; next; }
+    push @{ $BED{$l[0]} }, [ $l[1], $l[2] ];
+}
+$BED->close;
+
+my $OUT = ($o_o) ? Bio::SeqIO->new( -file => ">$o_o",  -format => 'fasta' )
+                 : Bio::SeqIO->new( -fh   => \*STDOUT, -format => 'fasta' );
+
+my $us = uc $o_s;
+my $ls = lc $o_s;
+
+while (my $seq = $IN->next_seq()) {
+    my $seqname = $seq->display_id;
+    my $k = $BED{$seqname};
+    if (defined $k) {
+        print STDERR "found intervals for sequence $seqname\n" if $debug;
+        # an alternative is modifying the seq in-place via direct ref:
+        # my $newseqref = \$seq->primary_seq->{'seq'};
+        my $newseq = $seq->seq;
+        foreach my $i (@{$k}) {  # foreach BED interval
+            print STDERR "interval  $seqname  $i->[0]  $i->[1]  ".
+                         substr($newseq, $i->[0], $i->[1] - $i->[0])."\n" if $debug;
+            for my $ic ($i->[0] .. ($i->[1] - 1)) {
+                if ($o_p) { # preserve case
+                    substr($newseq, $ic, 1) = (substr($newseq, $ic, 1) =~ /[[:upper:]]/) ? $us : $ls;
+                } else {  # just substitute the character as given
+                    substr($newseq, $ic, 1) = $o_s;
+                }
+            }
+            print STDERR "  filled  $seqname  $i->[0]  $i->[1]  ".
+                         substr($newseq, $i->[0], $i->[1] - $i->[0])."\n" if $debug;
+        }
+        $seq->seq($newseq);
+    }
+    $OUT->write_seq($seq);
+}
+
+
