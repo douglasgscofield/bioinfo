@@ -82,7 +82,10 @@ extracts named FASTA sequences from a FASTA file indexed with BioPerl's `Bio::DB
 hard-trims a given amount from the 5' or 3' end (or both) from each read in a FastQ-format file, and optionally trims each read from the 3' end to a maximum length.
 
 **shuffleFastq.pl** and **deshuffleFastq.pl**
-convert FastQ-format files from separate read 1/read 2 files to interleaved and back.  These are based on similar scripts provided with [velvet][].
+convert FastQ-format files from separate read 1/read 2 files to interleaved and back, with some other handy options.
+
+**compress_md5.sh**
+compress standard input to a given file while simultaneously computing MD5 checksum for the uncompressed data; useful alone or with the shuffle routines above
 
 **fastaGC.pl**
 analyses GC content of Fasta-format sequences a few different ways.

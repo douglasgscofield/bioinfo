@@ -7,6 +7,7 @@ use Getopt::Long;
 
 my $o_minlen = 0;
 my $o_single = "";
+my $o_simplify = 0;
 my $o_stdin = 0;
 my $o_md5 = 0;
 my $compress_md5 = "compress_md5.sh";
@@ -23,6 +24,8 @@ are undefined.
                  are dropped if one is too short [default: $o_minlen]
   --single FILE  Store reads which meet the --minlen criterion but have a mate
                  that did not meet it into this file
+  --simplify     Output a single '+' for each third FastQ line in all outfiles,
+                 removing any redundant (and wasteful) copy of the read name
   --md5          Calculate md5 checksums for the uncompressed FastQ stream for
                  each of the outfiles, saved to outfile.md5 after any .gz or .bz2
                  extension is removed.  This requires the $compress_md5 script
@@ -34,6 +37,7 @@ are undefined.
 
 GetOptions("minlen=i" => \$o_minlen, 
            "single=s" => \$o_single,
+           "simplify" => \$o_simplify,
            "md5"      => \$o_md5,
            ""         => \$o_stdin) or die "$usage";
 
@@ -93,10 +97,10 @@ sub file_open {
     return $fd;
 }
 
-my $INFILE  = file_open($filenameIn, "<");
-my $FILE1   = file_open($filename1,  ">", $o_md5);
-my $FILE2   = file_open($filename2,  ">", $o_md5);
-my $SINGLE  = file_open($o_single,   ">", $o_md5) if $o_single;
+my $INFILE   = file_open($filenameIn, "<");
+my $OUTFILE1 = file_open($filename1,  ">", $o_md5);
+my $OUTFILE2 = file_open($filename2,  ">", $o_md5);
+my $SINGLE   = file_open($o_single,   ">", $o_md5) if $o_single;
 
 while(<$INFILE>) {
     my $f1l1 = $_;
@@ -109,30 +113,26 @@ while(<$INFILE>) {
     my $f2l3 = <$INFILE>;
     my $f2l4 = <$INFILE>;
 
+    $f1l3 = $f2l3 = "+\n" if $o_simplify;
+
     if ($o_minlen) {
         my $s1 = $f1l2;  # read 1 sequence
         chomp $s1;
         my $s2 = $f2l2;  # read 2 sequence
         chomp $s2;
         if (length($s1) >= $o_minlen && length($s2) >= $o_minlen) {
-            print $FILE1 $f1l1, $f1l2, $f1l3, $f1l4;
-            print $FILE2 $f2l1, $f2l2, $f2l3, $f2l4;
-            #print $FILE1 $f1l1; print $FILE1 $f1l2; print $FILE1 $f1l3; print $FILE1 $f1l4;
-            #print $FILE2 $f2l1; print $FILE2 $f2l2; print $FILE2 $f2l3; print $FILE2 $f2l4;
+            print $OUTFILE1 $f1l1, $f1l2, $f1l3, $f1l4;
+            print $OUTFILE2 $f2l1, $f2l2, $f2l3, $f2l4;
         } elsif ($o_single) {
             if (length($s1) >= $o_minlen) {
                 print $SINGLE $f1l1, $f1l2, $f1l3, $f1l4;
-                #print $SINGLE $f1l1; print $SINGLE $f1l2; print $SINGLE $f1l3; print $SINGLE $f1l4;
             } elsif (length($s2) >= $o_minlen) {
                 print $SINGLE $f2l1, $f2l2, $f2l3, $f2l4;
-                #print $SINGLE $f2l1; print $SINGLE $f2l2; print $SINGLE $f2l3; print $SINGLE $f2l4;
             }
         }
     } else {
-        print $FILE1 $f1l1, $f1l2, $f1l3, $f1l4;
-        print $FILE2 $f2l1, $f2l2, $f2l3, $f2l4;
-        #print $FILE1 $f1l1; print $FILE1 $f1l2; print $FILE1 $f1l3; print $FILE1 $f1l4;
-        #print $FILE2 $f2l1; print $FILE2 $f2l2; print $FILE2 $f2l3; print $FILE2 $f2l4;
+        print $OUTFILE1 $f1l1, $f1l2, $f1l3, $f1l4;
+        print $OUTFILE2 $f2l1, $f2l2, $f2l3, $f2l4;
     }
 }
 

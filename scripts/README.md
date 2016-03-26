@@ -256,13 +256,13 @@ TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAA
 
 becomes this:
 
-````
+```
 >26417937:25351227_0 length:191;n_reads:83;median_coverage:44
 TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTAT
 ATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTA
 AACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCC
 TGCATGTAGAA
-````
+```
 
 [MAG-format input](https://github.com/lh3/fermi/blob/master/fermi.1) presents different fields in the read name line.  In MAG, the
 second field is the number of non-redundant reads, and the following two fields
@@ -283,23 +283,23 @@ TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTCGAAATTGCATGGGATTTGAT
 
 Output with `--mag` is
 
-````
+```
 >9012595342:2229517731 length:229;n_reads:13;median_coverage:6
 TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTC
 GAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTT
 AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
 CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
-````
+```
 
 Output with `--mag-verbose` includes the lists of left and right neighbours:
 
-````
+```
 >9012595342:2229517731 length:229;n_reads:13;median_coverage:6 355005708,77;958384802,76; 2817374678,67;3657728097,60;7691722363,68;9232081066,69;
 TGTTTTATTAATAAAATATCTCTCTAACTTGTTTATTTCTGACCTGTTTCAGGTGAATTC
 GAAATTGCATGGGATTTGATGGATAGTTTAGAGGATATTTGGATGATTTATTTTCATTTT
 AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
 CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
-````
+```
 
 This script required BioPerl 1.6.1 to compose and write the Fasta-format output.
 
@@ -312,19 +312,19 @@ Extract Fasta-format contigs from a
 [fermi](https://github.com/lh3/fermi)-format `*.fq.gz` FastQ-like scaftig
 files.  Does not use Perl.  Writes Fasta to `stdout`, with each sequence given its fermi sequence name and a description that includes sequence length and number of non-redundant reads that built the scaftig.  So this:
 
-````
+```
 @26417937:25351227_0	191	83
 TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
 +
 "#$%%&'((()**+,-../0123456789:;<=>?@ABCDEFGHIJKLLMNOPQRSTUVWXYZ[\]^_`abcdeffghijklmnoopqrstttttttttttsrqpponmmmlkkjihggfedcba`_^]\[ZYXWVUTSRQPONMLKJIIHGFEDCBA@?>=<;:9876543210//.-,+*)('&&%$#"
-````
+```
 
 Becomes this:
 
-````
+```
 >26417937:25351227_0 length:191,n_reads:83
 TTTCTATTCTAAACCACCGTATATATGTAATTTCTATTCTAAACTAACCTGTGTCCGTATATATGTAATTTCTATTCTAAACTACCTGTGTGAAGAAGCCCTACGTTTCTTTCTATTCTAAACTACCGTATTTCCTTACGTTTTTTTCTATTCTTTTCCACTCAAAATGGCCGACACTCCTGCATGTAGAA
-````
+```
 
 **Differences from `fermiExtractContigs.pl`**: In the interests of speed and simplicity, this script does no wrapping of the fermi-generated sequences, likewise it does not include median coverage along the entire length of the sequence, nor can it extract the proper fields from fermi's MAG-format headers.  If these limitations are not suitable for your task, consider using the `fermiExtractContigs.pl` script above.
 
@@ -388,9 +388,9 @@ near-distance correlation within the input, this policy should be fine.
 As this is an `awk` script, options may easily be set using a 
 `parameter=value` syntax on the command line, for example:
 
-````bash
+```bash
 windowWig windowsize=100 header=0 < input.dat | ...
-````
+```
 
 Shown are commonly used parameters and their default values; check the `BEGIN`
 section of the script for additional values that may be changed.
@@ -514,9 +514,9 @@ samtools mpileup -sAB -d1000 -q0 -f ref.fa your.bam \
 As this is an `awk` script, options may easily be set using a 
 `parameter=value` syntax on the command line, for example:
 
-````bash
+```bash
 intervalBed grace=50 min_width=50 header=0 < input.dat | ...
-````
+```
 
 Shown are commonly used parameters and their default values; check the `BEGIN`
 section of the script for additional values that may be changed.
@@ -563,19 +563,19 @@ sequence included in each BED file, etc.  Options may be combined.
 
 Say you want to call SNPs in contigs &ge; 1 kbp:
 
-````bash
+```bash
 samtools view -H your.bam | samHeader2Bed.pl --min-length 1000 - > min1000.bed
 samtools mpileup -l min1000.bed -u -f ref.fa your.bam | bcftools view ...
-````
+```
 
 Or you want to gather pileups for successive ~10 Mbp chunks of contigs:
 
-````bash
+```bash
 samtools view -H your.bam | samHeader2Bed.pl -o chunk --chunk-size 10000000 -
 for BED in chunk.*.bed ; do
    samtools mpileup -l $BED -u -f ref.fa your.bam | gzip -c > $BED.mpileup.gz
 done
-`````
+```
 
 **OPTIONS**
 
@@ -619,9 +619,9 @@ are enumerated.  This script simply converts the format, so any filtering on
 base/mapping quality, etc. that you may wish to do should be done when
 generating the pileup.
 
-````bash
+```bash
 samtools mpileup -B -q1 -f ref.fa your.bam | pileup2pro.pl > mlRho-input.txt
-````
+```
 
 mlRho (<http://guanine.evolbio.mpg.de/mlRho>) estimates population genetic
 parameters from NGS data sequenced from a diploid genome.  See references below.
@@ -719,17 +719,17 @@ apparently will be fixed at some point
 
 ### Usage
 
-````bash
+```bash
 samtools mpileup -f ref.fa y1.bam y2.bam | mergePileupColumns > merged.pile
-````
+```
 
 If the `-s` option was used for `samtools mpileup`, then set the `mpileup_s` variable
 on the command line:
 
 
-````bash
+```bash
 samtools mpileup -s -f ref.fa y1.bam y2.bam | mergePileupColumns mpileup_s=1 > merged.pile
-````
+```
 
 
 
@@ -803,12 +803,12 @@ extract sequences that *do not match* any of the names.
 
 All of these usages are equivalent:
 
-````bash
+```bash
 extractFastaSeqs.pl --names subset-names.txt --in full.fa --out subset.fa
 extractFastaSeqs.pl -n subset-names.txt -i full.fa - > subset.fa
 cat full.fa | extractFastaSeqs.pl -n subset-names.txt - > subset.fa
 extractFastaSeqs.pl subset-names.txt full.fa subset.fa
-`````
+```
 
 **OPTIONS**
 
@@ -828,7 +828,7 @@ extractFastaSeqs.pl subset-names.txt full.fa subset.fa
 
 
 trimFastq.pl
-----------------------------------
+------------
 
 Hard-trim a given number of bases from the 5' or 3' end (or both) from each read
 in a file of FastQ-format reads, optionallly trimming to a maximum length.  Both
@@ -844,9 +844,9 @@ the sequence and quality strings are trimmed (naturally).
                             read is INT
 
 
-````bash
+```bash
 shuffleFastQ.pl r1.fq.gz r2.fq.gz - | trimFastq.pl --trim5 10 --trimlen 80 - | deshuffleFastQ.pl --minlen 50 - r1.trimmed.fq.gz r2.trimmed.fq.gz
-````
+```
 
 
 
@@ -859,13 +859,13 @@ filenames terminate with `.gz` or `.bz2`.  With the '`-`' option,
 `shuffleFastq.pl` will write uncompressed FastQ to `/dev/stdout` and
 `deshuffleFastq.pl` will read uncompressed FastQ from `/dev/stdin`.  With the
 '`--md5`' option, MD5 checksums are also generated for the uncompressed FastQ,
-see below for further requirements for this capability.
+see below for a further requirement for this to work.
 
-````bash
+```bash
 shuffleFastq.pl  FA.1.fq FA.2.fq FA.i.fq.gz
 deshuffleFastq.pl  FB.i.fq.gz FB.1.fq.gz FB.2.fq.gz
 cat FC.i.fq | deshuffleFastq.pl - FC.1.fq.bz2 FC.2.fq.bz2
-````
+```
 
 `shuffleFastq.pl` has a `--subset` option for specifying the maximum number of reads
 to take from the beginning of the files.
@@ -873,23 +873,25 @@ to take from the beginning of the files.
 `deshuffleFastq.pl` has a couple other options for filtering reads based
 on minimum read length:
 
-````bash
+```bash
 deshuffleFastq.pl --minlen 30 --single FD.se.fq.gz FD.i.fq.gz FD.1.fq.gz FD.2.fq.gz
-````
-  
+```
+
 This will only include read pairs in the output where both reads are at least
 30bp long.  Any read that meets this criterion but has a mate that does not is
 written to `FD.se.fq.gz`.  If the `--single` option is not specified, such reads are
 dropped along with their mates.
 
 Each also has a `--md5` option that will calculate MD5 checksums for the
-uncompressed FastQ stream for each outfile, saved to outfile.md5 after any .gz
-or .bz2 extension is removed.  This requires the `compress_md5.sh` script
-(available in this repository) to be in your PATH.
+uncompressed FastQ stream.  For each output file `outfile` (any `.gz` or `.bz2`
+extension is removed), the checksum is saved in `md5sum` format to
+`outfile.md5`; the filename in the checksum file is `outfile` without the
+compression extension.  This requires the `compress_md5.sh` script from this
+repository to be in your `PATH`.
 
 These were originally built on the `shuffleSequences_fastq.pl` and
 `deshuffleSequences_fastq.pl` scripts distributed with
-[velvet](http://www.ebi.ac.uk/~zerbino/velvet), but have been completely
+[velvet](http://www.ebi.ac.uk/~zerbino/velvet) but have been completely
 rewritten.
 
 

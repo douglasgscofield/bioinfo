@@ -5,10 +5,11 @@ use warnings;
 
 use Getopt::Long;
 
-my $o_stdout = 0;
 my $o_subset = 0;
+my $o_simplify = 0;
 my $o_md5 = 0;
 my $compress_md5 = "compress_md5.sh";
+my $o_stdout = 0;
 my $o_verbose = 0;
 my $filename1;
 my $filename2;
@@ -22,6 +23,8 @@ be gzip- or bzip2-compressed, respectively. Results with ill-formed FastQ files
 are undefined.
 
   --subset INT   write INT read pairs, then stop
+  --simplify     Output a single '+' for each third FastQ line in the outfile,
+                 removing any redundant (and wasteful) copy of the read name
   --md5          Calculate md5 checksums for the uncompressed FastQ stream for
                  the outfile, saved to outfile.md5 after any .gz or .bz2
                  extension is removed.  This requires the $compress_md5 script
@@ -32,6 +35,7 @@ are undefined.
 ";
 
 GetOptions("subset=i" => \$o_subset,
+           "simplify" => \$o_simplify,
            "md5"      => \$o_md5,
            ""         => \$o_stdout) or die "$usage";
 die "$usage" if (scalar(@ARGV) != (2 + !$o_stdout)) or ($o_md5 and $o_stdout);
@@ -84,20 +88,24 @@ sub file_open {
     return $fd;
 }
 
-my $FILE1   = file_open($filename1,   "<");
-my $FILE2   = file_open($filename2,   "<");
+my $INFILE1 = file_open($filename1,   "<");
+my $INFILE2 = file_open($filename2,   "<");
 my $OUTFILE = file_open($filenameOut, ">", $o_md5);
 
-while (<$FILE1>) {
+while (<$INFILE1>) {
 	my $f1l1 = $_;
-    my $f1l2 = <$FILE1>;
-    my $f1l3 = <$FILE1>;
-    my $f1l4 = <$FILE1>;
+    my $f1l2 = <$INFILE1>;
+    my $f1l3 = <$INFILE1>;
+    my $f1l4 = <$INFILE1>;
+
+    my $f2l1 = <$INFILE2>;
+    my $f2l2 = <$INFILE2>;
+    my $f2l3 = <$INFILE2>;
+    my $f2l4 = <$INFILE2>;
+
+    $f1l3 = $f2l3 = "+\n" if $o_simplify;
+
     print $OUTFILE $f1l1, $f1l2, $f1l3, $f1l4;
-    my $f2l1 = <$FILE2>;
-    my $f2l2 = <$FILE2>;
-    my $f2l3 = <$FILE2>;
-    my $f2l4 = <$FILE2>;
     print $OUTFILE $f2l1, $f2l2, $f2l3, $f2l4;
 
     if ($o_subset) {
