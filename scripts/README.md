@@ -854,16 +854,17 @@ shuffleFastq.pl, deshuffleFastq.pl
 ----------------------------------
 
 Convert FastQ-format files from separate read 1 and read 2 files to interleaved
-files, and back.  Input is automatically un-gzipped if required with no
-particular filename requirements, and output is gzipped if the filename ends
-with `.gz`.  All the gzipping/ungzipping is done in pipes.  With the '`-`' option,
-`shuffleFastq.pl` will write to `stdout` and `deshuffleFastq.pl` will read from
-`stdin`.
+files, and back.  Input is compressed/decompressed automatically if the
+filenames terminate with `.gz` or `.bz2`.  With the '`-`' option,
+`shuffleFastq.pl` will write uncompressed FastQ to `/dev/stdout` and
+`deshuffleFastq.pl` will read uncompressed FastQ from `/dev/stdin`.  With the
+'`--md5`' option, MD5 checksums are also generated for the uncompressed FastQ,
+see below for further requirements for this capability.
 
 ````bash
 shuffleFastq.pl  FA.1.fq FA.2.fq FA.i.fq.gz
 deshuffleFastq.pl  FB.i.fq.gz FB.1.fq.gz FB.2.fq.gz
-cat FC.i.fq | deshuffleFastq.pl - FC.1.fq.gz FC.2.fq.gz
+cat FC.i.fq | deshuffleFastq.pl - FC.1.fq.bz2 FC.2.fq.bz2
 ````
 
 `shuffleFastq.pl` has a `--subset` option for specifying the maximum number of reads
@@ -881,9 +882,40 @@ This will only include read pairs in the output where both reads are at least
 written to `FD.se.fq.gz`.  If the `--single` option is not specified, such reads are
 dropped along with their mates.
 
-These were originally built on the the `shuffleSequences_fastq.pl` and
+Each also has a `--md5` option that will calculate MD5 checksums for the
+uncompressed FastQ stream for each outfile, saved to outfile.md5 after any .gz
+or .bz2 extension is removed.  This requires the `compress_md5.sh` script
+(available in this repository) to be in your PATH.
+
+These were originally built on the `shuffleSequences_fastq.pl` and
 `deshuffleSequences_fastq.pl` scripts distributed with
-[velvet](http://www.ebi.ac.uk/~zerbino/velvet).
+[velvet](http://www.ebi.ac.uk/~zerbino/velvet), but have been completely
+rewritten.
+
+
+
+compress_md5.sh
+---------------
+
+Usage:
+
+    compress_md5.sh  gz|bz2|none  filename
+
+Saves stdin to filename (optionally compressed) while simultaneously
+computing MD5 checksum on the uncompressed content, saved to filename.md5.
+
+First argument is the compression format: `gz` `bz2` `none`
+Second argument is the output filename without any compression suffix
+
+Output is two files:
+
+`filename` - compressed if requested, with suffix as appropriate
+
+`filename.md5` - `md5sum`-format file with MD5 checksum for uncompressed content of
+the file; the filename present in `filename.md5` is `filename` without any compression
+suffix
+
+
 
 
 fastaGC.pl
