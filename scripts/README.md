@@ -897,41 +897,44 @@ rewritten.
 compress_md5.sh
 ---------------
 
+	USAGE:  $0  gz|bz2|none       filename
+	        $0  gz_self|bz2_self  filename
+	
+	Saves stdin to filename (optionally compressed) while simultaneously
+	computing MD5 checksum on the uncompressed content, saved to filename.md5.
+	
+	First argument is the compression format: gz bz2 none
+	Second argument is the output filename without any compression suffix
+	
+	If the compression format is gz_self or bz2_self, use filename as input
+	instead of stdin, and remove filename if compression is successful.
+	
+	Output is two files:
+	
+	   filename     - compressed if requested, with suffix as appropriate
+	   filename.md5 - md5sum-format file with MD5 checksum for uncompressed
+	                  content of the file; filename present in filename.md5
+	                  is filename without any compression suffix
+
+
+checkFastqCollisions.pl
+-----------------------
+
 Usage:
 
-    compress_md5.sh  gz|bz2|none  filename
-
-Saves stdin to filename (optionally compressed) while simultaneously
-computing MD5 checksum on the uncompressed content, saved to filename.md5.
-
-First argument is the compression format: `gz` `bz2` `none`
-Second argument is the output filename without any compression suffix
-
-Output is two files:
-
-`filename` - compressed if requested, with suffix as appropriate
-
-`filename.md5` - `md5sum`-format file with MD5 checksum for uncompressed content of
-the file; the filename present in `filename.md5` is `filename` without any compression
-suffix
-
-
-check_fastq_collisions.pl
--------------------------
-
-Usage:
-
-    find . -type f -name '*.fastq.gz' | check_fastq_collisions.pl [ -v ]
+    find . -type f -name '*.fastq.gz' | checkFastqCollisions.pl [ -v ] [ -t INT ]
 
 Checks the list of filenames given on STDIN for collisions involving FastQ filenames.  If a collision is detected, a message is printed and the exit code of the script is non-zero.  The `find` tool is not required to have produced the filenames, but using it will avoid inadvertant duplicates on input.
 
-For filenames ending with `.fastq.gz` or `.fastq.bz2`, three types of collisions are detected:
+For filenames ending with any combination of `.fastq` or `.fq` followed by `.gz` or `.bz2` or `.xz`, three types of collisions are detected:
 
 * Identical filenames after all directory information is removed
 * Identical directory/filenames when keeping the final directory before the filename
 * Identical complete filenames specified on input, which should be avoided as it will create both of the above identities
 
 With the `-v` or `--verbose` option, the complete filename of each duplicate is also printed.
+
+With the `-t INT` or `--trimsuffix INT` option, then collisions are also detected after `INT` dot-suffixes are removed from the filename.  Using this option, a collision between `file.fastq.gz` and `file.fastq.bz2` is detected with `-t 1`, and between `file.fastq.gz` and `file.fq.bz2` with `-t 2`.
 
 
 
