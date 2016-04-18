@@ -43,8 +43,7 @@ while (my $path = <>) {
         # split filename by dot, join after removing the last $o_trimsuffix
         my @t = split(/\./, $file);
         if (scalar @t > $o_trimsuffix) {
-            my $i = $o_trimsuffix;
-            pop @t while $i--;
+            pop @t for 1 .. $o_trimsuffix;
             my $filetrim = join('.', @t);
             ++$files_trim{$filetrim};
             push @{$map{$filetrim}}, $path;
