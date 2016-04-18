@@ -8,25 +8,23 @@ fillBed
 
 Perl script to fill BED intervals of Fasta sequences with a given single-character sequence.  Especially useful for converting BED intervals to `N`.  The case of the substituted sequence is conserved by default, so an interval containing `TTatccgC` would be substituted (using `-s N`) as `NNnnnnnN`.  Requires BioPerl.
 
-```
-SYNOPSIS
+    SYNOPSIS
 
-    fillBed -i input.fa -b to_be_filled.bed -s N -p -o output.fa
+        fillBed -i input.fa -b to_be_filled.bed -s N -p -o output.fa
 
-This script does no validation of the sequence provided with -s, but BioPerl
-will do simple validation of the alphabet when updating the modified sequence.
+    This script does no validation of the sequence provided with -s, but BioPerl
+    will do simple validation of the alphabet when updating the modified sequence.
 
-OPTIONS
+    OPTIONS
 
-    -i FILE      input FASTA sequences (read from STDIN if not specified)
-    -o FILE      output FASTA sequences (written to STDOUT if not specified)
-    -b FILE      BED-format file containing intervals
-    -s CHAR      single character to fill intervals
-    -p           preserve case of replaced characters [default 1]
-    -P           DO NOT preserve case of replaced characters
-    -?, --help   help message
+        -i FILE      input FASTA sequences (read from STDIN if not specified)
+        -o FILE      output FASTA sequences (written to STDOUT if not specified)
+        -b FILE      BED-format file containing intervals
+        -s CHAR      single character to fill intervals
+        -p           preserve case of replaced characters [default 1]
+        -P           DO NOT preserve case of replaced characters
+        -?, --help   help message
 
-```
 
 
 fastaSort, gffSort
@@ -135,9 +133,9 @@ To handle paired-end reads in separate files for reads 1 and 2, use this
 script in a pipe like
 
 ```bash
-    shuffleFastq.pl - read1.fq.gz read2.fq.gz \
-    | subsampleReads.pl - -f 0.01 \
-    | deshuffleFastq.pl - sub1.fq.gz sub2.fq.gz
+shuffleFastq.pl - read1.fq.gz read2.fq.gz \
+| subsampleReads.pl - -f 0.01 \
+| deshuffleFastq.pl - sub1.fq.gz sub2.fq.gz
 ```
 
 
@@ -917,6 +915,23 @@ Output is two files:
 the file; the filename present in `filename.md5` is `filename` without any compression
 suffix
 
+
+check_fastq_collisions.pl
+-------------------------
+
+Usage:
+
+    find . -type f -name '*.fastq.gz' | check_fastq_collisions.pl [ -v ]
+
+Checks the list of filenames given on STDIN for collisions involving FastQ filenames.  If a collision is detected, a message is printed and the exit code of the script is non-zero.  The `find` tool is not required to have produced the filenames, but using it will avoid inadvertant duplicates on input.
+
+For filenames ending with `.fastq.gz` or `.fastq.bz2`, three types of collisions are detected:
+
+* Identical filenames after all directory information is removed
+* Identical directory/filenames when keeping the final directory before the filename
+* Identical complete filenames specified on input, which should be avoided as it will create both of the above identities
+
+With the `-v` or `--verbose` option, the complete filename of each duplicate is also printed.
 
 
 
