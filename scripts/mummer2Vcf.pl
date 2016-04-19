@@ -1,5 +1,10 @@
 #!/usr/bin/env perl
 
+# Changelog
+#
+# 2016-04-19: Liangjiao Xue <lxue@uga.edu> caught a bug where the alignment
+#             direction was not honoured when adding indel sequence.  Thanks!
+
 use warnings;
 use strict;
 use Getopt::Long;
@@ -51,6 +56,7 @@ my $o_snpEffect = 0;
 my $o_help = 0;
 my $ref_fasta_io;
 my $ref_fasta_seq;
+my $align_direction = 1;
 
 GetOptions('fasta=s' => \$fasta_file,
            'type=s' => \$o_type,
@@ -145,9 +151,14 @@ while (<>) {
             $indel_query = $line[11];
             $indel_query_start = $line[3];
             $indel_type = $line[1] eq "." ? "INSERTION" : "DELETION";
+            $align_direction = $line[9];
         }
         if ($line[1] eq ".") { # insertion in query
-            $indel .= $line[2];
+            if($align_direction == 1){
+            	 $indel .= $line[2];
+            } else{
+            	 $indel = $line[2].$indel;
+            }
         } elsif ($line[2] eq ".") { # deletion in query
             $indel .= $line[1];
         } else {
