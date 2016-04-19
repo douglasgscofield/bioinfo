@@ -14,6 +14,6 @@ Scaftigs=$1
 # grep out the scaftig names and the following line, which is the sequence
 # convert the scaftig name to fasta-like, and the length and reads to part of the description
 
-zcat -f --stdout $Scaftigs | grep -A 1 '^@' | grep -v '^--$' | sed -e 's/^@/>/g' -e 's/\t\([0-9]*\)\t\([0-9]*\)/ length:\1,reads:\2/g'
+gzip -dc -f "$Scaftigs" | grep -A 1 '^@' | grep -v '^--$' | sed -e 's/^@/>/g' -e 's/\t\([0-9]*\)\t\([0-9]*\)/ length:\1,reads:\2/g'
 
 
