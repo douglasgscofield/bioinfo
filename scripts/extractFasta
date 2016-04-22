@@ -68,7 +68,7 @@ print STDERR "Creating/loading index for $o_i ...";
 my $DB = Bio::DB::Fasta->new($o_i);
 print STDERR "done\n";
 
-my $OUT = ($o_o) ? Bio::SeqIO->new(-file => ">$o_i",   -format => 'fasta')
+my $OUT = ($o_o) ? Bio::SeqIO->new(-file => ">$o_o",   -format => 'fasta')
                  : Bio::SeqIO->new(-fh   => \*STDOUT,  -format => 'fasta');
 
 foreach my $s (@o_seqnames) {
@@ -80,8 +80,6 @@ foreach my $s (@o_seqnames) {
     }
 }
 
-
-$DB->close;
 $OUT->close;
 
 if ($o_delete_index) {
