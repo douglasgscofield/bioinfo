@@ -163,7 +163,7 @@ for the still-in-infancy [`snpEffect()`](https://github.com/douglasgscofield/snp
 The 'VCF' format produced by this script is not actually VCF yet, but I'm working
 on it :-)
 
-This script requires BioPerl 1.6.1.
+This script requires BioPerl.
 
 subsampleReads.pl
 -----------------
@@ -348,7 +348,7 @@ AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
 CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
 ```
 
-This script required BioPerl 1.6.1 to compose and write the Fasta-format output.
+This script required BioPerl to compose and write the Fasta-format output.
 
 
 
