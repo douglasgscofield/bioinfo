@@ -26,9 +26,10 @@ Four files are provided:
    the function `convertHapSNPsToArlequin()`
 3. `example_data.txt`, a very simple data file defining haplotypes for 13
    individuals belonging to 3 populations
-4. `example_output.arp`, in Arlequin project file format, the contents of 
-   which are identical to the output that should be produced by entering
-   within R:
+4. `example_output.arp`, in Arlequin project file format
+
+The contents of `example_output.arp` are identical to the output that should be
+produced by entering within R:
 
     convertHapSNPsToArlequin(infile="example_data.txt")
 
