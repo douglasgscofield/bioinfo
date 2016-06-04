@@ -29,9 +29,17 @@ A handful of bioinformatics scripts in R.
 
 A handful of bioinformatics scripts:
 
-**fastaSort** sorts a file of Fasta sequences by identifier name, naturally, so that `ìd_1` is followed by `id_2`, rather than `id_10`.  Requires BioPerl and the Perl module `Sort::Naturally`.
+**fai2WindowBed**
+ creates evenly-spaced BED intervals along Fasta sequences described by the given Fasta index file.  This is useful for creating BED files to guide sliding-window analyses with other tools.
 
-**gffSort** is a small Bash script that sorts a GFF file first by sequence name in column 1, and then by position numerically in column 4.  It assumes you might have generated this GFF with MAKER, so it removes the `###` lines between gene models if they are present.
+**fillBed**
+ fills BED-specified intervals of Fasta sequences with a given single-character sequence.  Especially useful for converting BED intervals to `N`.  Requires BioPerl.
+
+**fastaSort**
+ sorts a file of Fasta sequences by identifier name, naturally, so that `ìd_1` is followed by `id_2`, rather than `id_10`.  Requires BioPerl and the Perl module `Sort::Naturally`.
+
+**gffSort**
+ is a small Bash script that sorts a GFF file first by sequence name in column 1, and then by position numerically in column 4.  It assumes you might have generated this GFF with MAKER, so it removes the `###` lines between gene models if they are present.
 
 **stacksExtractStats.pl**
 reads a [Stacks][] log file and produce a table summarizing sample-specific statistics.  It currently prints number of RAD-Tags, number of stacks and mean stack coverage, and it is written so that other statistics can easily be harvested from the output.

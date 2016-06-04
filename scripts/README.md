@@ -3,6 +3,55 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fai2WindowBed
+-------------
+
+Perl script to create evenly-spaced BED intervals along Fasta sequences described by the given Fasta index file. A Fasta index file can be produced using '`samtools faidx ...`' and other tools. This is useful for creating BED files to guide sliding-window analyses with other tools, for example '`bedtools intersect`'.  If the `--overlap` option is non-zero, windows will overlap by the given number of bp.
+
+    SYNOPSIS
+
+        scripts/fai2WindowBed.pl --fai file.fa.fai --width 100000 > file.windows100000.bed
+
+    Create BED file of evenly-spaced windows from Fasta index.
+
+    This script creates evenly-spaced windows along sequences described in a Fasta
+    index file ('.fai').  It is useful for creating BED files for sliding window
+    analyses in other tools.
+
+    Window width is set with --width, and window overlap (if any) is set with
+    --overlap.  The BED intervals are named after the sequence and the coordinate
+    of the beginning of the window plus 1 to match the convention in non-BED files,
+    i.e.,
+
+          chr01 \t 0 \t 100000 \t chr01_00000001
+          chr01 \t 100000 \t 200000 \t chr01_00100001
+
+    The last window for each sequence is shortened, if necessary, not to extend
+    beyond the end of the sequence; underwidth windows can be dropped from the
+    output by specifying the --drop-underwidth option.
+
+    The BED file of windows is written to stdout with sequences appearing in their
+    order within the '.fai' file and BED intervals in increasing order of starting
+    coordinate.
+
+    OPTIONS
+
+        --fai FILE         REQUIRED: Fasta index file; this can be created with
+                           'samtools faidx file.fa' and other tools
+        --width INT        Window width [10000]
+        --overlap INT      Window overlap [0]
+        --no-pad           Do not add 0-padding to the digits used to write the
+                           starting coordinate in the interval name; without this,
+                           the number of digits is calculated from the maximum
+                           needed to make all coordinates equal-width in the
+                           intervals across each sequence.
+        --no-add-one       Do not add 1 to the interval name
+        --drop-underwidth  Do not include underwidth windows in the output; this
+                           drops the last window for each sequence if it is not
+                           the specified width.
+
+
+
 fillBed
 -------
 
