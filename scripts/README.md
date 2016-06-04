@@ -79,9 +79,9 @@ Perl script to fill BED intervals of Fasta sequences with a given single-charact
 fastaSort, gffSort
 ------------------
 
-`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates an index file for the Fasta file.  If you would like to remove this index after it is created, set `$remove_index` to 1 within the script.
+`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates a specialised index file for the Fasta file, which can be time-consuming to create but greatly speeds up sorting once completed.  If you would like to remove this index after completion of the script, set `$remove_index` to 1 within the script.
 
-`gffSort`: Sort GFF file by sequence name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output.
+`gffSort`: Sort GFF file by sequence name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output while also removing comment lines specified with `###`, which are inserted by MAKER.
 
 
 stacksExtractStats.pl
