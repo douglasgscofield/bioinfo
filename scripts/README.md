@@ -946,24 +946,29 @@ rewritten.
 compress_md5.sh
 ---------------
 
-	USAGE:  $0  gz|bz2|none       filename
-	        $0  gz_self|bz2_self  filename
+Usage:
+
+	compress_md5.sh  gz|bz2|none       filename
+	compress_md5.sh  gz_self|bz2_self  filename
 	
-	Saves stdin to filename (optionally compressed) while simultaneously
-	computing MD5 checksum on the uncompressed content, saved to filename.md5.
+Saves stdin to filename (optionally compressed) while simultaneously computing
+MD5 checksum on the uncompressed content, saved to `filename.md5`.
+
+First argument is the compression format: `gz bz2 none`
+
+If the compression format is `gz_self` or `bz2_self`, use filename as input
+instead of stdin, and remove filename if compression is successful.
+
+Second argument is the output filename without any compression suffix
+
+
+Output is two files:
 	
-	First argument is the compression format: gz bz2 none
-	Second argument is the output filename without any compression suffix
-	
-	If the compression format is gz_self or bz2_self, use filename as input
-	instead of stdin, and remove filename if compression is successful.
-	
-	Output is two files:
-	
-	   filename     - compressed if requested, with suffix as appropriate
-	   filename.md5 - md5sum-format file with MD5 checksum for uncompressed
-	                  content of the file; filename present in filename.md5
-	                  is filename without any compression suffix
+`filename`:
+compressed if requested, with suffix as appropriate
+
+`filename.md5`:
+md5sum-format file with MD5 checksum for uncompressed content of the file; filename present in filename.md5 is filename without any compression suffix
 
 
 checkFastqCollisions.pl
