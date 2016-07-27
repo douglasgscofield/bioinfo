@@ -146,22 +146,13 @@ produces a tab-separated table containing a header line and columns for sample n
 mummer2Vcf.pl
 -------------
 
-Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/)
-`show-snps -T` command to a rough substitute for a 
-[VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).
-VCF requires the first reference base to be output for indels and Mummer
-doesn't output this, so this script requires a file containing the Fasta-format
-reference sequence, in SNP order.  It will open the file named as the reference
-in the first line of the `show-snps -T`-formatted file, but this can also be
-supplied with the `--fasta` option, which will override the file-encoded
-reference sequence if it is provided.
+Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/) `show-snps -T` command to a rough substitute for a [VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).  VCF requires the first reference base to be output for indels and Mummer doesn't output this, so this script requires a file containing the Fasta-format reference sequence, in SNP order.  It will open the file named as the reference in the first line of the `show-snps -T`-formatted file, but this can also be supplied with the `--fasta` option, which will override the file-encoded reference sequence if it is provided.
 
-It also provides the `--type SNP|INDEL` option to subselect the set of variants
-produced if you like, as well as the `--snpEffect` option to produce variants suitably formatted
-for the still-in-infancy [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
+It also provides the `--type SNP|INDEL` option to subselect the set of variants produced if you like.
 
-The 'VCF' format produced by this script is not actually VCF yet, but I'm working
-on it :-)
+Note the order of the SNPs and indels with respect to their reference sequences must be in the same order as the sequences within the Fasta file supplied with `--fasta`.  Otherwise, `mummer2Vcf.pl` will produce a '`couldn't find reference`' error.
+
+The 'VCF' format produced by this script is approaching actual VCF, thanks to some very helpful user contributions.
 
 This script requires BioPerl.
 
