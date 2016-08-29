@@ -170,13 +170,18 @@ subsampleReads.pl
 
     subsampleReads.pl  [ options ] [ - | fastq-file fastq-file ]
 
-All files are interleaved FASTQ, and may be gzipped (*.gz).  Single-end
-reads can be handles with --single
+Input files are assumed to be paired-end, interleaved FastQ. Single-end input
+data is specified with --single.  Input files may be gzipped (with suffix
+'.gz').
 
+    -c|--count INT        number of reads to keep... OR
     -f|--fraction FLOAT   fraction of reads to keep; a read pair is
                           selected if a random uniform draw <= FLOAT
+    -l|--limit INT        with --fraction, take no more than INT reads, otherwise
+                          ignored
     -s|--single           reads are single-end
     -                     read input from STDIN, write to STDOUT
+
 
 To handle paired-end reads in separate files for reads 1 and 2, use this
 script in a pipe like

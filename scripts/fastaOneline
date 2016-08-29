@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Getopt::Long;
+use Bio::SeqIO;
+
+my $o_one;
+my $usage = "
+USAGE:  $0  [ -1 ] file.fa  >  output.fa
+
+    Prints all sequences from file.fa as single lines.  The output is Fasta
+    format (unless -1 is used), but there is no wrapping of sequence lines.
+    This can be useful for grep and count operations.
+
+OPTIONS
+
+    -1     Truly a single line: sequence-name <TAB> sequence <NEWLINE>
+
+";
+
+GetOptions("1" => \$o_one) or die $usage;
+
+my $f = shift @ARGV;
+
+if (! $f) {
+    print STDERR $usage;
+    exit 1;
+}
+
+my $IN = Bio::SeqIO->new(-file => "<$f", -format => 'fasta');
+
+while (my $seq = $IN->next_seq()) {
+    my $n = $seq->display_id();
+    my $s = $seq->seq();
+    if ($o_one) {
+        print STDOUT "$n\t$s\n";
+    } else {
+        print STDOUT ">$n\n$s\n";
+    }
+}
