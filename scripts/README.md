@@ -3,6 +3,55 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fai2WindowBed
+-------------
+
+Perl script to create evenly-spaced BED intervals along Fasta sequences described by the given Fasta index file. A Fasta index file can be produced using '`samtools faidx ...`' and other tools. This is useful for creating BED files to guide sliding-window analyses with other tools, for example '`bedtools intersect`'.  If the `--overlap` option is non-zero, windows will overlap by the given number of bp.
+
+    SYNOPSIS
+
+        scripts/fai2WindowBed.pl --fai file.fa.fai --width 100000 > file.windows100000.bed
+
+    Create BED file of evenly-spaced windows from Fasta index.
+
+    This script creates evenly-spaced windows along sequences described in a Fasta
+    index file ('.fai').  It is useful for creating BED files for sliding window
+    analyses in other tools.
+
+    Window width is set with --width, and window overlap (if any) is set with
+    --overlap.  The BED intervals are named after the sequence and the coordinate
+    of the beginning of the window plus 1 to match the convention in non-BED files,
+    i.e.,
+
+          chr01 \t 0 \t 100000 \t chr01_00000001
+          chr01 \t 100000 \t 200000 \t chr01_00100001
+
+    The last window for each sequence is shortened, if necessary, not to extend
+    beyond the end of the sequence; underwidth windows can be dropped from the
+    output by specifying the --drop-underwidth option.
+
+    The BED file of windows is written to stdout with sequences appearing in their
+    order within the '.fai' file and BED intervals in increasing order of starting
+    coordinate.
+
+    OPTIONS
+
+        --fai FILE         REQUIRED: Fasta index file; this can be created with
+                           'samtools faidx file.fa' and other tools
+        --width INT        Window width [10000]
+        --overlap INT      Window overlap [0]
+        --no-pad           Do not add 0-padding to the digits used to write the
+                           starting coordinate in the interval name; without this,
+                           the number of digits is calculated from the maximum
+                           needed to make all coordinates equal-width in the
+                           intervals across each sequence.
+        --no-add-one       Do not add 1 to the interval name
+        --drop-underwidth  Do not include underwidth windows in the output; this
+                           drops the last window for each sequence if it is not
+                           the specified width.
+
+
+
 fillBed
 -------
 
@@ -30,9 +79,9 @@ Perl script to fill BED intervals of Fasta sequences with a given single-charact
 fastaSort, gffSort
 ------------------
 
-`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates an index file for the Fasta file.  If you would like to remove this index after it is created, set `$remove_index` to 1 within the script.
+`fastaSort`: Sort Fasta file by ID, naturally (id_1, id_2, ..., id_10, id_11, ...).  One argument, the Fasta filename, and writes sorted output to standard output.  Requires `BioPerl 1.6.922` or thereabouts (`Bio::DB::Fasta` needs to have the `get_all_primary_ids` method), as well as `Sort::Naturally`.  Because of its use of `Bio::DB::Fasta`, it creates a specialised index file for the Fasta file, which can be time-consuming to create but greatly speeds up sorting once completed.  If you would like to remove this index after completion of the script, set `$remove_index` to 1 within the script.
 
-`gffSort`: Sort GFF file by sequence name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output.
+`gffSort`: Sort GFF file by sequence name (column 1) then numerically by position (column 4).  One argument, the GFF filename, and writes sorted output to standard output while also removing comment lines specified with `###`, which are inserted by MAKER.
 
 
 stacksExtractStats.pl
@@ -97,24 +146,15 @@ produces a tab-separated table containing a header line and columns for sample n
 mummer2Vcf.pl
 -------------
 
-Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/)
-`show-snps -T` command to a rough substitute for a 
-[VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).
-VCF requires the first reference base to be output for indels and Mummer
-doesn't output this, so this script requires a file containing the Fasta-format
-reference sequence, in SNP order.  It will open the file named as the reference
-in the first line of the `show-snps -T`-formatted file, but this can also be
-supplied with the `--fasta` option, which will override the file-encoded
-reference sequence if it is provided.
+Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/) `show-snps -T` command to a rough substitute for a [VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).  VCF requires the first reference base to be output for indels and Mummer doesn't output this, so this script requires a file containing the Fasta-format reference sequence, in SNP order.  It will open the file named as the reference in the first line of the `show-snps -T`-formatted file, but this can also be supplied with the `--fasta` option, which will override the file-encoded reference sequence if it is provided.
 
-It also provides the `--type SNP|INDEL` option to subselect the set of variants
-produced if you like, as well as the `--snpEffect` option to produce variants suitably formatted
-for the still-in-infancy [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
+It also provides the `--type SNP|INDEL` option to subselect the set of variants produced if you like.
 
-The 'VCF' format produced by this script is not actually VCF yet, but I'm working
-on it :-)
+Note the order of the SNPs and indels with respect to their reference sequences must be in the same order as the sequences within the Fasta file supplied with `--fasta`.  Otherwise, `mummer2Vcf.pl` will produce a '`couldn't find reference`' error.
 
-This script requires BioPerl 1.6.1.
+The 'VCF' format produced by this script is approaching actual VCF, thanks to some very helpful user contributions.
+
+This script requires BioPerl.
 
 subsampleReads.pl
 -----------------
@@ -299,7 +339,7 @@ AGTTTCCTAGTTTAGCTGATCTTGGGAATATCTTCCCAGATTATGTAAACAGTTTGATAA
 CTTCCACAGGGAGGTTTTACCCTGTGGAAAACTTATAAATACTTATTAT
 ```
 
-This script required BioPerl 1.6.1 to compose and write the Fasta-format output.
+This script required BioPerl to compose and write the Fasta-format output.
 
 
 
@@ -897,24 +937,29 @@ rewritten.
 compress_md5.sh
 ---------------
 
-	USAGE:  $0  gz|bz2|none       filename
-	        $0  gz_self|bz2_self  filename
+Usage:
+
+	compress_md5.sh  gz|bz2|none       filename
+	compress_md5.sh  gz_self|bz2_self  filename
 	
-	Saves stdin to filename (optionally compressed) while simultaneously
-	computing MD5 checksum on the uncompressed content, saved to filename.md5.
+Saves stdin to filename (optionally compressed) while simultaneously computing
+MD5 checksum on the uncompressed content, saved to `filename.md5`.
+
+First argument is the compression format: `gz bz2 none`
+
+If the compression format is `gz_self` or `bz2_self`, use filename as input
+instead of stdin, and remove filename if compression is successful.
+
+Second argument is the output filename without any compression suffix
+
+
+Output is two files:
 	
-	First argument is the compression format: gz bz2 none
-	Second argument is the output filename without any compression suffix
-	
-	If the compression format is gz_self or bz2_self, use filename as input
-	instead of stdin, and remove filename if compression is successful.
-	
-	Output is two files:
-	
-	   filename     - compressed if requested, with suffix as appropriate
-	   filename.md5 - md5sum-format file with MD5 checksum for uncompressed
-	                  content of the file; filename present in filename.md5
-	                  is filename without any compression suffix
+`filename`:
+compressed if requested, with suffix as appropriate
+
+`filename.md5`:
+md5sum-format file with MD5 checksum for uncompressed content of the file; filename present in filename.md5 is filename without any compression suffix
 
 
 checkFastqCollisions.pl

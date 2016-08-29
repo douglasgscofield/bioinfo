@@ -87,7 +87,7 @@ sub find_ref_fasta_seq($) {
             return;
         }
     }
-    die("couldn't find reference $seq_name_to_find");
+    die("couldn't find reference $seq_name_to_find, are references for SNPs/indels and sequences in --fasta file in the same order?");
 }
 sub complete_indel() {
     if ($o_type ne "SNP") {
