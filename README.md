@@ -45,7 +45,7 @@ A handful of bioinformatics scripts:
 reads a [Stacks][] log file and produce a table summarizing sample-specific statistics.  It currently prints number of RAD-Tags, number of stacks and mean stack coverage, and it is written so that other statistics can easily be harvested from the output.
 
 **mummer2Vcf.pl**
-reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is not yet compliant [VCF][] yet but it will be.  Requires BioPerl.
+reads file of SNPs and indels called by the [Mummer][] program `show-snps -T` and produce a VCF-ish file, collapsing consecutive indel characters into a single indel and adding the missing first base from indels by reading from the reference sequence file.  The format produced is close to compliant with [VCF][].  Requires BioPerl.
 
 **subsampleReads.pl**
 randomly selects a fraction of FastQ-format reads.

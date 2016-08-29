@@ -146,22 +146,13 @@ produces a tab-separated table containing a header line and columns for sample n
 mummer2Vcf.pl
 -------------
 
-Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/)
-`show-snps -T` command to a rough substitute for a 
-[VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).
-VCF requires the first reference base to be output for indels and Mummer
-doesn't output this, so this script requires a file containing the Fasta-format
-reference sequence, in SNP order.  It will open the file named as the reference
-in the first line of the `show-snps -T`-formatted file, but this can also be
-supplied with the `--fasta` option, which will override the file-encoded
-reference sequence if it is provided.
+Convert a list of SNPs and indels produced by [Mummer's](http://mummer.sourceforge.net/) `show-snps -T` command to a rough substitute for a [VCF file](http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41).  VCF requires the first reference base to be output for indels and Mummer doesn't output this, so this script requires a file containing the Fasta-format reference sequence, in SNP order.  It will open the file named as the reference in the first line of the `show-snps -T`-formatted file, but this can also be supplied with the `--fasta` option, which will override the file-encoded reference sequence if it is provided.
 
-It also provides the `--type SNP|INDEL` option to subselect the set of variants
-produced if you like, as well as the `--snpEffect` option to produce variants suitably formatted
-for the still-in-infancy [`snpEffect()`](https://github.com/douglasgscofield/snpEffect) function.
+It also provides the `--type SNP|INDEL` option to subselect the set of variants produced if you like.
 
-The 'VCF' format produced by this script is not actually VCF yet, but I'm working
-on it :-)
+Note the order of the SNPs and indels with respect to their reference sequences must be in the same order as the sequences within the Fasta file supplied with `--fasta`.  Otherwise, `mummer2Vcf.pl` will produce a '`couldn't find reference`' error.
+
+The 'VCF' format produced by this script is approaching actual VCF, thanks to some very helpful user contributions.
 
 This script requires BioPerl.
 
@@ -951,24 +942,29 @@ rewritten.
 compress_md5.sh
 ---------------
 
-	USAGE:  $0  gz|bz2|none       filename
-	        $0  gz_self|bz2_self  filename
+Usage:
+
+	compress_md5.sh  gz|bz2|none       filename
+	compress_md5.sh  gz_self|bz2_self  filename
 	
-	Saves stdin to filename (optionally compressed) while simultaneously
-	computing MD5 checksum on the uncompressed content, saved to filename.md5.
+Saves stdin to filename (optionally compressed) while simultaneously computing
+MD5 checksum on the uncompressed content, saved to `filename.md5`.
+
+First argument is the compression format: `gz bz2 none`
+
+If the compression format is `gz_self` or `bz2_self`, use filename as input
+instead of stdin, and remove filename if compression is successful.
+
+Second argument is the output filename without any compression suffix
+
+
+Output is two files:
 	
-	First argument is the compression format: gz bz2 none
-	Second argument is the output filename without any compression suffix
-	
-	If the compression format is gz_self or bz2_self, use filename as input
-	instead of stdin, and remove filename if compression is successful.
-	
-	Output is two files:
-	
-	   filename     - compressed if requested, with suffix as appropriate
-	   filename.md5 - md5sum-format file with MD5 checksum for uncompressed
-	                  content of the file; filename present in filename.md5
-	                  is filename without any compression suffix
+`filename`:
+compressed if requested, with suffix as appropriate
+
+`filename.md5`:
+md5sum-format file with MD5 checksum for uncompressed content of the file; filename present in filename.md5 is filename without any compression suffix
 
 
 checkFastqCollisions.pl
