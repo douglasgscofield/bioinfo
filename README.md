@@ -95,6 +95,9 @@ convert FastQ-format files from separate read 1/read 2 files to interleaved and 
 **compress_md5.sh**
 compress standard input to a given file while simultaneously computing MD5 checksum for the uncompressed data; useful alone or with the shuffle routines above
 
+**fastaOneline**
+collapse a multiline Fasta sequence onto a single line; useful for `grep` etc.
+
 **fastaGC.pl**
 analyses GC content of Fasta-format sequences a few different ways.
 

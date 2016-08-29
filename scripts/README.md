@@ -987,6 +987,21 @@ With the `-v` or `--verbose` option, the complete filename of each duplicate is 
 With the `-t INT` or `--trimsuffix INT` option, then collisions are also detected after `INT` dot-suffixes are removed from the filename.  Using this option, a collision between `file.fastq.gz` and `file.fastq.bz2` is detected with `-t 1`, and between `file.fastq.gz` and `file.fq.bz2` with `-t 2`.
 
 
+fastaOneline
+------------
+
+Usage:
+
+    fastaOneline  [ -1 ] file.fa  >  output.fa
+
+Prints all sequences from file.fa as single lines.  The output is Fasta
+format (unless -1 is used), but there is no wrapping of sequence lines.
+This can be useful for grep and count operations.  Uses BioPerl.
+
+**Options**
+
+    -1     Truly a single line: sequence-name <TAB> sequence <NEWLINE>
+
 
 fastaGC.pl
 ----------
