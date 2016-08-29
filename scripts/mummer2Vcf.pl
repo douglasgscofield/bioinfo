@@ -33,10 +33,6 @@ OPTIONS:
     -t|--type   SNP|INDEL   Restrict the output to just SNPs or indels;
                             if the output is just SNPs, no reference
                             file is required
-    -s|--snpEffect          Instead of VCF-ish, produce file formatted for
-                            eventual input to my R function snpEffect(),
-                            for determining SNP effects based on GFF
-                            annotation
     -h|--help               This help output
     mummer.snps             SNPs/indels as output by the Mummer command
                             'show-snps -T'
