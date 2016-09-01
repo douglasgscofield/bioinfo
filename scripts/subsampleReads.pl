@@ -7,6 +7,7 @@ my $single = 0;
 my $fraction = 0;
 my $count = 0;
 my $o_count = 0;
+my $o_limit = 0;
 my $filenameIn = "";
 my $filenameOut = "";
 my $n_in = 0;
@@ -15,12 +16,15 @@ my $n_out = 0;
 my $usage = "
 $0  [ fastq-file fastq-file ]
 
-All files are interleaved FASTQ, and may be gzipped (*.gz).  Single-end
-reads can be handles with --single
+Input files are assumed to be paired-end, interleaved FastQ. Single-end input
+data is specified with --single.  Input files may be gzipped (with suffix
+'.gz').
 
 -c|--count INT        number of reads to keep... OR
 -f|--fraction FLOAT   fraction of reads to keep; a read pair is
                       selected if a random uniform draw <= FLOAT
+-l|--limit INT        with --fraction, take no more than INT reads, otherwise
+                      ignored
 -s|--single           reads are single-end
 -                     read input from STDIN, write to STDOUT
 
@@ -35,6 +39,7 @@ script in a pipe like
 
 GetOptions("f|fraction=f" => \$fraction, 
            "c|count=i"    => \$o_count, 
+           "l|limit=i"    => \$o_limit, 
            "s|single"     => \$single, 
            ""             => \$stdin) or { die "$usage" };
 
@@ -91,6 +96,7 @@ while(<INFILE>) {
             }
             ++$n_out;
         }
+        last if $o_limit and $n_out >= $o_limit;
     } elsif ($count) {
         print OUTFILE $f1l1;
         print OUTFILE $f1l2;

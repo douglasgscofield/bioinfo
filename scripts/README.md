@@ -161,13 +161,18 @@ subsampleReads.pl
 
     subsampleReads.pl  [ options ] [ - | fastq-file fastq-file ]
 
-All files are interleaved FASTQ, and may be gzipped (*.gz).  Single-end
-reads can be handles with --single
+Input files are assumed to be paired-end, interleaved FastQ. Single-end input
+data is specified with --single.  Input files may be gzipped (with suffix
+'.gz').
 
+    -c|--count INT        number of reads to keep... OR
     -f|--fraction FLOAT   fraction of reads to keep; a read pair is
                           selected if a random uniform draw <= FLOAT
+    -l|--limit INT        with --fraction, take no more than INT reads, otherwise
+                          ignored
     -s|--single           reads are single-end
     -                     read input from STDIN, write to STDOUT
+
 
 To handle paired-end reads in separate files for reads 1 and 2, use this
 script in a pipe like
@@ -985,6 +990,21 @@ With the `-v` or `--verbose` option, the complete filename of each duplicate is 
 
 With the `-t INT` or `--trimsuffix INT` option, then collisions are also detected after `INT` dot-suffixes are removed from the filename.  Using this option, a collision between `file.fastq.gz` and `file.fastq.bz2` is detected with `-t 1`, and between `file.fastq.gz` and `file.fq.bz2` with `-t 2`.
 
+
+fastaOneline
+------------
+
+Usage:
+
+    fastaOneline  [ -1 ] file.fa  >  output.fa
+
+Prints all sequences from file.fa as single lines.  The output is Fasta
+format (unless -1 is used), but there is no wrapping of sequence lines.
+This can be useful for grep and count operations.  Uses BioPerl.
+
+**Options**
+
+    -1     Truly a single line: sequence-name <TAB> sequence <NEWLINE>
 
 
 fastaGC.pl
