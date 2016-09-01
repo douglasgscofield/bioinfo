@@ -651,11 +651,15 @@ All options are identical to `samHeader2Bed.pl`.
 pileup2pro.pl
 -------------
 
-Convert pileup to profile format as used for input to mlRho.  This is a format
-in which bases present at each position in a mapping to a reference sequence
-are enumerated.  This script simply converts the format, so any filtering on
-base/mapping quality, etc. that you may wish to do should be done when
-generating the pileup.
+Convert pileup to profile format as used for input to mlRho.
+
+**The developers of mlRho now provide a C-language tool `sam2pro` to
+do the same job, available at <http://guanine.evolbio.mpg.de/mlRho/>.**
+
+In profile format, the bases observed at each position in a mapping to a
+reference sequence are enumerated.  This script simply converts the format, so
+any filtering on base/mapping quality, etc. that you may wish to do should be
+done when generating the pileup.
 
 ```bash
 samtools mpileup -B -q1 -f ref.fa your.bam | pileup2pro.pl > mlRho-input.txt
