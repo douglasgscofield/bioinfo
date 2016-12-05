@@ -5,8 +5,6 @@ use warnings;
 use feature 'say';
 use Getopt::Long;
 
-my $debug = 1;
-
 use constant missing_rho => -1;
 use constant missing_rho_output => 'NA';
 
@@ -80,7 +78,6 @@ sub rho_interval_from_ref_pos($) {
 
 sub calc_rho($$$$) {
     my ($ref1, $pos1, $ref2, $pos2) = @_;
-    my $debug = 1;
     if ((! $ref1 and ! $pos1) and (! $ref2 and ! $pos2)) {
         die "calc_rho: both ref/pos pairs not set";
     } elsif ((! $ref1 and ! $pos1) xor (! $ref2 and ! $pos2)) {
@@ -94,14 +91,10 @@ sub calc_rho($$$$) {
         my $i2; # interval for $ref2/$pos2
         my $is_NA = 0; # count of intervals with missing rho values
         for ($i1 = $RH->{$ref1};    ! ($pos1 >= $RI->[$i1]->[1] and $pos1 < $RI->[$i1]->[2]); ++$i1 ) { }
-        say STDERR "calc_rho: 1: $ref1:$pos1 found within interval $i1: ".join(" ", @{$RI->[$i1]}) if $debug > 1;
         $is_NA = 1 if $RI->[$i1]->[3] == missing_rho;
         for ($i2 = $i1; ! ($pos2 > $RI->[$i2]->[1] and $pos2 <= $RI->[$i2]->[2]); ++$i2 ) {
-            say STDERR "rho for $i2 is $RI->[$i2]->[3]" if $debug > 1;
             ++$is_NA if $RI->[$i2]->[3] == missing_rho;
         }
-        say STDERR "calc_rho: 2: $ref2:$pos2 found within interval $i2: ".join(" ", @{$RI->[$i2]}) if $debug > 1;
-        say STDERR "calc_rho: $is_NA intervals were missing rho values" if $debug > 1;
 
         return missing_rho_output if $is_NA;  # stop trying to calculate rho if there are missing values
 
@@ -113,10 +106,9 @@ sub calc_rho($$$$) {
             $i_bp -= $left_crop  if $left_crop > 0;
             $i_bp -= $right_crop if $right_crop > 0;
             $rho_sum += ($i_bp * $RI->[$_]->[3]);
-            say STDERR "interval $_: [$RI->[$_]->[1] $RI->[$_]->[2] rho=$RI->[$_]->[3]] i_bp=$i_bp pos1=$pos1 pos2=$pos2 left_crop=$left_crop right_crop=$right_crop final i_bp=$i_bp rho_sum=$rho_sum" if $debug > 1;
+            #say STDERR "interval $_: [$RI->[$_]->[1] $RI->[$_]->[2] rho=$RI->[$_]->[3]] i_bp=$i_bp pos1=$pos1 pos2=$pos2 left_crop=$left_crop right_crop=$right_crop final i_bp=$i_bp rho_sum=$rho_sum";
         }
         $rho = $rho_sum / ($pos2 - $pos1);
-        say STDERR "final rho from $pos1 to $pos2: $rho" if $debug > 1;
 
     } else {
         return missing_rho_output;  # stop if positions are on different refs
@@ -130,18 +122,14 @@ sub load_rho_intervals($$) {
     my ($rhofile, $faifile) = @_;
     my $prev_chr = "";
     my $prev_pos = 0;
-    my $debug = 0;
     my @RI;
-    say STDERR "$0:load_rho_intervals: assuming proper fai file is $faifile" if $debug;
     open (my $fai, "<", $faifile) or die "could not open fai file $faifile: $!";
     while (<$fai>) {
         my @l = split/\t/;
         $FAI_LEN{$l[0]} = $l[1];
     }
     close($fai);
-    say STDERR "$0:load_rho_intervals: read ".scalar(keys %FAI_LEN)." fai records" if $debug;
 
-    say STDERR "$0:load_rho_intervals: attempting to open recombination map file '$rhofile'" if $debug;
 
     open (my $rhofd, "<", $rhofile) or die "could not open rho file $rhofile: $!";
     while (<$rhofd>) {
@@ -157,7 +145,6 @@ sub load_rho_intervals($$) {
                 my $fai_end = $FAI_LEN{$prev_chr};
                 die "unknown reference name in FAI $prev_chr" if not defined $fai_end;
                 if ($prev_pos < $fai_end) {
-                    say STDERR "$rhofile:$.:load_rho_intervals: $l[0]: no rho at end of $prev_chr from pos $prev_pos to $fai_end" if $debug > 1;
                     # create a gap to cover the missing region at the end of the chromosome
                     push @RI, [$prev_chr, $prev_pos, $fai_end, missing_rho];
                 }
@@ -166,7 +153,6 @@ sub load_rho_intervals($$) {
             $prev_pos = 1;
         }
         if ($prev_pos != $l[1]) {
-            say STDERR "$rhofile:$.:load_rho_intervals: $l[0]: no rho from pos $prev_pos to $l[1]" if $debug > 1;
             # create a gap to cover the missing region before processing the current gap
             push @RI, [$l[0], $prev_pos, $l[1], missing_rho];
         }
@@ -177,18 +163,8 @@ sub load_rho_intervals($$) {
     my $fai_end = $FAI_LEN{$prev_chr};
     die "unknown reference name in FAI $prev_chr" if not defined $fai_end;
     if ($prev_pos < $fai_end) {
-        say STDERR "$rhofile:$.:load_rho_intervals: $prev_chr: end of $rhofile: no rho at end of $prev_chr from pos $prev_pos to $fai_end" if $debug > 1;
         # create a gap to cover the missing region at the end of the chromosome
         push @RI, [$prev_chr, $prev_pos, $fai_end, missing_rho];
-    }
-
-    if ($debug > 1) {
-        foreach (0 .. $#RI) {
-            say STDERR "RI $_: ".join('  ', @{$RI[$_]});
-            if ($_ > 0 && $RI[$_]->[0] eq $RI[$_ - 1]->[0] and $RI[$_]->[1] != $RI[$_ - 1]->[2]) {
-                say STDERR "**** BREAK in intervals at $_";
-            }
-        }
     }
 
     my $RH = create_rho_ref_hash(\@RI);
@@ -203,12 +179,10 @@ sub load_rho_intervals($$) {
 sub create_rho_ref_hash($) {
     my $RI = shift;
     my %RH;
-    my $debug = 0;
     my $prev_chr = "";
-    say STDERR "I think there are 0 .. ".(scalar(@{$RI})-1)." entries in \$RI" if $debug > 1;
     foreach (0..(scalar(@{$RI})-1)) {
         if ($RI->[$_]->[0] ne $prev_chr) {
-            die "create_rho_ref_hash: adding $RI->[$_]->[0] but it is already defined" if defined $RH{$RI->[$_]->[0]};
+            die "create_rho_ref_hash: $RI->[$_]->[0] is already defined" if defined $RH{$RI->[$_]->[0]};
             $RH{$RI->[$_]->[0]} = $_;
             $prev_chr = $RI->[$_]->[0];
         }
