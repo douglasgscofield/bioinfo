@@ -7,6 +7,7 @@ tests:
 	$(TESTDIR)/mergePileupColumns_test.sh
 	$(TESTDIR)/pileup2pro_test.sh
 	$(TESTDIR)/windowWig_test.sh
+	$(TESTDIR)/fai2Bed_test.sh
 
 .PHONY: tests
 

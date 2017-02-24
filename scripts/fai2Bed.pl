@@ -31,9 +31,9 @@ my $this_chunk_seqs = 0; # the total number of sequences in this chunk
 my $in_file;
 my $out_file;
 my $stdio;
-my $quiet = 0;
+my $o_quiet = 0;
 my $help;
-my $opt_header = 0;
+my $o_header = 0;
 my $N_references = 0; # the number of reference sequences seen
 
 my $usage = "
@@ -63,6 +63,7 @@ OPTIONS
     --min-length INT      do not include reference sequences shorter than INT
     --max-length INT      do not include reference sequences longer than INT
     --header              include a BED header line in BED output
+    -q, --quiet           do not produce informational messages to stderr
 
     -?, --help            help message
 
@@ -83,7 +84,8 @@ GetOptions(
     "chunk-size=f" => \$opt_chunksize,
     "min-length|minlength=f" => \$min_length,
     "max-length|maxlength=f" => \$max_length,
-    "header" => \$opt_header,
+    "header" => \$o_header,
+    "q|quiet" => \$o_quiet,
     "help|?" => \$help,
 ) or print_usage_and_exit("");
 
@@ -108,7 +110,7 @@ if ($opt_chunksize) {
     $out_file = "/dev/stdout" if $stdio or ! defined($out_file);
 }
 $OUT->open("> $out_file") or die "Cannot open $out_file: $!\n";
-print $OUT "#chrom\tchromStart\tchromEnd\n" if $opt_header;
+print $OUT "#chrom\tchromStart\tchromEnd\n" if $o_header;
 
 while (<$IN>) {
     # Format of an .fai line is (https://www.biostars.org/p/11523/#11524)
@@ -137,20 +139,20 @@ while (<$IN>) {
         #$out_file = $chunk_prefix . ".$N_chunk";
         $out_file = sprintf("%s.%.2d.bed", $chunk_prefix, $N_chunk);
         $OUT->open("> $out_file") or die "Cannot open next chunk $out_file: $!\n";
-        print $OUT "#chrom\tchromStart\tchromEnd\n" if $opt_header;
+        print $OUT "#chrom\tchromStart\tchromEnd\n" if $o_header;
     }
 
     print $OUT "$ref\t0\t$length\n";
 
     if ($opt_chunksize and $this_chunk_size > $opt_chunksize) {
-        print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n";
+        print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet;
         $OUT->close();
         $this_chunk_size = $this_chunk_seqs = 0;
         $must_open_chunk = 1;  # open a new bed file
     }
 }
 
-print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $must_open_chunk;
+print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet && ! $must_open_chunk;
 
 undef $OUT;
 undef $IN;
