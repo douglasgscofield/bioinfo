@@ -3,6 +3,26 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+
+plink-pairwise-loci.pl
+----------------------
+
+    USAGE:   plink-pairwise-loci.pl [ --help ] --ped file.ped --mibs file.mibs
+
+Scan `file.ped` and write matrix to STDOUT counting the number of complete
+pairwise comparisons, with no missing alleles, between each genotype described
+in `file.ped`.  The `file.mibs` will be used to verify the format of the output but
+will not otherwise be used.
+
+A locus with missing alleles is indicated by `0 0` in `file.ped`.  A message
+is produced if only one allele is coded as missing, and the entire locus is
+coded as missing.
+
+`file.ped` is formatted for PLINK input and `file.mibs` is PLINK output of
+pairwise inbreeding coefficients, which is produced without regard to the
+number of complete pairwise comparisons.
+
+
 rhoIntervals
 ------------
 

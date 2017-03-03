@@ -21,3 +21,5 @@ pileup2pro_test_05 - --has-mapping-quality and restrictive --which-bams - PASSED
 windowWig_test_01 - general test of script operation - PASSED
 windowWig_test_02 - input includes comment lines - PASSED
 windowWig_test_03 - input includes comment and blank lines - PASSED
+./fai2Bed_test.sh
+fai2Bed_test_01 - general test of script operation - PASSED
