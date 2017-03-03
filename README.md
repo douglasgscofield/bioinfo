@@ -29,7 +29,13 @@ A handful of bioinformatics scripts in R.
 
 A handful of bioinformatics scripts:
 
-**fai2WindowBed**
+**plink-pairwise-loci.pl**
+ takes a [PLINK][] `.ped`-format input file and produce a matrix matching the `.mibs`-format pairwise output describing the number of complete loci (no missing data) contributing to each pairwise inbreeding coefficient in the `.mibs` file.
+
+**fai2Bed.pl**
+ creates BED intervals for each Fasta sequence described by the given Fasta index file.  Might be useful for separating input by chromosome for split-process-reduce parallelism.
+
+**fai2WindowBed.pl**
  creates evenly-spaced BED intervals along Fasta sequences described by the given Fasta index file.  This is useful for creating BED files to guide sliding-window analyses with other tools.
 
 **fillBed**
@@ -112,6 +118,7 @@ extract Fasta sequences and a summary table from output produced by the ORF-find
 **cutadaptReportScript.sh**
 collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
 
+[PLINK]: https://www.cog-genomics.org/plink2
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html
 [Stacks]:  http://creskolab.uoregon.edu/stacks/
 [Mummer]:  http://mummer.sourceforge.net
