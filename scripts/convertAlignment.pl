@@ -14,72 +14,68 @@ use File::Basename qw();
 use Bio::SeqIO;
 use Bio::AlignIO;
 
-my $THISSCRIPT = File::Basename::basename($0);
-
-my $stdio = 0;
-my $infile = "";
-my $outfile = "";
-my $informat = "fasta";
-my $outformat = "";
-my $format = "";
+my $o_infile;
+my $o_informat = 'clustalw';
+my $o_outfile;
+my $o_outformat = 'fasta';
 my $o_degap = 0;
 my $o_uppercase = 0;
-my $verbose = 0;
+my $o_verbose = 0;
+my $o_help = 0;
 
 sub usage {
-    print STDERR <<__usage__;
+    print STDERR "
+Usage: $0 [ --if input-format ] [ [--input] input.file ] [ --of output-format ] [ --output output.file ] 
 
-Usage: $THISSCRIPT [ - ] [ input.file ] -f input-format [ -out output.file ] -of output-format 
+Sequence format conversion - format to format
 
-Alignment conversion - format to format
+   --input     infile    default from STDIN, or first non-option command-line argument
+   --output    outfile   default to STDOUT
 
-   infile
-   -out|utput outfile
+   --if|format fasta     input format, see Bio::AlignIO documentation for available formats
+               clustalw  http://bioperl.org/howtos/AlignIO_and_SimpleAlign_HOWTO.html
+               nexus
+               phylip    default $o_informat
+               etc.
 
-   -                    read input from stdin and/or write output to stdout
+   --of|ormat  fasta     output file format, as above for formats
+               etc.      default $o_outformat
 
-   -f|ormat fasta       input file format [default $informat], see
-            clustalw    Bio::AlignIO documentation for available formats
-            nexus
-            phylip
-            etc.
+   --degap               convert aligned sequences to standard sequences by removing gaps
+   --uc | --uppercase    convert sequence to uppercase
 
-   -of  fasta           output file format, as above for input formats
-        etc.
 
-   -degap               convert aligned sequences to standard sequences
-   -uc | -uppercase     convert sequence to uppercase
+   -v | --verbose        print end summary of conversion effort
+   -h | --help           this help
 
-   -v|erbose            print end summary of conversion effort
-
-__usage__
+";
     exit(1);
 }
 
 GetOptions (
-    "input=s"      => \$infile,
-    "output=s"     => \$outfile,
-    "format=s"     => \$informat,
-    "of=s"         => \$outformat,
+    "input=s"      => \$o_infile,
+    "output=s"     => \$o_outfile,
+    "if|format=s"  => \$o_informat,
+    "oformat=s"    => \$o_outformat,
     "degap"        => \$o_degap,
     "uc|uppercase" => \$o_uppercase,
-    "verbose:1"    => \$verbose,
-    "" => \$stdio
+    "verbose"      => \$o_verbose,
+    "help"         => \$o_help
 ) or usage();
 
-$infile = $ARGV[0] if $ARGV[0];
-die "Only one input file allowed" if scalar(@ARGV) > 1;
-die "Must specify input and/or output file without -" if !$stdio and !($infile and $outfile);
-die "Must specify input format" if !$informat;
-die "Must specify output format" if !$outformat;
+usage() if $o_help;
+
+die("Only one input file allowed") if scalar(@ARGV) > 1;
+$o_infile = $ARGV[0] if $ARGV[0];
+die("Must specify input format and output format") if not $o_informat or not $o_outformat;
 
 my ($in, $out);
 
-$in = ($infile) ? Bio::AlignIO->new( -file => "<$infile", -format => $informat)
-                : Bio::AlignIO->new( -fh => \*STDIN, -format => $informat);
+$in  = ($o_infile)  ? Bio::AlignIO->new( -file => "<$o_infile", -format => $o_informat )
+                    : Bio::AlignIO->new( -fh => \*STDIN, -format => $o_informat );
 
-$out = ($outfile) ? Bio::AlignIO->new( -file => ">$outfile", -format => $outformat)
-                  : Bio::AlignIO->new( -fh => \*STDOUT, -format => $outformat);
+$out = ($o_outfile) ? Bio::AlignIO->new( -file => ">$o_outfile", -format => $o_outformat )
+                    : Bio::AlignIO->new( -fh => \*STDOUT, -format => $o_outformat );
 
 my $i = 0;
 
@@ -89,12 +85,12 @@ while (my $aln = $in->next_aln()) {
     if ($o_degap) {
         my $gc = $aln->gap_char();
         $aln->map_chars($gc, "");
-        $aln->uppercase() if ($o_uppercase);
-        $out->write_aln($aln);
     }
+    $aln->uppercase() if $o_uppercase;
+    $out->write_aln($aln);
 }
 
-print STDERR "$THISSCRIPT: total of $i alignments converted from $informat to $outformat\n" if $verbose;
+print STDERR "$0 total of $i alignments converted from $o_informat to $o_outformat\n" if $o_verbose;
 
 $in->close;
 $out->close;

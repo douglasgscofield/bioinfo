@@ -9,55 +9,60 @@
 use strict;
 use warnings;
 use Getopt::Long;
-use List::Util qw(first);
 use Bio::SeqIO;
 
-sub usage {
-    print STDERR <<__usage__;
+my $o_infile = '';
+my $o_informat = 'genbank';
+my $o_outfile = '';
+my $o_outformat = 'fasta';
+my $o_verbose = 0;
+my $o_help = 0;
 
-Usage: $THISSCRIPT [ - ] [ input.file ] -f input-format [ -out output.file ] -of output-format 
+sub usage {
+    print STDERR "
+Usage: $0 [ --if input-format ] [ [--input] input.file ] [ --of output-format ] [ --output output.file ] 
 
 Sequence format conversion - format to format
 
-   infile
-   -out|utput outfile
+   --input     infile    default from STDIN, or first non-option command line argument
+   --output    outfile   default to STDOUT
 
-   -                    read input from stdin and/or write output to stdout
+   --if|format fasta     input format, see Bio::SeqIO documentation for available formats
+               genbank   http://bioperl.org/howtos/SeqIO_HOWTO.html
+               swiss
+               embl      default $o_informat
+               etc.
 
-   -f|ormat fasta       input file format [default $informat], see
-            genbank     Bio::SeqIO documentation for available formats
-            swiss
-            embl
-            etc.
+   --of|ormat  fasta     output file format, as above for formats
+               etc.      default $o_outformat
 
-   -of  fasta           output file format, as above for input formats
-        etc.
+   -v|--verbose          print end summary of conversion effort
+   -h|--help             this help
 
-   -v|erbose            print end summary of conversion effort
-
-__usage__
+";
     exit(1);
 }
 
 GetOptions (
-    "input=s" => \$infile,
-    "output=s" => \$outfile,
-    "format=s" => \$informat,
-    "of=s" => \$outformat,
-    "verbose:1" => \$verbose,
-    "" => \$stdio
+    "input=s" => \$o_infile,
+    "output=s" => \$o_outfile,
+    "if|format=s" => \$o_informat,
+    "oformat=s" => \$o_outformat,
+    "verbose:1" => \$o_verbose,
+    "help" => \$o_help,
 ) or usage();
 
-$infile = $ARGV[0] if $ARGV[0];
-die("Only one input file allowed") if scalar(@ARGV) > 1;
-die("Must specify input and/or output file without -") if !$stdio and !($infile and $outfile);
-die("Must specify input format") if !$informat;
-die("Must specify output format") if !$outformat;
+usage() if $o_help;
 
-my $in = ($infile) ? Bio::SeqIO->new( -file => "<$infile", -format => $informat)
-                   : Bio::SeqIO->new( -fh => \*STDIN, -format => $informat);
-my $out = ($outfile) ? Bio::SeqIO->new( -file => ">$outfile", -format => $outformat)
-                     : Bio::SeqIO->new( -fh => \*STDOUT, -format => $outformat);
+die("Only one input file allowed") if scalar(@ARGV) > 1;
+$o_infile = $ARGV[0] if $ARGV[0];
+die("Must specify input format and output format") if not $o_informat or not $o_outformat;
+
+my $in  = ($o_infile)  ? Bio::SeqIO->new( -file => "<$o_infile", -format => $o_informat )
+                       : Bio::SeqIO->new( -fh => \*STDIN, -format => $o_informat );
+
+my $out = ($o_outfile) ? Bio::SeqIO->new( -file => ">$o_outfile", -format => $o_outformat )
+                       : Bio::SeqIO->new( -fh => \*STDOUT, -format => $o_outformat );
 
 my $i = 0;
 
@@ -66,7 +71,7 @@ while (my $seq = $in->next_seq()) {
     $out->write_seq($seq);
 }
 
-print STDERR "$THISSCRIPT: total of $i sequences converted from $informat to $outformat\n" if $verbose;
+print STDERR "$0 total of $i sequences converted from $o_informat to $o_outformat\n" if $o_verbose;
 
 $in->close;
 $out->close;

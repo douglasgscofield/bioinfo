@@ -1114,25 +1114,53 @@ Read the output of [gmhmmp](http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx)
 convertSequence.pl
 ------------------
 
-Usage:
+Sequence format conversion - format to format - all available in BioPerl's [Bio::SeqIO](http://bioperl.org/howtos/SeqIO_HOWTO.html)
 
-    convertSequence.pl -f genbank file.in -of fasta - > file.out
+Usage: `convertSequence.pl [ --if input-format ] [ [--input] input.file ] [ --of output-format ] [ --output output.file ]`
 
+    --input     infile    default from STDIN, or first non-option command line argument
+    --output    outfile   default to STDOUT
 
-Read the sequence data in GenBank format from `file.in`, convert it to Fasta format and write it via `stdout` to `file.out`.
+    --if|format fasta     input format, see Bio::SeqIO documentation for available formats
+                genbank   http://bioperl.org/howtos/SeqIO_HOWTO.html
+                swiss
+                embl      default genbank
+                etc.
+
+    --of|ormat  fasta     output file format, as above for formats
+                etc.      default fasta
+
+    -v|--verbose          print end summary of conversion effort
+    -h|--help             this help
 
 
 convertAlignment.pl
 ------------------
 
-Usage:
+Alignment format conversion - format to format - all available in BioPerl's [Bio::AlignIO](http://bioperl.org/howtos/AlignIO_and_SimpleAlign_HOWTO.html).
 
-    convertAlignment.pl -f clustalw file.in -of phylip - > file.out
+Can allow degap the output with `--degap`.
+
+Usage: `convertAlignment.pl [ --if input-format ] [ [--input] input.file ] [ --of output-format ] [ --output output.file ]`
+
+    --input     infile    default from STDIN, or first non-option command-line argument
+    --output    outfile   default to STDOUT
+
+    --if|format fasta     input format, see Bio::AlignIO documentation for available formats
+                clustalw  http://bioperl.org/howtos/AlignIO_and_SimpleAlign_HOWTO.html
+                nexus
+                phylip    default clustalw
+                etc.
+
+    --of|ormat  fasta     output file format, as above for formats
+                etc.      default fasta
+
+    --degap               convert aligned sequences to standard sequences by removing gaps
+    --uc | --uppercase    convert sequence to uppercase
 
 
-Read the multiple sequence alignment in ClustalW format from `file.in`, convert it to [PHYLIP](http://evolution.genetics.washington.edu/phylip.html) format and write it via `stdout` to `file.out`.
-
-This script also -as option `--degap`, for converting an alignment to straight degapped sequences, and `--uc`/`--uppercase`, for converting an aligned sequence to uppercase.
+    -v | --verbose        print end summary of conversion effort
+    -h | --help           this help
 
 
 cutadaptReportScript.sh
