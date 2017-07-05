@@ -108,9 +108,9 @@ collapse a multiline Fasta sequence onto a single line; useful for `grep` etc.
 analyses GC content of Fasta-format sequences a few different ways.
 
 **convertSequence.pl** and **convertAlignment.pl**
-convert between sequence and alignment formats using BioPerl.  `convertAlignment.pl` can also convert aligned sequences to degapped unaligned sequences.  If you need to line-wrap a Fasta file, use
+convert between any of the sequence and alignment formats supported by BioPerl, which must be available.  `convertAlignment.pl` can also convert aligned sequences to degapped unaligned sequences.  If you need to line-wrap a Fasta file, use
 
-    convertSequence.pl -f fasta file.fa -of fasta - > outfile.fa
+    convertSequence.pl -if fasta -of fasta < unwrapped.fa > wrapped.fa
 
 **gmhmmp2Fasta.pl** and **gmhmmp2Table.pl**
 extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
@@ -129,3 +129,4 @@ collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl p
 [velvet]: http://www.ebi.ac.uk/~zerbino/velvet
 [gmhmmp]: http://www.genepro.com/Manuals/EuGM/EuGM_usage.aspx
 [cutadapt]: https://code.google.com/p/cutadapt/
+
