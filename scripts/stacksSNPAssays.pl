@@ -6,7 +6,8 @@ use feature 'say';
 use Getopt::Long;
 use Data::Dumper::Perltidy;
 
-# TODO: switch to managing SNP columns that are 1-based ?  Stacks provides 0-based columns
+# Note: SNP Columns are transformed to 1-based, from Stacks' 0-based
+# TODO: sort out >1 central snp and maxflanksnps, e.g., locus 7
 
 my %LOCUS; # key, value: locus ID, stack sequence
 
@@ -24,7 +25,7 @@ my $o_snpsfile = "batch_1.catalog.snps.tsv.gz";
 my $o_tagsfile = "batch_1.catalog.tags.tsv.gz";  # consensus for assembled loci
 my $o_minflank = 50;
 my $o_maxflanksnps = 2;
-my $D_limit = 10;
+my $D_limit = 99;
 my $o_hetsonly = 1; # we only want heterozygous SNPs
 
 GetOptions("snps=s" => \$o_snpsfile,
@@ -52,39 +53,44 @@ sub process_snps_line($) {
     chomp $_[0];
     my (undef, $sample, $locus, $column, $type, $LR, $al0, $al1, $al2, $al3) = split(/\t/, $_[0]);
     die "$o_snpsfile:$.: snp type '$type' not 'E'" if $type ne 'E';
-    return { locus => $locus, column => $column, type => $type, al0 => $al0, al1 => $al1, al2 => $al2, al3 => $al3 };
+    return { locus => $locus, column => $column + 1, type => $type, al0 => $al0, al1 => $al1, al2 => $al2, al3 => $al3 };
 }
 sub dump_locus($) {
     my $l = shift;
-    say STDERR "locus $l consensus $LOCUS{$l}->{seqlen} bp:\n$LOCUS{$l}->{seq}";
+    say STDOUT "locus $l consensus $LOCUS{$l}->{seqlen} bp:\n$LOCUS{$l}->{seq}";
     if (exists $LOCUS{$l}->{snps}) {
         my @s = sort { $a->{column} <=> $b->{column} } @{$LOCUS{$l}->{snps}};
-        say STDERR (' ' x $_->{column})."^$_->{al0}$_->{al1}$_->{al2} c".($_->{column} + 1) foreach @s;
+        say STDOUT (' ' x ($_->{column} - 1))."^$_->{al0}$_->{al1}$_->{al2} c".($_->{column} + 1) foreach @s;
+        evaluate_locus($l);
     } else {
         say "-- no snps";
     }
 }
 sub evaluate_locus($) {
-    my $l = shift;
-    # is this a locus suitable for creating a probe?
-    say STDERR "evaluating locus $l: checking for snps between $o_minflank flanking sequences";
-    my @snps = grep { $_->{
-    
+    my $l = shift; my $seqlen = $LOCUS{$l}->{seqlen};
+    # is this a locus suitable for creating a probe?  all SNPs must be two-allele SNPs
+    print STDOUT "evaluating locus $l ... ";
+    my @csnps = grep { $_->{column} > $o_minflank and $_->{column} < ($seqlen - $o_minflank + 1) and $_->{al3} eq '-' } @{$LOCUS{$l}->{snps}};
+    if (! @csnps) { say STDOUT 'no central snps'; return; }
+    my @lsnps = grep { $_->{column} <= $o_minflank and $_->{al3} eq '-' } @{$LOCUS{$l}->{snps}};
+    if (@lsnps > $o_maxflanksnps) { say STDOUT 'too many snps on left flank'; return; }
+    my @rsnps = grep { $_->{column} >= ($seqlen - $o_minflank + 1) and $_->{al3} eq '-' } @{$LOCUS{$l}->{snps}};
+    if (@rsnps > $o_maxflanksnps) { say STDOUT 'too many snps on right flank'; return; }
+    say STDOUT 'SUITABLE';
 }
 while (<$f_tagsfile>) {  # tags first, one tag per consensus stack
     my $h = process_tags_line($_);
     $LOCUS{$h->{locus}} = $h;
-    last if $. > $D_limit;
+    last if $D_limit && $. > $D_limit;
 }
 while (<$f_snpsfile>) {  # snps, 0, 1, or more than 1 per consensus stack
     my $h = process_snps_line($_);
     last if ! exists $LOCUS{$h->{locus}};  # if we have not read this locus, stop
     push @{$LOCUS{$h->{locus}}->{snps}}, $h;
 }
-say Dumper(\%LOCUS);
+#say Dumper(\%LOCUS);
 
 dump_locus($_) foreach sort { $a <=> $b } keys %LOCUS;
-exit;
 
 
 __END__
