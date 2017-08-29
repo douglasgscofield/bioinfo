@@ -1,0 +1,1 @@
+--input convertAlignment_test_01.input --if phylip --of fasta
