@@ -60,7 +60,7 @@ sub dump_locus($) {
     say STDOUT "locus $l consensus $LOCUS{$l}->{seqlen} bp:\n$LOCUS{$l}->{seq}";
     if (exists $LOCUS{$l}->{snps}) {
         my @s = sort { $a->{column} <=> $b->{column} } @{$LOCUS{$l}->{snps}};
-        say STDOUT (' ' x ($_->{column} - 1))."^$_->{al0}$_->{al1}$_->{al2} c".($_->{column} + 1) foreach @s;
+        say STDOUT (' ' x ($_->{column} - 1))."^$_->{al0}$_->{al1}$_->{al2} c$_->{column}" foreach @s;
         evaluate_locus($l);
     } else {
         say "-- no snps";
