@@ -1,0 +1,42 @@
+$VAR1 = {
+  '1' => {
+    'locus' => '1',
+    'seq' => 'CGAAGGTGAGCTCTACTTCTACTTGTTTTGTTCATGGTCTGCTTACATAAATCAATAGTAAGAAAATAATAGTTTACTCCCTTTGTTTGTACTGTGTAGCTAGTTTTAAGACTTGTTGAAGTATAT',
+    'seqlen' => 126,
+    'snps' => [
+      { 'al0' => 'G', 'al1' => 'T', 'al2' => '-', 'al3' => '-', 'column' => 62, 'locus' => '1', 'type' => 'E' },
+      { 'al0' => 'G', 'al1' => 'A', 'al2' => '-', 'al3' => '-', 'column' => 72, 'locus' => '1', 'type' => 'E' },
+      { 'al0' => 'G', 'al1' => 'T', 'al2' => '-', 'al3' => '-', 'column' => 94, 'locus' => '1', 'type' => 'E' }
+    ],
+    'sumstats' => {
+      '72' => [
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '4', 'pop' => 'Hu' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '1', 'pop' => 'Kv' },
+        { 'alp' => 'G', 'alq' => 'A', 'column' => 72, 'freqp' => '0.75000000', 'locus' => '1', 'nindiv' => '2', 'pop' => 'La' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '2', 'pop' => 'Mo' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '3', 'pop' => 'Na' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '4', 'pop' => 'Ru' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '3', 'pop' => 'Sk' },
+        { 'alp' => 'G', 'alq' => '-', 'column' => 72, 'freqp' => '1.00000000', 'locus' => '1', 'nindiv' => '1', 'pop' => 'So' }
+      ]
+    }
+  },
+  '10' => {
+    'locus' => '10',
+    'seq' => 'AATTCAAGGGAAATCTCCGTCAGAGTTCTCTCGTGTGCAGAAGACAAGATGTCTTGAAATGAAGATCATGAGCTTCTTTTATAGCCTTGGGCAGGGGTAGCCTAGTAATTTCGTCGTCGTA',
+    'seqlen' => 121,
+    'snps' => [ { 'al0' => 'G', 'al1' => 'T', 'al2' => '-', 'al3' => '-', 'column' => 94, 'locus' => '10', 'type' => 'E' } ]
+  },
+  '2' => {
+    'locus' => '2',
+    'seq' => 'AATTCTTCCTTTCCATGGTTAGACCACAAGACTTTCACTAAGGGGACTTTCTTATTCCGCAACACATGAATTTTAGAATCCACCAATCGTATTGGTTCAAGATGAACCAATCTATCCAAAG',
+    'seqlen' => 121,
+    'snps' => [
+      { 'al0' => 'C', 'al1' => 'G', 'al2' => '-', 'al3' => '-', 'column' => 13, 'locus' => '2', 'type' => 'E' },
+      { 'al0' => 'G', 'al1' => 'T', 'al2' => '-', 'al3' => '-', 'column' => 17, 'locus' => '2', 'type' => 'E' },
+      { 'al0' => 'T', 'al1' => 'G', 'al2' => '-', 'al3' => '-', 'column' => 67, 'locus' => '2', 'type' => 'E' },
+      { 'al0' => 'C', 'al1' => 'T', 'al2' => '-', 'al3' => '-', 'column' => 80, 'locus' => '2', 'type' => 'E' },
+      { 'al0' => 'G', 'al1' => 'A', 'al2' => '-', 'al3' => '-', 'column' => 89, 'locus' => '2', 'type' => 'E' },
+      { 'al0' => 'C', 'al1' => 'A', 'al2' => '-', 'al3' => '-', 'column' => 112, 'locus' => '2', 'type' => 'E' }
+    ]
+  },
