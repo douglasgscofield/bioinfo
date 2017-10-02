@@ -6,6 +6,7 @@ use feature 'say';
 use Getopt::Long;
 use Statistics::Distributions;
 use Data::Dumper;
+use diagnostics;
 #use Data::Dumper::Perltidy;
 $Data::Dumper::Fill = 160;
 $Data::Dumper::Indent = 1;
@@ -93,9 +94,10 @@ my $o_snpsfile;
 my $o_tagsfile;  # consensus for assembled loci
 my $o_sumstatsfile;  # summary statistics per locus
 my $o_alpha = 0.05;   # alpha value for frequency confidence intervals
+my $o_ploidy = 2;   # ploidy of the study species
 my $o_minflank = 50;
 my $o_maxflanksnps = 3;
-my $D_limit = 10;
+my $D_limit = 1;
 my $o_templatename;
 my $o_padding = 7;
 my $o_verbose = 0;
@@ -189,30 +191,30 @@ while (<$f_sumstatsfile>) {  # summary statistics for each SNP in each populatio
     next if /^#/;
     my $h = process_sumstats_line($_);
     #print "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.3f", $h->{freqp}).($h->{oland}?" oland":"").($h->{private}?" private":"") if 1;
-    print "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.3f", $h->{freqp}) if 1;
+    my $out = "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.3f", $h->{freqp});
     if (! exists $LOCUS{$h->{locus}}) { # if we have not read this locus, stop
-        say " LOCUS NOT READ, BAILING" if 1;
+        say "$out LOCUS NOT READ, BAILING";
         last;
     }
     if (! is_central_SNP($LOCUS{$h->{locus}}, $h->{column})) {
-        print "\n" if 1;
+        #print "\n" if 1;
         next;
     }
-    say " CENTRAL" if 1;
+    say "$out CENTRAL" if 1;
     push @{$LOCUS{$h->{locus}}->{sumstats}->{$h->{column}}}, $h;
 }
 say Pretty(Dumper(\%LOCUS));
-exit 1;
+#exit 1;
 
 
 process_locus($LOCUS{$_}) foreach sort { $a <=> $b } keys %LOCUS;
 
-say STDOUT "*** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "");
 if ($o_annotatetemplate) {
-    say STDOUT "*** Output: name <tab> locus <tab> focal SNP (0-based) <tab> n_lsnps:n_rsnps <tab> template";
+    say STDOUT "*** Output: name locus focal_SNP_0-based n_lsnps:n_rsnps template";
 } else {
     say STDOUT "*** Output: name template";
 }
+say STDOUT "*** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "");
 
 
 ###############################
@@ -269,8 +271,36 @@ sub is_central_SNP($$) {
     return ($column > $o_minflank and $column < ($locus->{seqlen} - $o_minflank + 1)) ? 1 : 0;
 }
 
-sub condense_substats($) {
+sub condense_sumstats($) {
     my $locus = shift;
+    my $sumstats = $locus->{sumstats};
+    foreach my $k (sort keys %$sumstats) {
+        say "locus $locus->{locus} \@ $k";
+        my $npop = @{$sumstats->{$k}};
+        my %oland;
+        my %other;
+        foreach (@{$sumstats->{$k}}) {
+            my $nindiv  = $_->{nindiv};
+            my $nhap    = $nindiv * $o_ploidy;
+            my $nq      = $nhap - ($nhap * $_->{freqp});
+            my $is_poly = $_->{freqp} < 1.0 && $_->{freqp} > 0.0;
+            my $update_group = sub {
+                my $h = shift;
+                $h->{npop}++;
+                $h->{nindiv}  += $nindiv;
+                $h->{nhap}    += $nhap;
+                $h->{nq}      += $nq;
+                $h->{npoly}   += $is_poly;
+                $h->{qfreq} = $h->{nq} / $h->{nhap};
+                $h->{qci} = [ confidence_interval($h->{nhap}, $h->{nq}, $o_alpha, 0) ];
+            };
+            $update_group->(is_oland($_->{pop}) ? \%oland : \%other);
+        }
+        print "oland ";
+        say "npop $_->{npop} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq} npoly $_->{npoly}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%oland);
+        print "other ";
+        say "npop $_->{npop} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq} npoly $_->{npoly}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%other);
+    }
     # count oland and non-oland populations that are polymorphic
     # calculate frequencies
     # calculate binomial probabilities of observed frequencies, with confidence intervals
@@ -296,6 +326,7 @@ sub confidence_interval($$$$) {
         my $pm = $z * sqrt((1.0 / $n) * $success * ($n - $success));  # the +/- part
         @ci = map { (1.0 / $n) * ($success + ($_ * $pm)) } (-1.0, +1.0);
     } else { die "unknown method: $method"; }
+    @ci = map { sprintf("%.4f", $_) } @ci;
     return @ci;
 }
 
