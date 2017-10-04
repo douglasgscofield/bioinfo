@@ -73,7 +73,8 @@ my %REV_IUB = (
 my %LOCUS; # key, value: locus ID, stack sequence
 my $n_templates = 0;
 
-my %oland = map { $_ => 1 } qw/Gr Kv La Me Mo Na Re To Vi/;
+my %OLAND = map { $_ => 1 } qw/Gr Kv La Me Mo Na Re To Vi/;
+$OLAND{OO} = 1;  # lumped Oland population
 
 sub process_tags_line($);
 sub process_snps_line($);
@@ -86,6 +87,7 @@ sub dump_locus($);
 sub create_locus_template($);
 sub is_oland($);
 sub is_central_SNP($$);
+sub binomial_confint($$$$);
 
 # these catalog files are produced by cstacks
 
@@ -105,6 +107,7 @@ my $o_hetsonly = 1; # we only want heterozygous SNPs
 my $o_centralsnpgap = 5;
 my $o_trimtemplate = 1;
 my $o_annotatetemplate = 1;
+my $o_lumpoland = 1;
 
 sub usage {
     print STDERR join("", @_)."
@@ -123,6 +126,7 @@ $0: process Stacks batch files to produce SNP-assay templates
     --padding INT          0-padded with for number suffix on template name [$o_padding]
     --trimtemplate         trim templates to have minflank+SNP+minflank bases
     --annotatetemplate     add annotation columns to template output, for filtering
+    --lumpoland            lump Oland populations into one population [$o_lumpoland]
     --D_limit INT          only read this number of templates; for debugging
     --verbose              verbose debugging output
 
@@ -143,9 +147,12 @@ GetOptions("dir=s" => \$o_dir,
            "padding=i" => \$o_padding,
            "trimtemplate" => \$o_trimtemplate,
            "annotatetemplate" => \$o_annotatetemplate,
+           "lumpoland:1" => \$o_lumpoland,
            "D_limit=i" => \$D_limit,
            "verbose:1" => \$o_verbose,
 ) or usage();
+
+$o_lumpoland || die "Can only --lumpoland at this time";
 
 if ($o_dir) {
     $o_snpsfile ||= "$o_dir/batch_1.catalog.snps.tsv.gz";
@@ -262,7 +269,7 @@ sub process_sumstats_line($) {
 
 
 sub is_oland($) {
-    return exists($oland{substr($_[0], 0, 2)});
+    return exists($OLAND{substr($_[0], 0, 2)});
 }
 
 
@@ -270,6 +277,7 @@ sub is_central_SNP($$) {
     my ($locus, $column) = @_;
     return ($column > $o_minflank and $column < ($locus->{seqlen} - $o_minflank + 1)) ? 1 : 0;
 }
+
 
 sub condense_sumstats($) {
     my $locus = shift;
@@ -284,6 +292,7 @@ sub condense_sumstats($) {
             my $nhap    = $nindiv * $o_ploidy;
             my $nq      = $nhap - ($nhap * $_->{freqp});
             my $is_poly = $_->{freqp} < 1.0 && $_->{freqp} > 0.0;
+            my $has_q   = $_->{freqp} < 1.0;
             my $update_group = sub {
                 my $h = shift;
                 $h->{npop}++;
@@ -291,40 +300,67 @@ sub condense_sumstats($) {
                 $h->{nhap}    += $nhap;
                 $h->{nq}      += $nq;
                 $h->{npoly}   += $is_poly;
+                $h->{nwithq}  += $has_q;
                 $h->{qfreq} = $h->{nq} / $h->{nhap};
-                $h->{qci} = [ confidence_interval($h->{nhap}, $h->{nq}, $o_alpha, 0) ];
+                $h->{qci} = [ binomial_confint($h->{nhap}, $h->{nq}, $o_alpha, 0) ];
             };
             $update_group->(is_oland($_->{pop}) ? \%oland : \%other);
         }
-        print "oland ";
-        say "npop $_->{npop} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq} npoly $_->{npoly}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%oland);
-        print "other ";
-        say "npop $_->{npop} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq} npoly $_->{npoly}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%other);
+        if ($o_verbose) {
+            print "oland ";
+            say "npop $_->{npop} npoly $_->{npoly} nwithq $_->{nwithq} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%oland);
+            print "other ";
+            say "npop $_->{npop} npoly $_->{npoly} nwithq $_->{nwithq} nindiv $_->{nindiv} nhap $_->{nhap} nq $_->{nq}\t$_->{qfreq}\t[$_->{qci}->[0], $_->{qci}->[1]]" for (\%other);
+        }
+        # now condense
+        my $ans = { in_oland => $oland{nwithq} > 0,
+                    in_other => $other{nwithq} > 0,
+                    npop => $other{npop},
+                    nwithq => $other{nwithq},
+                    npoly => $other{npoly} };
+        $ans->{lumped} = $o_lumpoland;
+        if ($o_lumpoland) {
+            $ans->{nwithq} += $oland{nwithq} > 0;
+            $ans->{npop} += 1 if $oland{npop};
+            $ans->{npoly} += $oland{npoly} > 0;
+            $ans->{qfreq} = $other{qfreq};
+            $ans->{qci} = $other{qci};
+        } else {
+            $ans->{nwithq} += $oland{nwithq};
+            $ans->{npop} += $oland{npop};
+            $ans->{npoly} += $oland{npoly};
+            my ($nq, $nhap) = ($other{nq} + $oland{nq}, $other{nhap} + $oland{nhap});
+            $ans->{qfreq} = $nq / $nhap;
+            $ans->{qci} = [ binomial_confint($nhap, $nq, $o_alpha, 0) ];
+        }
+        print Dumper($ans) if $o_verbose;
+        $sumstats->{$k} = $ans;
     }
-    # count oland and non-oland populations that are polymorphic
-    # calculate frequencies
-    # calculate binomial probabilities of observed frequencies, with confidence intervals
-    # compute confidence intervals using Wilson
 }
 
-sub confidence_interval($$$$) {
+
+sub binomial_confint($$$$) {
     # https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+    # 4 digits right of decimal point
+    # 1: number of trials
+    # 2: number of successes
+    # 3: alpha level
+    # 4: method: 0: wilson  1: normal approx using adjusted p  2: normal approx
     my ($n, $success, $alpha, $method) = @_;
     my $z = Statistics::Distributions::udistr($alpha / 2);  # two-sized z-score
     usage("alpha $alpha seems inappropriate, z-score is $z") if $z < 0;
-    my $p = $success / $n;
     my @ci;
     if (! $method) { # wilson's method
         my $z2 = $z * $z;
-        my $pm = $z * sqrt(((1.0/$n) * $success * ($n - $success)) + 0.25*$z2);
-        @ci = map { (1.0/($n + $z2)) * ($success + 0.5*$z2 + ($_ * $pm)) } (-1.0, +1.0);
+        my $plusminus = $z * sqrt(((1.0/$n) * $success * ($n - $success)) + 0.25*$z2);
+        @ci = map { (1.0/($n + $z2)) * ($success + 0.5*$z2 + ($_ * $plusminus)) } (-1.0, +1.0);
     } elsif ($method == 1) { # adjust p and use normal approximation
-        $p = ($success + 2) / ($n + 4);
-        my $pm = $z * sqrt((1.0 / $n) * $p * (1.0 - $p));  # the +/- part
-        @ci = map { $p + ($_ * $pm) } (-1.0, +1.0);
+        my $p = ($success + 2) / ($n + 4);
+        my $plusminus = $z * sqrt((1.0 / $n) * $p * (1.0 - $p));  # the +/- part
+        @ci = map { $p + ($_ * $plusminus) } (-1.0, +1.0);
     } elsif ($method == 2) { # normal approximation, alternative factorisation
-        my $pm = $z * sqrt((1.0 / $n) * $success * ($n - $success));  # the +/- part
-        @ci = map { (1.0 / $n) * ($success + ($_ * $pm)) } (-1.0, +1.0);
+        my $plusminus = $z * sqrt((1.0 / $n) * $success * ($n - $success));  # the +/- part
+        @ci = map { (1.0 / $n) * ($success + ($_ * $plusminus)) } (-1.0, +1.0);
     } else { die "unknown method: $method"; }
     @ci = map { sprintf("%.4f", $_) } @ci;
     return @ci;
@@ -477,6 +513,8 @@ sub evaluate_locus($) {
         say STDOUT 'too many SNPs on right flank' if $o_verbose;
         return 0;
     }
+
+    #if ($locus->{sumstats}->{$csnps[0]->{column}};
 
     say STDOUT "SUITABLE SNP at column $csnps[0]->{column}" if $o_verbose;
 
