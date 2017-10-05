@@ -42,23 +42,9 @@ sub Pretty  # from http://www.perlmonks.org/?node_id=490421
 # rather than depend on BioPerl, copy the hash %Bio::Tools::IUPAC::REV_IUB
 # source at http://cpansearch.perl.org/src/CJFIELDS/BioPerl-1.007002/Bio/Tools/IUPAC.pm
 my %REV_IUB = (
-    A    => 'A',
-    T    => 'T',
-    U    => 'U',
-    C    => 'C',
-    G    => 'G',
-    AC   => 'M',
-    AG   => 'R',
-    AT   => 'W',
-    CG   => 'S',
-    CT   => 'Y',
-    GT   => 'K',
-    ACG  => 'V',
-    ACT  => 'H',
-    AGT  => 'D',
-    CGT  => 'B',
-    ACGT => 'N',
-    N    => 'N'
+    A    => 'A', T    => 'T', U    => 'U', C    => 'C', G    => 'G',
+    AC   => 'M', AG   => 'R', AT   => 'W', CG   => 'S', CT   => 'Y', GT   => 'K',
+    ACG  => 'V', ACT  => 'H', AGT  => 'D', CGT  => 'B', ACGT => 'N', N    => 'N'
 );
 
 # Note: SNP Columns are transformed to 1-based, from Stacks' 0-based
@@ -76,6 +62,7 @@ my $n_templates = 0;
 my %NORTH = map { $_ => 1 } qw/Ab Hs Li Ru Sk Tr/;
 my %OLAND = map { $_ => 1 } qw/Gr Kv La Me Mo Na Re To Vi/;
 my %REGIONS = map { $_ => $_ } qw/north other oland/;
+my %POPULATIONS_SEEN;
 
 sub is_oland($) {
     return exists($OLAND{substr($_[0], 0, 2)});
@@ -105,6 +92,8 @@ sub dump_locus($);
 sub create_locus_template($);
 sub is_central_SNP($$);
 sub binomial_confint($$$$);
+sub check_SNP_has_sumstats($$);
+sub check_SNP_sumstats_OK($$);
 
 # these catalog files are produced by cstacks
 
@@ -131,6 +120,17 @@ my $o_crit_n_region = 2;
 my $o_crit_nwithq = 1;
 my $o_crit_qfreq = 0.01;
 
+my $N_locus_no_SNP = 0;
+my $N_locus_SNP_3allele = 0;
+my $N_locus_no_central_SNP = 0;
+my $N_locus_central_SNP_no_sumstats = 0;
+my $N_locus_central_SNP_no_sumstats_OK = 0;
+my $N_locus_central_SNP_crowded = 0;
+my $N_locus_central_SNP_multiple_one_OK = 0;
+my $N_locus_central_SNP_multiple_OK = 0;
+my $N_locus_central_SNP_multiple_remaining = 0;
+my $N_locus_flank_SNP_toomany = 0;
+
 sub usage {
     print STDERR join("", @_)."
 
@@ -152,8 +152,8 @@ To be considered, stack consensus sequences must pass these basic criteria:
 Only central SNPs that pass simple filtering according to the following criteria are considered:
 
     --crit_n_region INT    min number of regions stack must be scored in [$o_crit_n_region]
-    --crit_nwithq INT      min number of populations with the minor allele [$o_nwithq]
-    --crit_qfreq FLOAT     min minor allele frequency across all scored populations [$o_qfreq]
+    --crit_nwithq INT      min number of populations with the minor allele [$o_crit_nwithq]
+    --crit_qfreq FLOAT     min minor allele frequency across all scored populations [$o_crit_qfreq]
 
 For all SNP minor alleles, binomial confints are calculated as well:
 
@@ -200,6 +200,7 @@ GetOptions("dir=s"             => \$o_dir,
            "padding=i"         => \$o_padding,
            "trimtemplate"      => \$o_trimtemplate,
            "annotatetemplate"  => \$o_annotatetemplate,
+           "freqdigits=i"      => \$o_freqdigits,
            "D_limit=i"         => \$D_limit,
            "verbose:1"         => \$o_verbose,
 ) or usage();
@@ -247,16 +248,13 @@ while (<$f_snpsfile>) {  # snps, 0, 1, or more than 1 per consensus stack
 while (<$f_sumstatsfile>) {  # summary statistics for each SNP in each population
     next if /^#/;
     my $h = process_sumstats_line($_);
-    #print "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.3f", $h->{freqp}).($h->{oland}?" oland":"").($h->{private}?" private":"") if 1;
-    my $out = "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.3f", $h->{freqp});
+    $POPULATIONS_SEEN{$h->{pop}}++;
+    my $out = "$o_sumstatsfile:$.: loc:$h->{locus} \@$h->{column} $h->{pop}:$h->{nindiv} $h->{alp}/$h->{alq} ".sprintf("%.${o_freqdigits}f", $h->{freqp});
     if (! exists $LOCUS{$h->{locus}}) { # if we have not read this locus, stop
-        #say "$out LOCUS NOT READ, SKIPPING" if $o_verbose;
+        say "$out LOCUS NOT READ, SKIPPING" if $o_verbose;
         next;
     }
-    if (! is_central_SNP($LOCUS{$h->{locus}}, $h->{column})) {
-        #print "\n" if 1;
-        next;
-    }
+    next if ! is_central_SNP($LOCUS{$h->{locus}}, $h->{column});
     say "$out CENTRAL" if $o_verbose;
     push @{$LOCUS{$h->{locus}}->{sumstats}->{$h->{column}}}, $h;
 }
@@ -266,14 +264,29 @@ say Pretty(Dumper(\%LOCUS)) if $o_verbose;
 
 process_locus($LOCUS{$_}) foreach sort { $a <=> $b } keys %LOCUS;
 
-if ($o_annotatetemplate) {
-    say STDOUT "*** Output: name locus focal_SNP_0-based nwithq/npop:in_oland qfreq,[ci] n_lsnps:n_rsnps template";
-} else {
-    say STDOUT "*** Output: name template";
+say STDOUT "
+*** Output: name ".($o_annotatetemplate ?  "regions_scored(pops no,ot,ol) regions_withq(pops no,ot,ol) qfreq(no,ot,ol) SNP_column n_lsnps:n_rsnps" : "")." template
+***
+*** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "")."
+***
+*** N_locus_no_SNP                          $N_locus_no_SNP
+*** N_locus_SNP_3allele . . . . . . . . . . $N_locus_SNP_3allele
+*** N_locus_no_central_SNP                  $N_locus_no_central_SNP
+*** N_locus_central_SNP_no_sumstats . . . . $N_locus_central_SNP_no_sumstats
+*** N_locus_central_SNP_no_sumstats_OK      $N_locus_central_SNP_no_sumstats_OK
+*** N_locus_central_SNP_crowded . . . . . . $N_locus_central_SNP_crowded
+*** N_locus_central_SNP_multiple_one_OK     $N_locus_central_SNP_multiple_one_OK
+*** N_locus_central_SNP_multiple_OK . . . . $N_locus_central_SNP_multiple_OK
+*** N_locus_central_SNP_multiple_remaining  $N_locus_central_SNP_multiple_remaining
+*** N_locus_flank_SNP_toomany . . . . . . . $N_locus_flank_SNP_toomany
+***
+*** The following populations have been seen (name, region, num scored stacks)";
+foreach (sort keys %POPULATIONS_SEEN) {
+    say STDOUT "*** ".join("\t", $_, pop_region($_), $POPULATIONS_SEEN{$_});
 }
-say STDOUT "*** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "");
 
 
+###############################
 ###############################
 #
 # subroutines
@@ -389,7 +402,7 @@ sub condense_sumstats($) {
     foreach (0 .. $#k_rank) {
         $sumstats->{$k_rank[$_]}->{_rank} = $_ + 1;
     }
-    print "condense_sumstats:veryend:".Pretty(Dumper($locus));# if $o_verbose;
+    print "condense_sumstats:veryend:".Pretty(Dumper($locus)) if $o_verbose;
 }
 
 
@@ -448,13 +461,13 @@ sub print_locus_template($$) {
             "$locus->{focal_sumstats}->{oland}->{nwithq})"
             ,
             # _qfreq(qfreq,qfreq,qfreq)
-            "$locus->{focal_sumstats}->{_qfreq}(".
-            "$locus->{focal_sumstats}->{north}->{qfreq},".
-            "$locus->{focal_sumstats}->{other}->{qfreq},".
-            "$locus->{focal_sumstats}->{oland}->{qfreq})"
+            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{_qfreq})."(".
+            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{north}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{other}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{oland}->{qfreq}).")"
             ,
             $locus->{focal_SNP} - 1,
-            $locus->{n_lsnps}:$locus->{n_rsnps},
+            "$locus->{n_lsnps}:$locus->{n_rsnps}",
             $template);
     } else {
         say STDOUT "$name $template";
@@ -482,14 +495,7 @@ sub dump_locus($) {
 
 sub create_locus_template($) {
     my $locus = shift;
-    if (! exists $locus->{focal_SNP}) {
-        say "no focal SNP for locus $locus->{locus}, not creating template" if $o_verbose;
-        return;
-    }
-    if ($locus->{focal_SNP} == 0) {
-        say "*** focal_SNP key exists but value == 0";
-        exit 1;
-    }
+    die "create_locus_template: locus $locus->{locus} has no focal SNP" if ! exists $locus->{focal_SNP};
     my $name = $o_templatename.sprintf("%.${o_padding}d", $locus->{locus});
     my $template = $locus->{seq};
     my $focal_SNP;
@@ -515,6 +521,7 @@ sub evaluate_locus($) {
     my $locus = shift;
     print STDOUT "evaluating locus $locus->{locus} ... " if $o_verbose;
     if (! exists $locus->{snps}) {
+        ++$N_locus_no_SNP;
         say STDOUT "no SNPs" if $o_verbose; 
         return 0;
     }
@@ -526,6 +533,7 @@ sub evaluate_locus($) {
     # reject templates with any 3+ allele SNPs
     my @snps3 = grep { $_->{al3} ne '-' } @{$locus->{snps}};
     if (@snps3) {
+        ++$N_locus_SNP_3allele;
         say STDOUT 'at least one 3+ allele SNP' if $o_verbose; 
         return 0;
     }
@@ -534,7 +542,14 @@ sub evaluate_locus($) {
     #my @csnps = grep { $_->{column} > $o_minflank and $_->{column} < ($locus->{seqlen} - $o_minflank + 1) } @{$locus->{snps}};
     my @csnps = grep { is_central_SNP($locus, $_->{column}) } @{$locus->{snps}};
     if (! @csnps) {
+        ++$N_locus_no_central_SNP;
         say STDOUT 'no central snps' if $o_verbose;
+        return 0;
+    }
+    my @i_csnps_has_sumstats = check_SNP_has_sumstats($locus, \@csnps);
+    if (@i_csnps_has_sumstats == 0) {
+        ++$N_locus_central_SNP_no_sumstats;
+        say STDOUT "evaluate_locus: locus $locus->{locus}: no central SNP has sumstats" if $o_verbose;
         return 0;
     }
 
@@ -544,15 +559,17 @@ sub evaluate_locus($) {
     my @rsnps = grep { $_->{column} >= ($locus->{seqlen} - $o_minflank + 1) } @{$locus->{snps}};
     my $r_column = @rsnps > 0 ? $rsnps[0]->{column} : 0;  # column of the leftmost right SNP
 
-    my @csnps_ok = check_SNP_sumstats($locus, \@csnps);
-    if (@csnps_ok == 0) {
-        say STDOUT 'no central SNP has sumstats OK';# if $o_verbose;
+    my @i_csnps_ok = check_SNP_sumstats_OK($locus, \@csnps);
+    if (@i_csnps_ok == 0) {
+        ++$N_locus_central_SNP_no_sumstats_OK;
+        say STDOUT "evaluate_locus: locus $locus->{locus}: no central SNP has sumstats OK" if $o_verbose;
         return 0;
     }
 
     if (@csnps == 1) {
         if (($l_column && ($csnps[0]->{column} - $l_column) < $o_centralsnpgap) or
             ($r_column && ($r_column - $csnps[0]->{column}) < $o_centralsnpgap)) {
+            ++$N_locus_central_SNP_crowded;
             say STDOUT 'single central SNP too close to SNP in flank' if $o_verbose;
             return 0;
         }
@@ -560,37 +577,43 @@ sub evaluate_locus($) {
         # none of the closeness checks require the SNPs to be sumstats_OK
         my @close = grep { ($csnps[$_ + 1]->{column} - $csnps[$_]->{column}) < $o_centralsnpgap }  0 .. ($#csnps - 1);
         if (@close) {
+            ++$N_locus_central_SNP_crowded;
             say STDOUT 'at least two central SNPs are too close to each other' if $o_verbose;
             return 0;
         }
         if (($l_column && ($csnps[0]->{column} - $l_column) < $o_centralsnpgap) or
             ($r_column && ($r_column - $csnps[$#csnps]->{column}) < $o_centralsnpgap)) {
+            ++$N_locus_central_SNP_crowded;
             say STDOUT 'at least one central SNP too close to SNP in flank' if $o_verbose;
             return 0;
         }
-        if (@csnps_ok == 1) {  # if only one SNP OK, then focus on that
-            say STDOUT 'multiple central SNPs and only one is OK';# if $o_verbose;
-            while (@csnps > $csnps_ok[0] + 1) { # take non-OK SNPs off the right onto @rsnps
+        if (@i_csnps_ok == 1) {  # if only one SNP OK, then focus on that
+            ++$N_locus_central_SNP_multiple_one_OK;
+            say STDOUT 'multiple central SNPs and only one is OK' if $o_verbose;
+            while (@csnps > $i_csnps_ok[0] + 1) { # take non-OK SNPs off the right onto @rsnps
                 unshift @rsnps, pop @csnps;
             }
             while (@csnps > 1) { # take non-OK SNPs off the left side onto @lsnps
                 push @lsnps, shift @csnps;
             }
         } else {  # more than one OK SNP, pick the best by rank
+            ++$N_locus_central_SNP_multiple_OK;
             # find the position in @csnps of the SNP with highest rank
-            my ($i, $r) = (-1, 0); # i is the position
-            foreach (@csnps_ok) {
+            my ($i, $r) = (-1, 0); # i is the position, r is the highest rank seen so far
+            foreach (@i_csnps_ok) {
                 die "both i and r must be unset at same time" if $i == -1 xor $r == 0;
-                if ($r && $r == $csnps->[$_]->{sumstats}->{_rank}) {
-                    say STDOUT "evaluate_locus: duplicate ranks $r for OK central SNPS $i and $_";
-                    say STDOUT Pretty(Dumper($locus));
+                if (($i == -1 && $r == 0) or $csnps[$_]->{sumstats}->{_rank} > $r) {
+                    $i = $_;
+                    $r = $csnps[$_]->{sumstats}->{_rank};
                 }
-                if ($i == 0) {
-                $i = $_ $csnps->[$_]->{sumstats}->{_rank} if $i == 0;
-                 $csnps->[$_]->{sumstats}->{_rank}
-                if $_->
             }
-            # shift the others to the corresponding lists
+            say STDOUT "multiple central SNPs and the one at position $i with rank $r is the best" if $o_verbose;
+            while (@csnps > $i + 1) { # take lower-rank SNPs off the right onto @rsnps
+                unshift @rsnps, pop @csnps;
+            }
+            while (@csnps > 1) { # take lower-rank SNPs off the left side onto @lsnps
+                push @lsnps, shift @csnps;
+            }
         }
             
         # choose a central SNP, move the other(s) to the flanks
@@ -598,6 +621,8 @@ sub evaluate_locus($) {
         # 1) favour equal numbers of SNPs on both sides of central SNP
         # 2) favour a more central SNP for the focal SNP over a less central SNP
         while (@csnps > 1) {
+            ++$N_locus_central_SNP_multiple_remaining;
+            say STDOUT "*** After selecting among OK SNPs, it still seems \@csnps has more than 1 SNP ... this should not happen";
             if (@lsnps < @rsnps) { # move leftmost central SNP to end of left flank
                 push @lsnps, shift @csnps;
             } elsif (@lsnps > @rsnps) { # move rightmost central SNP to beginning of right flank
@@ -616,10 +641,12 @@ sub evaluate_locus($) {
         }
     }
     if (@lsnps > $o_maxflanksnps) {
+        ++$N_locus_flank_SNP_toomany;
         say STDOUT 'too many SNPs on left flank' if $o_verbose;
         return 0;
     }
     if (@rsnps > $o_maxflanksnps) {
+        ++$N_locus_flank_SNP_toomany;
         say STDOUT 'too many SNPs on right flank' if $o_verbose;
         return 0;
     }
@@ -635,15 +662,28 @@ sub evaluate_locus($) {
     return $locus->{focal_SNP};
 }
 
-sub check_SNP_sumstats($$) {
-    my ($locus, $csnps) = @_;
+
+sub check_SNP_has_sumstats($$) {
+    my ($locus, $snps) = @_;
     my @ok;
     my $i = -1;
-    foreach (@$csnps) {
+    foreach (@$snps) {
         ++$i;
-        my $ok;
+        my $ok = (defined $locus->{sumstats}->{$_->{column}}) ? 1 : 0;
+        push @ok, $i if $ok;
+    }
+    return @ok;
+}
+
+
+sub check_SNP_sumstats_OK($$) {
+    my ($locus, $snps) = @_;
+    my @ok;
+    my $i = -1;
+    foreach (@$snps) {
+        ++$i;
         my $s = $locus->{sumstats}->{$_->{column}};
-        $ok = (defined $s and
+        my $ok = (defined $s and
                $s->{_n_region} >= $o_crit_n_region and
                $s->{_nwithq}   >= $o_crit_nwithq   and
                $s->{_qfreq}    >= $o_crit_qfreq)       ? 1 : 0;
