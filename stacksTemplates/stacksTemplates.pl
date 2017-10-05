@@ -105,11 +105,10 @@ my $o_alpha = 0.05;   # alpha value for frequency confidence intervals
 my $o_ploidy = 2;   # ploidy of the study species
 my $o_minflank = 50;
 my $o_maxflanksnps = 3;
-my $D_limit = 1;
+my $D_limit = 0;
 my $o_templatename;
 my $o_padding = 7;
 my $o_verbose = 0;
-my $o_hetsonly = 1; # we only want heterozygous SNPs
 my $o_centralsnpgap = 5;
 my $o_trimtemplate = 1;
 my $o_annotatetemplate = 1;
@@ -264,8 +263,27 @@ say Pretty(Dumper(\%LOCUS)) if $o_verbose;
 
 process_locus($LOCUS{$_}) foreach sort { $a <=> $b } keys %LOCUS;
 
-say STDOUT "
-*** Output: name ".($o_annotatetemplate ?  "regions_scored(pops no,ot,ol) regions_withq(pops no,ot,ol) qfreq(no,ot,ol) SNP_column n_lsnps:n_rsnps" : "")." template
+say STDERR "
+*** dir . . . . . . . . . $o_dir
+*** SNPs file             $o_snpsfile
+*** tags file . . . . . . $o_tagsfile
+*** sumstats file         $o_sumstatsfile
+*** template name . . . . $o_templatename
+*** frequency digits      $o_freqdigits
+*** locus number padding. $o_padding
+*** alpha for confint     $o_alpha
+*** ploidy. . . . . . . . $o_ploidy
+*** D_limit (debugging)   $D_limit
+*** verbose (debugging) . $o_verbose
+***
+*** minimum flank length                             $o_minflank
+*** maximum SNPs on each flank . . . . . . . . . . . $o_maxflanksnps
+*** minimum gap between central SNPs                 $o_centralsnpgap
+*** minimum number of scored regions . . . . . . . . $o_crit_n_region
+*** minimum number of populations with minor allele  $o_crit_nwithq
+*** minimum minor allele frequency . . . . . . . . . $o_crit_qfreq
+***
+*** Templates: name ".($o_annotatetemplate ?  "regions_scored(pops nor,oth,ola) regions_withq(pops nor,oth,ola) qfreq(nor,oth,ola) SNP_column n_lsnps:n_rsnps" : "")." template
 ***
 *** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "")."
 ***
@@ -280,9 +298,9 @@ say STDOUT "
 *** N_locus_central_SNP_multiple_remaining  $N_locus_central_SNP_multiple_remaining
 *** N_locus_flank_SNP_toomany . . . . . . . $N_locus_flank_SNP_toomany
 ***
-*** The following populations have been seen (name, region, num scored stacks)";
+*** The following populations were observed (name, region, number of scored stacks)";
 foreach (sort keys %POPULATIONS_SEEN) {
-    say STDOUT "*** ".join("\t", $_, pop_region($_), $POPULATIONS_SEEN{$_});
+    say STDERR "*** ".join("\t", $_, pop_region($_), $POPULATIONS_SEEN{$_});
 }
 
 
