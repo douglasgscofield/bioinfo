@@ -106,7 +106,8 @@ my $o_ploidy = 2;   # ploidy of the study species
 my $o_minflank = 50;
 my $o_maxflanksnps = 3;
 my $D_limit = 0;
-my $o_templatename;
+my $o_name;
+my $o_extended;
 my $o_padding = 7;
 my $o_verbose = 0;
 my $o_centralsnpgap = 5;
@@ -170,7 +171,21 @@ The central SNP that is ranked most highly is used, and the others are shifted t
 
 These options control output.
 
-    --templatename STRING  name prefix for templates
+    --name STRING          name prefix for templates, only one of --name or --extended allowed
+    --extended STRING      use extended template names, with STRING for the nonvariable prefix
+                           Extended names are particular to this study.
+                           STRINGR#cP##p###_locusnumber0padded
+                           STRING: the prefix
+                           R#c   : the regions containing the minor allele
+                                   R3A : all regions
+                                   R1N : only north
+                                   R1T : only other
+                                   R1L : only oland
+                                   R2X : north and other
+                                   R2Y : north and oland
+                                   R2Z : other and oland
+                           P##   : Total number of populations with minor allele, 0-padded
+                           p###  : Number north, other, oland populations containing minor allele
     --padding INT          0-padded with for number suffix on template name [$o_padding]
     --trimtemplate         trim templates to have minflank+SNP+minflank bases [$o_trimtemplate]
     --annotatetemplate     add annotation columns to template output, for filtering [$o_annotatetemplate]
@@ -195,7 +210,8 @@ GetOptions("dir=s"             => \$o_dir,
            "crit_nwithq=i"     => \$o_crit_nwithq,
            "crit_qfreq=f"      => \$o_crit_qfreq,
            "alpha=f"           => \$o_alpha,
-           "templatename=s"    => \$o_templatename,
+           "name=s"            => \$o_name,
+           "extended=s"        => \$o_extended,
            "padding=i"         => \$o_padding,
            "trimtemplate"      => \$o_trimtemplate,
            "annotatetemplate"  => \$o_annotatetemplate,
@@ -204,16 +220,18 @@ GetOptions("dir=s"             => \$o_dir,
            "verbose:1"         => \$o_verbose,
 ) or usage();
 
+($o_name xor $o_extended) or die "only one of --name and --extended allowed";
+
 if ($o_dir) {
     $o_snpsfile ||= "$o_dir/batch_1.catalog.snps.tsv.gz";
     $o_tagsfile ||= "$o_dir/batch_1.catalog.tags.tsv.gz";
     $o_sumstatsfile ||= "$o_dir/batch_1.sumstats.tsv";
-    $o_templatename ||= "${o_dir}_";
+    $o_name ||= "${o_dir}_";
 } else {
     $o_snpsfile ||= "batch_1.catalog.snps.tsv.gz";
     $o_tagsfile ||= "batch_1.catalog.tags.tsv.gz";
     $o_sumstatsfile ||= "batch_1.sumstats.tsv";
-    $o_templatename ||= "batch_1_";
+    $o_name ||= "batch_1_";
 }
 
 open my $f_snpsfile, '-|', "gzip -dcf $o_snpsfile" or die "could not open $o_snpsfile for reading: $!";
@@ -264,17 +282,18 @@ say Pretty(Dumper(\%LOCUS)) if $o_verbose;
 process_locus($LOCUS{$_}) foreach sort { $a <=> $b } keys %LOCUS;
 
 say STDERR "
-*** dir . . . . . . . . . $o_dir
-*** SNPs file             $o_snpsfile
-*** tags file . . . . . . $o_tagsfile
-*** sumstats file         $o_sumstatsfile
-*** template name . . . . $o_templatename
-*** frequency digits      $o_freqdigits
-*** locus number padding. $o_padding
-*** alpha for confint     $o_alpha
-*** ploidy. . . . . . . . $o_ploidy
-*** D_limit (debugging)   $D_limit
-*** verbose (debugging) . $o_verbose
+*** dir . . . . . . . . . . $o_dir
+*** SNPs file               $o_snpsfile
+*** tags file . . . . . . . $o_tagsfile
+*** sumstats file           $o_sumstatsfile
+*** template name . . . . . $o_name
+*** extended template name  $o_extended
+*** frequency digits. . . . $o_freqdigits
+*** locus number padding    $o_padding
+*** alpha for confint . . . $o_alpha
+*** ploidy                  $o_ploidy
+*** D_limit (debugging)   . $D_limit
+*** verbose (debugging) . . $o_verbose
 ***
 *** minimum flank length                             $o_minflank
 *** maximum SNPs on each flank . . . . . . . . . . . $o_maxflanksnps
@@ -283,7 +302,20 @@ say STDERR "
 *** minimum number of populations with minor allele  $o_crit_nwithq
 *** minimum minor allele frequency . . . . . . . . . $o_crit_qfreq
 ***
-*** Templates: name ".($o_annotatetemplate ?  "regions_scored(pops nor,oth,ola) regions_withq(pops nor,oth,ola) qfreq(nor,oth,ola) SNP_column n_lsnps:n_rsnps" : "")." template
+*** Templates: ".($o_extended ? "extended_name" : "name")." ".($o_annotatetemplate ?  "regions_scored(pops nor,oth,ola) regions_withq(pops nor,oth,ola) qfreq(nor,oth,ola) SNP_column n_lsnps:n_rsnps" : "")." template".
+($o_extended ? "
+***
+*** extended_name is <prefix>R#cP##p###_locusnumber0padded:
+***     <prefix> the argument to --extended
+***     R#c is the regions the minor allele was seen in, with c the region code
+***         R1N: north, R1T: other, R1L: oland
+***         R2X: north and other, R2Y: north and oland, R2Z: other and oland
+***         R3A: all three
+***     P## is the total number of populations with the minor allele, 0-padded
+***     p### is the number of populations the minor allele was seen in
+***      ^   number of populations in north (single digit)
+***       ^  number of populations in other (single digit)
+***        ^ number of populations in oland (single digit)" : "")."
 ***
 *** Templates for $n_templates loci".($o_trimtemplate ? " (flanks trimmed to $o_minflank bp)" : "")."
 ***
@@ -514,7 +546,37 @@ sub dump_locus($) {
 sub create_locus_template($) {
     my $locus = shift;
     die "create_locus_template: locus $locus->{locus} has no focal SNP" if ! exists $locus->{focal_SNP};
-    my $name = $o_templatename.sprintf("%.${o_padding}d", $locus->{locus});
+    ## create template name
+    my $name;
+    if ($o_extended) {
+        $name = $o_extended;
+        # region coding
+        my $R = $locus->{focal_sumstats}->{_n_region_withq};
+        my ($n, $t, $l) = ($locus->{focal_sumstats}->{north}->{nwithq},
+                           $locus->{focal_sumstats}->{other}->{nwithq},
+                           $locus->{focal_sumstats}->{oland}->{nwithq});
+        if ($R == 1) {
+            $name .= "R1";
+            $name .= ($n ? "N" : ($t ? "T" : "L"));
+        } elsif ($R == 2) {
+            $name .= "R2";
+            $name .= ($n ? ($t ? "X" : "Y") : "Z");
+        } elsif ($R == 3) {
+            $name .= "R3A";
+        } else {
+            die "create_locus_template: locus $locus->{locus}: _n_region_withq makes no sense: $R";
+        }
+        # number of all populations with minor allele
+        $name .= "P".sprintf("%.2d", $n + $t + $l);
+        # populations with minor allele in each region
+        $name .= "p$n$t$l";
+        $name .= "_";
+        # locus number
+        $name .= sprintf("%.${o_padding}d", $locus->{locus});
+    } else {
+        $name = $o_name.sprintf("%.${o_padding}d", $locus->{locus});
+    }
+    ## create template sequence
     my $template = $locus->{seq};
     my $focal_SNP;
     # first, non-focal SNPs get converted to IUPAC symbols; these substitutions do not change template length

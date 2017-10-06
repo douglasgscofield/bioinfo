@@ -1,3 +1,7 @@
 data_G*
 panelG*
 testdata
+.RData
+.Rhistory
+*.Rproj
+*.R
