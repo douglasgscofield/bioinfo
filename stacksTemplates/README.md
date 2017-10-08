@@ -1,5 +1,5 @@
-stacksTemplates.pl: process Stacks batch files to produce SNP-assay templates
-===============
+Produce SNP-assay templates from Stacks batch files
+===================================================
 
 Read [Stacks](http://catchenlab.life.illinois.edu/stacks/) `batch_` files
 (`.tags.tsv.gz`, `.snps.tsv.gz` and `.sumstats.tsv`) to produce templates for
