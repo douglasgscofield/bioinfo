@@ -1,13 +1,14 @@
 stacksTemplates.pl: process Stacks batch files to produce SNP-assay templates
 ===============
 
-Read [Stacks][Stacks] `batch_` files (`.tags.tsv.gz`, `.snps.tsv.gz` and
-`.sumstats.tsv`) to produce templates for high-throughput genotyping.  Within
-locus consensus sequences, template candidates are filtered and central SNPs
-are identified based on minimum flank sizes and other options.  Consensus
-sequences containing central SNPs that fulfill a few quality criteria are then
-used to create sequences in which the central SNP is called out and SNPs in
-flanking regions are assigned IUPAC codes.
+Read [Stacks](http://catchenlab.life.illinois.edu/stacks/) `batch_` files
+(`.tags.tsv.gz`, `.snps.tsv.gz` and `.sumstats.tsv`) to produce templates for
+high-throughput genotyping.  Within locus consensus sequences, template
+candidates are filtered and central SNPs are identified based on minimum flank
+sizes and other options.  Consensus sequences containing central SNPs that
+fulfill a few quality criteria are then used to create sequences in which the
+central SNP is called out and SNPs in flanking regions are assigned IUPAC
+codes.
 
 Example output:
 
@@ -24,7 +25,6 @@ project in Sweden.  The code is documented sufficiently that it should be
 possible to apply other custom criteria.
 
 
-Stacks: http://catchenlab.life.illinois.edu/stacks/
 
 Options
 -------
