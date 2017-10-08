@@ -10,6 +10,8 @@ fulfill a few quality criteria are then used to create sequences in which the
 central SNP is called out and SNPs in flanking regions are assigned IUPAC
 codes.
 
+Apart from standard modules, this requires the Perl module [Statistics::Distributions](http://search.cpan.org/~mikek/Statistics-Distributions-1.02/Distributions.pm).
+
 Example output:
 
 ~~~~
@@ -23,8 +25,6 @@ locus_0014827	GCAAGCTAAATAATTCTTTTAGGCAAACAAGTTTTGGTGTTCCTCCGCGC[A/G]GAGGGCCAAAG
 A variety of options are designed to filter based on criteria for a particular
 project in Sweden.  The code is documented sufficiently that it should be
 possible to apply other custom criteria.
-
-
 
 Options
 -------
