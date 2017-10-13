@@ -12,7 +12,7 @@ $Data::Dumper::Fill = 160;
 $Data::Dumper::Indent = 1;
 $Data::Dumper::Sortkeys = 1;
 
-sub Pretty  # from http://www.perlmonks.org/?node_id=490421
+sub Pretty  # condense Dumper output, from http://www.perlmonks.org/?node_id=490421
 {
     my @src = split(/\n/, join('', @_));
     my @dst = ();
@@ -48,15 +48,8 @@ my %REV_IUB = (
 );
 
 # Note: SNP Columns are transformed to 1-based, from Stacks' 0-based
-# DONE: sort out >1 central snp and maxflanksnps, e.g., locus 7
-# DONE: IUPAC codes for off-site SNPs, and output tag for focal SNP
-# DONE: reject all templates with >2 alleles
-# DONE: trim templates to 50p each side of focal SNP
-# TODO: allele frequencies
-# TODO: sample frequencies
-# TODO: reject central SNP based on allele frequencies ?
 
-my %LOCUS; # key, value: locus ID, stack sequence
+my %LOCUS;
 my $n_templates = 0;
 
 my %NORTH = map { $_ => 1 } qw/Ab Hs Li Ru Sk Tr/;
@@ -496,25 +489,26 @@ sub print_locus_template($$) {
     }
     if ($do_annotate) {
         say Pretty(Dumper($locus)) if $o_verbose;
+        my $lfs = $locus->{focal_sumstats};
         say STDOUT join("\t",
             $name,
             # _n_region(npop,npop,npop)
-            "$locus->{focal_sumstats}->{_n_region}(".
-            "$locus->{focal_sumstats}->{north}->{npop},".
-            "$locus->{focal_sumstats}->{other}->{npop},".
-            "$locus->{focal_sumstats}->{oland}->{npop})"
+            "$lfs->{_n_region}(".
+            "$lfs->{north}->{npop},".
+            "$lfs->{other}->{npop},".
+            "$lfs->{oland}->{npop})"
             ,
             # _n_region_withq(nwithq,nwithq,nwithq)
-            "$locus->{focal_sumstats}->{_n_region_withq}(".
-            "$locus->{focal_sumstats}->{north}->{nwithq},".
-            "$locus->{focal_sumstats}->{other}->{nwithq},".
-            "$locus->{focal_sumstats}->{oland}->{nwithq})"
+            "$lfs->{_n_region_withq}(".
+            "$lfs->{north}->{nwithq},".
+            "$lfs->{other}->{nwithq},".
+            "$lfs->{oland}->{nwithq})"
             ,
             # _qfreq(qfreq,qfreq,qfreq)
-            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{_qfreq})."(".
-            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{north}->{qfreq}).",".
-            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{other}->{qfreq}).",".
-            sprintf("%.${o_freqdigits}f", $locus->{focal_sumstats}->{oland}->{qfreq}).")"
+            sprintf("%.${o_freqdigits}f", $lfs->{_qfreq})."(".
+            sprintf("%.${o_freqdigits}f", $lfs->{north}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $lfs->{other}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $lfs->{oland}->{qfreq}).")"
             ,
             $locus->{focal_SNP} - 1,
             "$locus->{n_lsnps}:$locus->{n_rsnps}",
@@ -775,10 +769,3 @@ sub check_SNP_sumstats_OK($$) {
 }
 
 
-
-__END__
-
-foreach (keys %oland) {
-    say;
-    say "$_ ".(is_oland($_) ? 'Oland' : 'nope');
-}
