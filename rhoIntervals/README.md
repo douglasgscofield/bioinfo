@@ -1,22 +1,25 @@
 rhoIntervals : Infer recombination rates in arbitrary genomic intervals
 ============
 
-Infer recombination rates in arbitrary intervals, using weighted contributions within underlying intervals.
+Infer recombination rates (rho, &rho;) in arbitrary genomic intervals, using length-weighted contributions within underlying intervals.
 
 Three files are expected for input, all with tab-separated columns:
 
-* a BED file describing rho estimates in genomic intervals
-* a two-column reference,position file describing genomic positions between which rho should be inferred
-* an FAI file describing the sizes of reference sequences named within the position file
+* a four-column BED file describing recombination rate estimates in genomic intervals (`--rhofile`)
+* a two-column reference,position file describing genomic positions between which values of &rho; should be inferred (`--posfile`)
+* an FAI file describing the sizes of reference sequences named within the &rho; and position files (`--faifile`)
 
 
 Options
 -------
 
-    --rhofile FILE  File of rho intervals
-    --posfile FILE  File with (perhaps SNP) ref and position in cols 1 and 2
-    --faifile FILE  File containing Fasta index (.fai) for reference [default ]
-    --help | -?    help
+    --rhofile FILE    File of rho intervals [default ]
+    --faifile FILE    File containing Fasta index (.fai) for reference [default ]
+    --posfile FILE    File with SNP ref and position described in cols 1 and 2 [default ]
+
+    --rho-column INT  Column of --rhofile containing the rho estimate, numbered from 1 [default 4]
+
+    --help | -?       help
 
 
 Example
