@@ -59,14 +59,14 @@ while (<$f>) {
     if (not $pchr and not $ppos) {  # start
         $pchr = $chr;
         $ppos = 1;
-        say join("\t", $chr, $ppos - 1, $pos) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
+        say join("\t", $chr, $ppos - 1, $pos - 1) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
     } elsif ($chr ne $pchr) {  # new chromosome
         say join("\t", $pchr, $ppos, $fai{$pchr}) if $o_addends;  # wrap up previous chromosome
         $pchr = $chr;
         $ppos = 1;
-        say join("\t", $chr, $ppos - 1, $pos) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
+        say join("\t", $chr, $ppos - 1, $pos - 1) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
     } else {  # same chromosome
-        say join("\t", $chr, $ppos - 1, $pos);
+        say join("\t", $chr, $ppos - 1, $pos - 1);
     }
     ($pchr, $ppos) = ($chr, $pos);
 }
