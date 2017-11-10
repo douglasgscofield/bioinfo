@@ -25,6 +25,11 @@ Plot spatially-distributed pie charts.
 A handful of bioinformatics scripts in R.
 
 
+### [rhoIntervals](https://github.com/douglasgscofield/bioinfo/tree/master/rhoIntervals)
+
+Calculate weighted recombination rate (*&rho;*) estimates over given intervals.
+
+
 ### [stacksTemplates](https://github.com/douglasgscofield/bioinfo/tree/master/stacksTemplates)
 
 Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.
