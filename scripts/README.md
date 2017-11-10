@@ -23,29 +23,6 @@ pairwise inbreeding coefficients, which is produced without regard to the
 number of complete pairwise comparisons.
 
 
-rhoIntervals
-------------
-
-Perl script to calculate rho (*&rho;*, per-base recombination rate) between
-arbitrary positions, based on estimates of rho already calculated in other
-intervals.  Requires three input files:
-
-* 4-column BED-format file containing per-base rho estimates (reference,
-  position 1, position 2, rho estimate) (`--rhofile`)
-* Fasta index (`.fai`) containing entries for all reference sequences appearing
-  in this file (`--faifile`)
-* File of positions, subsequent positions of which specify an interval within
-  which to estimate rho (`--snpfile`)
-
-This can very easily be extended to specify arbitrary positions via BED format
-rather than via the `--snpfile`; the internal code already converts these
-positions to a BED-ish format after applying some simple assumptions about
-ordering.
-
-The script requires only Perl modules and uses the `say` feature to simplify
-output.
-
-
 fai2WindowBed
 -------------
 
