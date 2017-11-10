@@ -6,16 +6,20 @@ Infer recombination rates (rho, &rho;) in arbitrary genomic intervals, using len
 Three files are expected for input, all with tab-separated columns:
 
 * a four-column BED file describing recombination rate estimates in genomic intervals (`--rhofile`)
-* a two-column reference,position file describing genomic positions between which values of &rho; should be inferred (`--posfile`)
+* a file specifying positions between which recombination rates should be inferred.  This file can have one of two formats, determined by the option used to specify the file
+    * a two-column reference,position file describing genomic positions between which values of &rho; should be inferred (`--posfile`)  **OR**
+    * a three-column BED file describing genomic intervals within which &rho; should be inferred (`--bedfile`)
 * an FAI file describing the sizes of reference sequences named within the &rho; and position files (`--faifile`)
 
 
 Options
 -------
 
-    --rhofile FILE    File of rho intervals [default ]
-    --faifile FILE    File containing Fasta index (.fai) for reference [default ]
-    --posfile FILE    File with SNP ref and position described in cols 1 and 2 [default ]
+    --rhofile FILE    BED file of rho intervals
+    --faifile FILE    File containing Fasta index (.fai) for reference
+
+    --posfile FILE    File with SNP ref and position described in cols 1 and 2
+    --bedfile FILE    BED file specifying genomic intervals
 
     --rho-column INT  Column of --rhofile containing the rho estimate, numbered from 1 [default 4]
 
@@ -27,7 +31,7 @@ Example
 
 For the provided example input files, the following output is produced.
 
-    $ ./rhoIntervals.pl --rho example_rho.bed --pos example_pos.bed --fai example.fai
+    $ ./rhoIntervals.pl --rho example_rho.bed --pos example_pos.pos --fai example.fai
     Chr21   1   443920  NA
     Chr21   443920  444023  0.00042253
     Chr21   444023  444035  0.00042253

@@ -25,6 +25,11 @@ Plot spatially-distributed pie charts.
 A handful of bioinformatics scripts in R.
 
 
+### [stacksTemplates](https://github.com/douglasgscofield/bioinfo/tree/master/stacksTemplates)
+
+Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.
+
+
 ### [scripts](https://github.com/douglasgscofield/bioinfo/tree/master/scripts)
 
 A handful of bioinformatics scripts:
@@ -77,6 +82,11 @@ describing intervals in which the values are true.
 **samHeader2Bed.pl** 
 reads a SAM header and produces [BED][] file(s) after applying a few filtering criteria.
 
+**pos2bed**
+reads a 2-column chromosome,position file -- for example, the first two columns of a VCF or GFF/GTF -- and
+creates a BED file to stdout containing intervals that cover the chromosomes, with boundaries at
+the positions.
+
 **pileup2pro.pl**
 reads `samtools mpileup` format and produces a profile file suitable for input to [mlRho][].
 
@@ -117,6 +127,7 @@ extract Fasta sequences and a summary table from output produced by the ORF-find
 
 **cutadaptReportScript.sh**
 collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
+
 
 [PLINK]: https://www.cog-genomics.org/plink2
 [WIG]:  http://genome.ucsc.edu/goldenPath/help/wiggle.html

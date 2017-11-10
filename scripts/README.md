@@ -1194,3 +1194,22 @@ stacksSNPAssays.pl
 Mine Stacks output to design sequence templates to use when designing SNP
 assays (iPLEX, iSelect).  Configurable.  Under construction.
 
+
+
+pos2bed
+-------
+
+Convert chr,pos file to BED intervals.
+
+    --posfile FILE   Two-column file with the first two columns specifying chromosome,position locations.
+                     Position is 1-based, so the posfile is like the first two columns of a VCF or GFF/GTF
+                     file.  Only the first two columns are used, if other columns are present they are ignored.
+                     Lines beginning with '#' are ignored.
+    --faifile FILE   FAI-format file describing sizes of chromosomes expected in the posfile.  Lines beginning
+                     with '#' are ignored.  If --no-addends is specified, this file is not required.  
+    --no-addends     Do not add the ends of chromosomes.  By default, BED intervals are created for the
+                     beginning and end of each chromosome, with the beginning at position 1 and the end at the
+                     length given in the faifile.  When this option is specified, these intervals are not 
+                     created, and the --faifile option is not required.
+    --help           This help
+
