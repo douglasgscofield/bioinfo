@@ -131,7 +131,7 @@ convert between any of the sequence and alignment formats supported by BioPerl, 
 extract Fasta sequences and a summary table from output produced by the ORF-finding tool [gmhmmp][].
 
 **cutadaptReportScript.sh**
-collects results from `*.cutReport` files produced by [cutadapt][] to quicklyl produce a table of adapter trimming results.
+collects results from `*.cutReport` files produced by [cutadapt][] to quickly produce a table of adapter trimming results.
 
 
 [PLINK]: https://www.cog-genomics.org/plink2
