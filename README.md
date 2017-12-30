@@ -3,11 +3,19 @@ Bioinformatics tools
 
 More details are provided within each subfolder.
 
+### [MLGtest](https://github.com/douglasgscofield/bioinfo/tree/master/MLGtest)
+
+**MLGtest.R** tests for the occurrence of asexual reproduction in a population
+based on the number of unique multilocus genotypes observed.  It is quite
+conservative, see its README for several cautions.
+
+
 ### [pileVar](https://github.com/douglasgscofield/bioinfo/tree/master/pileVar)
 
 **pileVar.pl** identifies variants based on mpileup output from
 [samtools](http://samtools.sourcefourge.net).  This tool is currently geared
 toward identifying fixed differences and regions of ambiguity due to indels.
+This is quite old by now, and much better methods are available.
 
 
 ### [plotGFF](https://github.com/douglasgscofield/bioinfo/tree/master/plotGFF)

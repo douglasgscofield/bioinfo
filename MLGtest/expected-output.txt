@@ -1,0 +1,341 @@
+MLGtest: 17 populations, 1000 Monte Carlo iterations
+Population 1 ...
+Population 2 ...
+Population 3 ...
+Population 4 ...
+Population 5 ...
+Population 6 ...
+Population 7 ...
+Population 8 ...
+Population 9 ...
+Population 10 ...
+Population 11 ...
+Population 12 ...
+Population 13 ...
+Population 14 ...
+Population 15 ...
+Population 16 ...
+Population 17 ...
+=== Population 1 ===
+ploidy = 2 
+n = 38 
+MLG.observed = 17 
+N.iter = 1000 
+MLG.sim.mean = 19.437 
+MLG.sim.var = 5.98201301301301 
+P.observed = 0.21 
+MLG.sim.quantiles :
+    0 = 12 
+    0.01 = 14 
+    0.05 = 16 
+    0.1 = 16 
+    0.5 = 19 
+    0.9 = 23 
+    0.95 = 23.05 
+    0.99 = 25 
+    1 = 29 
+
+=== Population 2 ===
+ploidy = 2 
+n = 47 
+MLG.observed = 17 
+N.iter = 1000 
+MLG.sim.mean = 16.929 
+MLG.sim.var = 5.66562462462462 
+P.observed = 0.6 
+MLG.sim.quantiles :
+    0 = 10 
+    0.01 = 12 
+    0.05 = 13 
+    0.1 = 14 
+    0.5 = 17 
+    0.9 = 20 
+    0.95 = 21 
+    0.99 = 23 
+    1 = 26 
+
+=== Population 3 ===
+ploidy = 2 
+n = 51 
+MLG.observed = 14 
+N.iter = 1000 
+MLG.sim.mean = 15.704 
+MLG.sim.var = 3.17555955955956 
+P.observed = 0.256 
+MLG.sim.quantiles :
+    0 = 11 
+    0.01 = 12 
+    0.05 = 13 
+    0.1 = 13 
+    0.5 = 16 
+    0.9 = 18 
+    0.95 = 19 
+    0.99 = 20 
+    1 = 22 
+
+=== Population 4 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 51 
+N.iter = 1000 
+MLG.sim.mean = 53.468 
+MLG.sim.var = 5.38235835835836 
+P.observed = 0.176 
+MLG.sim.quantiles :
+    0 = 44 
+    0.01 = 47.99 
+    0.05 = 49 
+    0.1 = 51 
+    0.5 = 54 
+    0.9 = 56 
+    0.95 = 57 
+    0.99 = 58 
+    1 = 60 
+
+=== Population 5 ===
+ploidy = 2 
+n = 50 
+MLG.observed = 44 
+N.iter = 1000 
+MLG.sim.mean = 45.526 
+MLG.sim.var = 3.95728128128128 
+P.observed = 0.278 
+MLG.sim.quantiles :
+    0 = 37 
+    0.01 = 40 
+    0.05 = 42 
+    0.1 = 43 
+    0.5 = 46 
+    0.9 = 48 
+    0.95 = 49 
+    0.99 = 49 
+    1 = 50 
+
+=== Population 6 ===
+ploidy = 2 
+n = 44 
+MLG.observed = 31 
+N.iter = 1000 
+MLG.sim.mean = 37.491 
+MLG.sim.var = 5.30122022022022 
+P.observed = 0.003 
+MLG.sim.quantiles :
+    0 = 29 
+    0.01 = 32 
+    0.05 = 34 
+    0.1 = 35 
+    0.5 = 38 
+    0.9 = 40 
+    0.95 = 41 
+    0.99 = 42 
+    1 = 44 
+
+=== Population 7 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 29 
+N.iter = 1000 
+MLG.sim.mean = 57.785 
+MLG.sim.var = 2.17895395395395 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 52 
+    0.01 = 54 
+    0.05 = 55 
+    0.1 = 56 
+    0.5 = 58 
+    0.9 = 60 
+    0.95 = 60 
+    0.99 = 60 
+    1 = 60 
+
+=== Population 8 ===
+ploidy = 2 
+n = 49 
+MLG.observed = 26 
+N.iter = 1000 
+MLG.sim.mean = 47.735 
+MLG.sim.var = 1.20397897897898 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 43 
+    0.01 = 45 
+    0.05 = 46 
+    0.1 = 46 
+    0.5 = 48 
+    0.9 = 49 
+    0.95 = 49 
+    0.99 = 49 
+    1 = 49 
+
+=== Population 9 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 32 
+N.iter = 1000 
+MLG.sim.mean = 59.327 
+MLG.sim.var = 0.682753753753754 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 56 
+    0.01 = 57 
+    0.05 = 58 
+    0.1 = 58 
+    0.5 = 60 
+    0.9 = 60 
+    0.95 = 60 
+    0.99 = 60 
+    1 = 60 
+
+=== Population 10 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 23 
+N.iter = 1000 
+MLG.sim.mean = 58.262 
+MLG.sim.var = 1.73308908908909 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 53 
+    0.01 = 55 
+    0.05 = 56 
+    0.1 = 57 
+    0.5 = 58 
+    0.9 = 60 
+    0.95 = 60 
+    0.99 = 60 
+    1 = 60 
+
+=== Population 11 ===
+ploidy = 2 
+n = 54 
+MLG.observed = 44 
+N.iter = 1000 
+MLG.sim.mean = 53.11 
+MLG.sim.var = 0.920820820820821 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 49 
+    0.01 = 50 
+    0.05 = 51 
+    0.1 = 52 
+    0.5 = 53 
+    0.9 = 54 
+    0.95 = 54 
+    0.99 = 54 
+    1 = 54 
+
+=== Population 12 ===
+ploidy = 2 
+n = 58 
+MLG.observed = 42 
+N.iter = 1000 
+MLG.sim.mean = 57.28 
+MLG.sim.var = 0.718318318318318 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 54 
+    0.01 = 55 
+    0.05 = 56 
+    0.1 = 56 
+    0.5 = 57 
+    0.9 = 58 
+    0.95 = 58 
+    0.99 = 58 
+    1 = 58 
+
+=== Population 13 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 15 
+N.iter = 1000 
+MLG.sim.mean = 48.245 
+MLG.sim.var = 7.81278778778779 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 38 
+    0.01 = 41.99 
+    0.05 = 44 
+    0.1 = 45 
+    0.5 = 48 
+    0.9 = 52 
+    0.95 = 53 
+    0.99 = 54.01 
+    1 = 57 
+
+=== Population 14 ===
+ploidy = 2 
+n = 47 
+MLG.observed = 17 
+N.iter = 1000 
+MLG.sim.mean = 39.728 
+MLG.sim.var = 5.83985585585586 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 32 
+    0.01 = 34 
+    0.05 = 36 
+    0.1 = 37 
+    0.5 = 40 
+    0.9 = 43 
+    0.95 = 43 
+    0.99 = 45 
+    1 = 46 
+
+=== Population 15 ===
+ploidy = 2 
+n = 27 
+MLG.observed = 11 
+N.iter = 1000 
+MLG.sim.mean = 24.306 
+MLG.sim.var = 2.28865265265265 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 20 
+    0.01 = 21 
+    0.05 = 22 
+    0.1 = 22 
+    0.5 = 24 
+    0.9 = 26 
+    0.95 = 27 
+    0.99 = 27 
+    1 = 27 
+
+=== Population 16 ===
+ploidy = 2 
+n = 60 
+MLG.observed = 33 
+N.iter = 1000 
+MLG.sim.mean = 59.362 
+MLG.sim.var = 0.637593593593594 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 56 
+    0.01 = 57 
+    0.05 = 58 
+    0.1 = 58 
+    0.5 = 60 
+    0.9 = 60 
+    0.95 = 60 
+    0.99 = 60 
+    1 = 60 
+
+=== Population 17 ===
+ploidy = 2 
+n = 56 
+MLG.observed = 27 
+N.iter = 1000 
+MLG.sim.mean = 54.3 
+MLG.sim.var = 1.71571571571572 
+P.observed = 0 
+MLG.sim.quantiles :
+    0 = 50 
+    0.01 = 51 
+    0.05 = 52 
+    0.1 = 53 
+    0.5 = 54 
+    0.9 = 56 
+    0.95 = 56 
+    0.99 = 56 
+    1 = 56 
+
