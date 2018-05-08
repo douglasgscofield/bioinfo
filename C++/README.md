@@ -3,7 +3,23 @@ Documentation practices group
 
 I'm attempting to put this file in the `$HOME/Box Sync` folder on my desktop, to see if it gets synced to my laptop and especially back to the Documentation practices group folder on Box.
 
-I agree with Linnea that the lack of code formatting is a bummer:
+It does... but the Box Sync client on my laptop had to be restarted to get the new folder synced there.  My limited experience so far suggests it is not as robust as the Dropbox client is in this regard.
+
+## Syncing files to your desktop/laptop
+
+Files will not automatically be synced to your desktop.  The `Documentation practices group` folder was *not* synced to my desktop/laptop until I did the following:
+
+1. In the box website (<https://uppsala.app.box.com>), at All Files, hover to the right size of the folder name until the three-dots "More Options" box appears.  Click there.
+2. A dropdown will appear.  Click More Actions.
+3. A popup will appear.  Select Sync.
+
+This should be enough to get the file in the list of "Synced" files on the left of the All Files window and thus one of the files Box thinks it should keep synced.
+
+This is also the **only** way to get files Synced to your desktop from the Box site.  Much better to do this to an entire folder, so its contents will be tracked.
+
+## Code formatting
+
+I agree with Linnea that the lack of attractive code formatting is a bummer:
 
 ```cpp
 #include <iostream>
@@ -28,5 +44,8 @@ int main() {
 }
 ```
 
-Compare this to a copy on Github: <https://github.com/douglasgscofield/bioinfo/blob/master/C%2B%2B/mathoncomputers-limits-c%2B%2B.cpp>
+Compare this to a copy of this README on Github: <https://github.com/douglasgscofield/bioinfo/tree/master/C++>
 
+and the C++ file itself: <https://github.com/douglasgscofield/bioinfo/blob/master/C++/mathoncomputers-limits-c++.cpp>
+
+I've also placed a copy of the C++ file within the Box folder to view it on the Box website.  It has a little extra formatting, but it is not very well done.
