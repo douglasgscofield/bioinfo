@@ -35,6 +35,7 @@ GetOptions("faifile=s" => \$o_faifile,
            "addends!"  => \$o_addends,
            "help"      => \$o_help) or die "unknown option: $!";
 
+usage() if $o_help;
 usage("must specify --posfile") if ! $o_posfile;
 usage("must specify --faifile when not using --no-addends") if ! $o_posfile and $o_addends;
 
