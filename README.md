@@ -47,6 +47,9 @@ Create templates for high-throughput genotyping platforms (iPlex, etc) from Stac
 
 A handful of bioinformatics scripts:
 
+**fqSplit.pl**
+ splits a FastQ file into a selected number of files, each named with a given prefix.  Does not handle compressed input or output, see its help (run with no options) for how to handle compressed input/output.
+
 **plink-pairwise-loci.pl**
  takes a [PLINK][] `.ped`-format input file and produce a matrix matching the `.mibs`-format pairwise output describing the number of complete loci (no missing data) contributing to each pairwise inbreeding coefficient in the `.mibs` file.
 

@@ -6,17 +6,20 @@ These have been useful to me, I hope they can be useful to you!
 fqSplit.pl
 ----------
 
-    USAGE: fqSplit.pl --nfiles INT --prefix STRING reads.fastq
+    USAGE :  ./fqSplit.pl [ --help ] --nfiles INT --prefix STRING reads.fastq
 
-           zcat reads.fastq.gz | fqSplit.pl --nfiles INT --prefix STRING && gzip -v STRING*.fastq
+With compressed input/output:
 
-Read `reads.fastq` and split it into `--nfiles` different files, each filename
-starting with `--prefix`, followed by the padded file number (1 to `--nfiles`)
-and then `.fastq`.
+    USAGE : zcat reads.fastq.gz | ./fqSplit.pl --nfiles INT --prefix STRING && gzip -v STRING*.fastq
 
-Sorry, this does not currently support compressed input or output, so the
-second form can be used to present uncompressed reads to the script and then
-compress the output.
+
+Read `reads.fastq` and split it into `INT` different files, each filename starting
+with `STRING`, followed by the padded file number (1 to `INT`) and then ending with
+the suffix `.fastq`.
+
+Sorry, the script does not currently support compressed input or output, so
+some variation of the second form with the pipe and ending with `&& gzip ...`
+can be used to uncompress reads for the script and then compress the output.
 
 
 plink-pairwise-loci.pl
