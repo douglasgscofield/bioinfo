@@ -3,6 +3,21 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+fqSplit.pl
+----------
+
+    USAGE: fqSplit.pl --nfiles INT --prefix STRING reads.fastq
+
+           zcat reads.fastq.gz | fqSplit.pl --nfiles INT --prefix STRING && gzip -v STRING*.fastq
+
+Read `reads.fastq` and split it into `--nfiles` different files, each filename
+starting with `--prefix`, followed by the padded file number (1 to `--nfiles`)
+and then `.fastq`.
+
+Sorry, this does not currently support compressed input or output, so the
+second form can be used to present uncompressed reads to the script and then
+compress the output.
+
 
 plink-pairwise-loci.pl
 ----------------------
