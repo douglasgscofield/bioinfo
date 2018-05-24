@@ -6,37 +6,10 @@ use feature 'say';
 use Getopt::Long;
 use Statistics::Distributions;
 use Data::Dumper;
-#use diagnostics;
-#use Data::Dumper::Perltidy;
+# use diagnostics;
 $Data::Dumper::Fill = 160;
 $Data::Dumper::Indent = 1;
 $Data::Dumper::Sortkeys = 1;
-
-sub Pretty  # condense Dumper output, from http://www.perlmonks.org/?node_id=490421
-{
-    my @src = split(/\n/, join('', @_));
-    my @dst = ();
-    my $f = $Data::Dumper::Fill || 72;
-    my $i = 0;
-    while ($i <= $#src) {
-        my $l = $src[$i];
-        if (not $l =~ /[\[\{\(]\s*$/) { push(@dst, $l); $i++; next; }
-        my ($p) = ($l =~ /^(\s+)/);
-        my $j = $i+1;
-        while ($j <= $#src) {
-            my $n = $src[$j];
-            my ($q) = ($n =~ /^(\s+)/);
-            $n =~ s/^\s+/ /;
-            if (length($l) + length($n) >= $f) { $l = $src[$i]; last; }
-            $l .= $n;
-            if ($q and $p and $q eq $p) { $i = $j; last; }
-            $j++;
-        }
-        push(@dst, $l);
-        $i++;
-    }
-    return join("\n", @dst) . "\n";
-}
 
 ##use Bio::Tools::IUPAC;
 # rather than depend on BioPerl, copy the hash %Bio::Tools::IUPAC::REV_IUB
@@ -57,36 +30,22 @@ my %OLAND = map { $_ => 1 } qw/Gr Kv La Me Mo Na Re To Vi/;
 my %REGIONS = map { $_ => $_ } qw/north other oland/;
 my %POPULATIONS_SEEN;
 
-sub is_oland($) {
-    return exists($OLAND{substr($_[0], 0, 2)});
-}
-
-sub pop_region($) {
-    my ($pop, $region) = (substr($_[0], 0, 2), "");
-    if (exists($OLAND{$pop})) {
-        $region = $REGIONS{oland};
-    } elsif (exists($NORTH{$pop})) {
-        $region = $REGIONS{north};
-    } else {
-        $region = $REGIONS{other};
-    }
-    return $region;
-}
-
-
-sub process_tags_line($);
-sub process_snps_line($);
-sub process_sumstats_line($);
 sub process_locus($);
 sub condense_sumstats($);
 sub evaluate_locus($);
+sub create_locus_template($);
 sub print_locus_template($$);
 sub dump_locus($);
-sub create_locus_template($);
+sub process_tags_line($);
+sub process_snps_line($);
+sub process_sumstats_line($);
 sub is_central_SNP($$);
 sub binomial_confint($$$$);
 sub check_SNP_has_sumstats($$);
 sub check_SNP_sumstats_OK($$);
+sub pop_region($);
+sub is_oland($);
+sub Pretty;
 
 # these catalog files are produced by cstacks
 
@@ -144,9 +103,9 @@ To be considered, stack consensus sequences must pass these basic criteria:
 
 Only central SNPs that pass simple filtering according to the following criteria are considered:
 
-    --crit_n_region INT    min number of regions stack must be scored in [$o_crit_n_region]
-    --crit_nwithq INT      min number of populations with the minor allele [$o_crit_nwithq]
-    --crit_qfreq FLOAT     min minor allele frequency across all scored populations [$o_crit_qfreq]
+    --crit-n-region INT    min number of regions stack must be scored in [$o_crit_n_region]
+    --crit-nwithq INT      min number of populations with the minor allele [$o_crit_nwithq]
+    --crit-qfreq FLOAT     min minor allele frequency across all scored populations [$o_crit_qfreq]
 
 For all SNP minor alleles, binomial confints are calculated as well:
 
@@ -183,7 +142,7 @@ These options control output.
     --trimtemplate         trim templates to have minflank+SNP+minflank bases [$o_trimtemplate]
     --annotatetemplate     add annotation columns to template output, for filtering [$o_annotatetemplate]
     --freqdigits INT       digits right of decimal point for allele frequences [$o_freqdigits]
-    --D_limit INT          only read this number of templates; for debugging
+    --D-limit INT          only read this number of templates; for debugging
     --verbose              verbose debugging output
 
 ";
@@ -199,9 +158,9 @@ GetOptions("dir=s"             => \$o_dir,
            "minflank=i"        => \$o_minflank,
            "maxflanksnps=i"    => \$o_maxflanksnps,
            "centralsnpgap=i"   => \$o_centralsnpgap,
-           "crit_n_region=i"   => \$o_crit_n_region,
-           "crit_nwithq=i"     => \$o_crit_nwithq,
-           "crit_qfreq=f"      => \$o_crit_qfreq,
+           "crit-n-region=i"   => \$o_crit_n_region,
+           "crit-nwithq=i"     => \$o_crit_nwithq,
+           "crit-qfreq=f"      => \$o_crit_qfreq,
            "alpha=f"           => \$o_alpha,
            "name=s"            => \$o_name,
            "extended=s"        => \$o_extended,
@@ -209,7 +168,7 @@ GetOptions("dir=s"             => \$o_dir,
            "trimtemplate"      => \$o_trimtemplate,
            "annotatetemplate"  => \$o_annotatetemplate,
            "freqdigits=i"      => \$o_freqdigits,
-           "D_limit=i"         => \$D_limit,
+           "D-limit=i"         => \$D_limit,
            "verbose:1"         => \$o_verbose,
 ) or usage();
 
@@ -272,7 +231,15 @@ say Pretty(Dumper(\%LOCUS)) if $o_verbose;
 #exit 1;
 
 
+###############################
+###############################
+#
+# loop over all loci, evaluating each and producing templates along the way
+
 process_locus($LOCUS{$_}) foreach sort { $a <=> $b } keys %LOCUS;
+
+###############################
+###############################
 
 say STDERR "
 *** dir . . . . . . . . . . $o_dir
@@ -346,40 +313,6 @@ sub process_locus($) {
 }
 
 
-sub process_tags_line($) {
-    chomp $_[0];
-    my (undef, $sample, $locus, undef, undef, undef, $type, $component, $seqid, $seq, undef, undef, undef, undef) = split(/\t/, $_[0]);
-    die "$o_tagsfile:$.: sequence type '$type' not 'consensus'" if $type ne 'consensus';
-    #return { locus => $locus, seq => $seq, seqid => $seqid, seqlen => length($seq) };
-    return { locus => $locus, seq => $seq, seqlen => length($seq) };
-}
-
-
-sub process_snps_line($) {
-    chomp $_[0];
-    my (undef, $sample, $locus, $column, $type, $LR, $al0, $al1, $al2, $al3) = split(/\t/, $_[0]);
-    die "$o_snpsfile:$.: snp type '$type' not 'E'" if $type ne 'E';
-    $column += 1;  # convert to 1-based
-    return { locus => $locus, column => $column, type => $type, al0 => $al0, al1 => $al1, al2 => $al2, al3 => $al3 };
-}
-
-
-sub process_sumstats_line($) {
-    chomp $_[0];
-    #   $batch, $locus, $chrom, $bp_cum, $column, $pop, $alp, $alq, $nindiv, $pfreq, $obshet, $obshom, $exphet, $exphom, $pi,   $pismooth, $P_pismooth, $Fis , $Fis_smooth, $P_Fis_smooth, $private
-    my ($batch, $locus, $chrom, undef  , $column, $pop, $alp, $alq, $nindiv, $freqp, undef  , undef  , undef  , undef  , undef, undef    , undef      , undef, undef      , undef        , undef) = split(/\t/, $_[0]);
-    die "$o_sumstatsfile:$.: Chr '$chrom' not 'un'" if $chrom ne 'un';
-    $column += 1;  # convert to 1-based
-    return { locus => $locus, column => $column, pop => $pop, nindiv => $nindiv, alp => $alp, alq => $alq, freqp => $freqp };
-}
-
-
-sub is_central_SNP($$) {
-    my ($locus, $column) = @_;
-    return ($column > $o_minflank and $column < ($locus->{seqlen} - $o_minflank + 1)) ? 1 : 0;
-}
-
-
 sub condense_sumstats($) {
     my $locus = shift;
     my $sumstats = $locus->{sumstats};
@@ -446,147 +379,6 @@ sub condense_sumstats($) {
         $sumstats->{$k_rank[$_]}->{_rank} = $_ + 1;
     }
     print "condense_sumstats:veryend:".Pretty(Dumper($locus)) if $o_verbose;
-}
-
-
-sub binomial_confint($$$$) {
-    # https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
-    # 4 digits right of decimal point
-    # 1: number of trials
-    # 2: number of successes
-    # 3: alpha level
-    # 4: method: 0: wilson  1: normal approx using adjusted p  2: normal approx
-    my ($n, $success, $alpha, $method) = @_;
-    my $z = Statistics::Distributions::udistr($alpha / 2);  # two-sized z-score
-    usage("alpha $alpha seems inappropriate, z-score is $z") if $z < 0;
-    my @ci;
-    if (! $method) { # wilson's method
-        my $z2 = $z * $z;
-        my $plusminus = $z * sqrt(((1.0/$n) * $success * ($n - $success)) + 0.25*$z2);
-        @ci = map { (1.0/($n + $z2)) * ($success + 0.5*$z2 + ($_ * $plusminus)) } (-1.0, +1.0);
-    } elsif ($method == 1) { # adjust p and use normal approximation
-        my $p = ($success + 2) / ($n + 4);
-        my $plusminus = $z * sqrt((1.0 / $n) * $p * (1.0 - $p));  # the +/- part
-        @ci = map { $p + ($_ * $plusminus) } (-1.0, +1.0);
-    } elsif ($method == 2) { # normal approximation, alternative factorisation
-        my $plusminus = $z * sqrt((1.0 / $n) * $success * ($n - $success));  # the +/- part
-        @ci = map { (1.0 / $n) * ($success + ($_ * $plusminus)) } (-1.0, +1.0);
-    } else { die "unknown method: $method"; }
-    @ci = map { sprintf("%.${o_freqdigits}f", $_) } @ci;
-    return @ci;
-}
-
-sub print_locus_template($$) {
-    my ($locus, $do_annotate) = @_;
-    my $name = $locus->{name};
-    my $template = $locus->{template};
-    if ($o_trimtemplate) {
-        my $x;
-        $x = $locus->{focal_SNP} - 1 - $o_minflank;
-        substr($template, 0, $x) = "" if $x;
-        $x = $locus->{seqlen} - $locus->{focal_SNP} - $o_minflank;
-        substr($template, -$x) = "" if $x;
-    }
-    if ($do_annotate) {
-        say Pretty(Dumper($locus)) if $o_verbose;
-        my $lfs = $locus->{focal_sumstats};
-        say STDOUT join("\t",
-            $name,
-            # _n_region(npop,npop,npop)
-            "$lfs->{_n_region}(".
-            "$lfs->{north}->{npop},".
-            "$lfs->{other}->{npop},".
-            "$lfs->{oland}->{npop})"
-            ,
-            # _n_region_withq(nwithq,nwithq,nwithq)
-            "$lfs->{_n_region_withq}(".
-            "$lfs->{north}->{nwithq},".
-            "$lfs->{other}->{nwithq},".
-            "$lfs->{oland}->{nwithq})"
-            ,
-            # _qfreq(qfreq,qfreq,qfreq)
-            sprintf("%.${o_freqdigits}f", $lfs->{_qfreq})."(".
-            sprintf("%.${o_freqdigits}f", $lfs->{north}->{qfreq}).",".
-            sprintf("%.${o_freqdigits}f", $lfs->{other}->{qfreq}).",".
-            sprintf("%.${o_freqdigits}f", $lfs->{oland}->{qfreq}).")"
-            ,
-            $locus->{focal_SNP} - 1,
-            "$locus->{n_lsnps}:$locus->{n_rsnps}",
-            $template);
-    } else {
-        say STDOUT "$name $template";
-    }
-    ++$n_templates;
-}
-
-sub dump_locus($) {
-    my $locus = shift;
-    say STDOUT "locus $locus->{locus} consensus $locus->{seqlen} bp:";
-    say STDOUT "$locus->{seq}";
-    if (exists $locus->{snps}) {
-        my $focal = exists $locus->{focal_SNP} ?  $locus->{focal_SNP} : 0;
-        say STDOUT (' ' x ($_->{column} - 1)).($_->{column} == $focal ? "*" : "^")."$_->{al0}$_->{al1}$_->{al2}".'@'."$_->{column}" foreach @{$locus->{snps}};
-    } else {
-        say STDOUT "-- no snps";
-    }
-    if (exists $locus->{template}) {
-        print_locus_template($locus, $o_annotatetemplate);
-    } else {
-        say STDOUT "-- no template";
-    }
-}
-
-
-sub create_locus_template($) {
-    my $locus = shift;
-    die "create_locus_template: locus $locus->{locus} has no focal SNP" if ! exists $locus->{focal_SNP};
-    ## create template name
-    my $name;
-    if ($o_extended) {
-        $name = $o_extended;
-        # region coding
-        my $R = $locus->{focal_sumstats}->{_n_region_withq};
-        my ($n, $t, $l) = ($locus->{focal_sumstats}->{north}->{nwithq},
-                           $locus->{focal_sumstats}->{other}->{nwithq},
-                           $locus->{focal_sumstats}->{oland}->{nwithq});
-        if ($R == 1) {
-            $name .= "R1";
-            $name .= ($n ? "N" : ($t ? "T" : "L"));
-        } elsif ($R == 2) {
-            $name .= "R2";
-            $name .= ($n ? ($t ? "X" : "Y") : "Z");
-        } elsif ($R == 3) {
-            $name .= "R3A";
-        } else {
-            die "create_locus_template: locus $locus->{locus}: _n_region_withq makes no sense: $R";
-        }
-        # number of all populations with minor allele
-        $name .= "P".sprintf("%.2d", $n + $t + $l);
-        # populations with minor allele in each region
-        $name .= "p$n$t$l";
-        $name .= "_";
-        # locus number
-        $name .= sprintf("%.${o_padding}d", $locus->{locus});
-    } else {
-        $name = $o_name.sprintf("%.${o_padding}d", $locus->{locus});
-    }
-    ## create template sequence
-    my $template = $locus->{seq};
-    my $focal_SNP;
-    # first, non-focal SNPs get converted to IUPAC symbols; these substitutions do not change template length
-    foreach (@{$locus->{snps}}) {
-        if ($_->{column} == $locus->{focal_SNP}) {
-            $focal_SNP = $_;
-            next;
-        }
-        substr($template, $_->{column} - 1, 1) = $REV_IUB{uc join '', sort ( $_->{al0}, $_->{al1} )};
-    }
-    # now the focal SNP; changes template length
-    my @a = sort map { uc } ( $focal_SNP->{al0}, $focal_SNP->{al1} );
-    substr($template, $focal_SNP->{column} - 1, 1) = "[$a[0]/$a[1]]";
-    # pack up and go
-    $locus->{name} = $name;
-    $locus->{template} = $template;
 }
 
 
@@ -737,6 +529,185 @@ sub evaluate_locus($) {
 }
 
 
+sub create_locus_template($) {
+    my $locus = shift;
+    die "create_locus_template: locus $locus->{locus} has no focal SNP" if ! exists $locus->{focal_SNP};
+    ## create template name
+    my $name;
+    if ($o_extended) {
+        $name = $o_extended;
+        # region coding
+        my $R = $locus->{focal_sumstats}->{_n_region_withq};
+        my ($n, $t, $l) = ($locus->{focal_sumstats}->{north}->{nwithq},
+                           $locus->{focal_sumstats}->{other}->{nwithq},
+                           $locus->{focal_sumstats}->{oland}->{nwithq});
+        if ($R == 1) {
+            $name .= "R1";
+            $name .= ($n ? "N" : ($t ? "T" : "L"));
+        } elsif ($R == 2) {
+            $name .= "R2";
+            $name .= ($n ? ($t ? "X" : "Y") : "Z");
+        } elsif ($R == 3) {
+            $name .= "R3A";
+        } else {
+            die "create_locus_template: locus $locus->{locus}: _n_region_withq makes no sense: $R";
+        }
+        # number of all populations with minor allele
+        $name .= "P".sprintf("%.2d", $n + $t + $l);
+        # populations with minor allele in each region
+        $name .= "p$n$t$l";
+        $name .= "_";
+        # locus number
+        $name .= sprintf("%.${o_padding}d", $locus->{locus});
+    } else {
+        $name = $o_name.sprintf("%.${o_padding}d", $locus->{locus});
+    }
+    ## create template sequence
+    my $template = $locus->{seq};
+    my $focal_SNP;
+    # first, non-focal SNPs get converted to IUPAC symbols; these substitutions do not change template length
+    foreach (@{$locus->{snps}}) {
+        if ($_->{column} == $locus->{focal_SNP}) {
+            $focal_SNP = $_;
+            next;
+        }
+        substr($template, $_->{column} - 1, 1) = $REV_IUB{uc join '', sort ( $_->{al0}, $_->{al1} )};
+    }
+    # now the focal SNP; changes template length
+    my @a = sort map { uc } ( $focal_SNP->{al0}, $focal_SNP->{al1} );
+    substr($template, $focal_SNP->{column} - 1, 1) = "[$a[0]/$a[1]]";
+    # pack up and go
+    $locus->{name} = $name;
+    $locus->{template} = $template;
+}
+
+
+sub print_locus_template($$) {
+    my ($locus, $do_annotate) = @_;
+    my $name = $locus->{name};
+    my $template = $locus->{template};
+    if ($o_trimtemplate) {
+        my $x;
+        $x = $locus->{focal_SNP} - 1 - $o_minflank;
+        substr($template, 0, $x) = "" if $x;
+        $x = $locus->{seqlen} - $locus->{focal_SNP} - $o_minflank;
+        substr($template, -$x) = "" if $x;
+    }
+    if ($do_annotate) {
+        say Pretty(Dumper($locus)) if $o_verbose;
+        my $lfs = $locus->{focal_sumstats};
+        say STDOUT join("\t",
+            $name,
+            # _n_region(npop,npop,npop)
+            "$lfs->{_n_region}(".
+            "$lfs->{north}->{npop},".
+            "$lfs->{other}->{npop},".
+            "$lfs->{oland}->{npop})"
+            ,
+            # _n_region_withq(nwithq,nwithq,nwithq)
+            "$lfs->{_n_region_withq}(".
+            "$lfs->{north}->{nwithq},".
+            "$lfs->{other}->{nwithq},".
+            "$lfs->{oland}->{nwithq})"
+            ,
+            # _qfreq(qfreq,qfreq,qfreq)
+            sprintf("%.${o_freqdigits}f", $lfs->{_qfreq})."(".
+            sprintf("%.${o_freqdigits}f", $lfs->{north}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $lfs->{other}->{qfreq}).",".
+            sprintf("%.${o_freqdigits}f", $lfs->{oland}->{qfreq}).")"
+            ,
+            $locus->{focal_SNP} - 1,
+            "$locus->{n_lsnps}:$locus->{n_rsnps}",
+            $template);
+    } else {
+        say STDOUT "$name $template";
+    }
+    ++$n_templates;
+}
+
+
+sub dump_locus($) {
+    my $locus = shift;
+    say STDOUT "locus $locus->{locus} consensus $locus->{seqlen} bp:";
+    say STDOUT "$locus->{seq}";
+    if (exists $locus->{snps}) {
+        my $focal = exists $locus->{focal_SNP} ?  $locus->{focal_SNP} : 0;
+        say STDOUT (' ' x ($_->{column} - 1)).($_->{column} == $focal ? "*" : "^")."$_->{al0}$_->{al1}$_->{al2}".'@'."$_->{column}" foreach @{$locus->{snps}};
+    } else {
+        say STDOUT "-- no snps";
+    }
+    if (exists $locus->{template}) {
+        print_locus_template($locus, $o_annotatetemplate);
+    } else {
+        say STDOUT "-- no template";
+    }
+}
+
+#----
+#----
+
+sub process_tags_line($) {
+    chomp $_[0];
+    my (undef, $sample, $locus, undef, undef, undef, $type, $component, $seqid, $seq, undef, undef, undef, undef) = split(/\t/, $_[0]);
+    die "$o_tagsfile:$.: sequence type '$type' not 'consensus'" if $type ne 'consensus';
+    #return { locus => $locus, seq => $seq, seqid => $seqid, seqlen => length($seq) };
+    return { locus => $locus, seq => $seq, seqlen => length($seq) };
+}
+
+
+sub process_snps_line($) {
+    chomp $_[0];
+    my (undef, $sample, $locus, $column, $type, $LR, $al0, $al1, $al2, $al3) = split(/\t/, $_[0]);
+    die "$o_snpsfile:$.: snp type '$type' not 'E'" if $type ne 'E';
+    $column += 1;  # convert to 1-based
+    return { locus => $locus, column => $column, type => $type, al0 => $al0, al1 => $al1, al2 => $al2, al3 => $al3 };
+}
+
+
+sub process_sumstats_line($) {
+    chomp $_[0];
+    #   $batch, $locus, $chrom, $bp_cum, $column, $pop, $alp, $alq, $nindiv, $pfreq, $obshet, $obshom, $exphet, $exphom, $pi,   $pismooth, $P_pismooth, $Fis , $Fis_smooth, $P_Fis_smooth, $private
+    my ($batch, $locus, $chrom, undef  , $column, $pop, $alp, $alq, $nindiv, $freqp, undef  , undef  , undef  , undef  , undef, undef    , undef      , undef, undef      , undef        , undef) = split(/\t/, $_[0]);
+    die "$o_sumstatsfile:$.: Chr '$chrom' not 'un'" if $chrom ne 'un';
+    $column += 1;  # convert to 1-based
+    return { locus => $locus, column => $column, pop => $pop, nindiv => $nindiv, alp => $alp, alq => $alq, freqp => $freqp };
+}
+
+
+sub is_central_SNP($$) {
+    my ($locus, $column) = @_;
+    return ($column > $o_minflank and $column < ($locus->{seqlen} - $o_minflank + 1)) ? 1 : 0;
+}
+
+
+sub binomial_confint($$$$) {
+    # https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+    # 4 digits right of decimal point
+    # 1: number of trials
+    # 2: number of successes
+    # 3: alpha level
+    # 4: method: 0: wilson  1: normal approx using adjusted p  2: normal approx
+    my ($n, $success, $alpha, $method) = @_;
+    my $z = Statistics::Distributions::udistr($alpha / 2);  # two-sized z-score
+    usage("alpha $alpha seems inappropriate, z-score is $z") if $z < 0;
+    my @ci;
+    if (! $method) { # wilson's method
+        my $z2 = $z * $z;
+        my $plusminus = $z * sqrt(((1.0/$n) * $success * ($n - $success)) + 0.25*$z2);
+        @ci = map { (1.0/($n + $z2)) * ($success + 0.5*$z2 + ($_ * $plusminus)) } (-1.0, +1.0);
+    } elsif ($method == 1) { # adjust p and use normal approximation
+        my $p = ($success + 2) / ($n + 4);
+        my $plusminus = $z * sqrt((1.0 / $n) * $p * (1.0 - $p));  # the +/- part
+        @ci = map { $p + ($_ * $plusminus) } (-1.0, +1.0);
+    } elsif ($method == 2) { # normal approximation, alternative factorisation
+        my $plusminus = $z * sqrt((1.0 / $n) * $success * ($n - $success));  # the +/- part
+        @ci = map { (1.0 / $n) * ($success + ($_ * $plusminus)) } (-1.0, +1.0);
+    } else { die "unknown method: $method"; }
+    @ci = map { sprintf("%.${o_freqdigits}f", $_) } @ci;
+    return @ci;
+}
+
+
 sub check_SNP_has_sumstats($$) {
     my ($locus, $snps) = @_;
     my @ok;
@@ -768,4 +739,48 @@ sub check_SNP_sumstats_OK($$) {
     return @ok;
 }
 
+
+sub is_oland($) {
+    return exists($OLAND{substr($_[0], 0, 2)});
+}
+
+
+sub pop_region($) {
+    my ($pop, $region) = (substr($_[0], 0, 2), "");
+    if (exists($OLAND{$pop})) {
+        $region = $REGIONS{oland};
+    } elsif (exists($NORTH{$pop})) {
+        $region = $REGIONS{north};
+    } else {
+        $region = $REGIONS{other};
+    }
+    return $region;
+}
+
+
+sub Pretty  # condense Dumper output, from http://www.perlmonks.org/?node_id=490421
+{
+    my @src = split(/\n/, join('', @_));
+    my @dst = ();
+    my $f = $Data::Dumper::Fill || 72;
+    my $i = 0;
+    while ($i <= $#src) {
+        my $l = $src[$i];
+        if (not $l =~ /[\[\{\(]\s*$/) { push(@dst, $l); $i++; next; }
+        my ($p) = ($l =~ /^(\s+)/);
+        my $j = $i+1;
+        while ($j <= $#src) {
+            my $n = $src[$j];
+            my ($q) = ($n =~ /^(\s+)/);
+            $n =~ s/^\s+/ /;
+            if (length($l) + length($n) >= $f) { $l = $src[$i]; last; }
+            $l .= $n;
+            if ($q and $p and $q eq $p) { $i = $j; last; }
+            $j++;
+        }
+        push(@dst, $l);
+        $i++;
+    }
+    return join("\n", @dst) . "\n";
+}
 

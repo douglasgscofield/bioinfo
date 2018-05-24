@@ -3,7 +3,7 @@
 
 TempID=$$
 ScriptDir=..
-ScriptName=convertAlignment.pl
+ScriptName=pos2bed
 
 # Complete set of variables used in tests; reset between tests
 
@@ -30,15 +30,11 @@ function RemoveTempFiles()
 RemoveTempFiles
 
 
-# -------------------------------- convertAlignment_test_01
+# -------------------------------- pos2bed_test_01
 
 
-ThisTest="convertAlignment_test_01"
-echo -n $ThisTest - general test of script operation 
-Input=${ThisTest}.input
-if [ "$CompressedInput" != "" -a ! -f $Input ] ; then
-    gzip -d -c < $CompressedInput > $Input
-fi
+ThisTest="pos2bed_test_01"
+echo -n $ThisTest - general test of script operation with a single chromosome
 Options=${ThisTest}.options
 Expected=${ThisTest}.expected
 Temp1=$ThisTest.$TempID.1
@@ -47,9 +43,6 @@ $ScriptDir/$ScriptName $(< $Options) > $Temp1
 if diff $Temp1 $Expected ; then
     echo " - PASSED"
     RemoveTempFiles
-    if [ "$CompressedInput" != "" ] ; then
-        rm -f $Input
-    fi
 else
     echo " - FAILED"
 fi

@@ -1,0 +1,73 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Getopt::Long;
+use feature 'say';
+
+my $o_faifile;
+my $o_posfile;
+my $o_addends = 1;
+my $o_help;
+
+sub usage {
+    say STDERR join("\n", @_) if $#_;
+    say STDERR "
+$0: convert chr,pos file to BED intervals
+
+    --posfile FILE   Two-column file with the first two columns specifying chromosome,position locations.
+                     Position is 1-based, so the posfile is like the first two columns of a VCF or GFF/GTF
+                     file.  Only the first two columns are used, if other columns are present they are ignored.
+                     Lines beginning with '#' are ignored.
+    --faifile FILE   FAI-format file describing sizes of chromosomes expected in the posfile.  Lines beginning
+                     with '#' are ignored.  If --no-addends is specified, this file is not required.  
+    --no-addends     Do not add the ends of chromosomes.  By default, BED intervals are created for the
+                     beginning and end of each chromosome, with the beginning at position 1 and the end at the
+                     length given in the faifile.  When this option is specified, these intervals are not 
+                     created, and the --faifile option is not required.
+    --help           This help
+";
+    exit 1;
+}
+
+GetOptions("faifile=s" => \$o_faifile,
+           "posfile=s" => \$o_posfile,
+           "addends!"  => \$o_addends,
+           "help"      => \$o_help) or die "unknown option: $!";
+
+usage("must specify --posfile") if ! $o_posfile;
+usage("must specify --faifile when not using --no-addends") if ! $o_posfile and $o_addends;
+
+my %fai;
+if ($o_faifile and $o_addends) {
+    open my $f, "<", $o_faifile or die "could not open file '$o_faifile': $!";
+    while (<$f>) {
+        next if /^#/;
+        chomp; my @l = split/\t/; $fai{$l[0]} = $l[1];
+    }
+    close $f;
+}
+
+open my $f, "<", $o_posfile or die "could not open file '$o_posfile': $!";
+my ($pchr, $ppos);
+my ($chr,  $pos);
+while (<$f>) {
+    next if /^#/;
+    chomp;
+    ($chr, $pos) = split/\t/;
+    die "chromosome $chr not found in $o_faifile" if $o_addends and not exists $fai{$chr};
+    if (not $pchr and not $ppos) {  # start
+        $pchr = $chr;
+        $ppos = 1;
+        say join("\t", $chr, $ppos - 1, $pos - 1) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
+    } elsif ($chr ne $pchr) {  # new chromosome
+        say join("\t", $pchr, $ppos, $fai{$pchr}) if $o_addends;  # wrap up previous chromosome
+        $pchr = $chr;
+        $ppos = 1;
+        say join("\t", $chr, $ppos - 1, $pos - 1) if $o_addends and $pos != $ppos;  # first interval, if chr position doesn't start with 1
+    } else {  # same chromosome
+        say join("\t", $chr, $ppos - 1, $pos - 1);
+    }
+    ($pchr, $ppos) = ($chr, $pos);
+}
+say join("\t", $pchr, $ppos - 1, $fai{$pchr}) if $o_addends and $ppos != $fai{$pchr};
