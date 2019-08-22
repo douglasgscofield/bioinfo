@@ -171,7 +171,7 @@ function print_interval(r, ib, ie)
                 if (min_width > 1)
                     trackdesc = trackdesc ", minimum width " min_width;
             }
-            print "track name=" trackname " description=\"" trackdesc "\"";
+            print "track name=\"" trackname "\" description=\"" trackdesc "\"";
         }
 
         next;
