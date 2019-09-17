@@ -3,6 +3,39 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+
+exonerate-protein2genome-gff-to-fasta.pl
+---------
+
+    USAGE : ./exonerate-protein2genome-gff-to-fasta.pl genome.fasta from-exonerate.gff output-prefix
+
+*Yes, the script name is ridiculously long, but ambiguity serves no one here.*
+
+Convert 'exonerate --model protein2genome --showfeaturegff true' output to CDS DNA sequence and translated protein.
+
+The arguments are:
+    1. Genome fasta containing the genome DNA sequences referred to by the GFF
+    2. GFF produced by `exonerate --model protein2genome --showfeaturegff true`
+    3. prefix for the two output files:
+       1. concatenated DNA sequences from segments marked 'cds' in the GFF, named `prefix.cds.fasta`
+       2. translated version of this sequence, named `prefix.pep.fasta`
+
+Requires BioPerl.  BioPerl is used for indexing the genome fasta, extracting
+CDS segments from the genome fasta, doing reverse-complementing if required,
+translating the sequence to proteins, and writing the output files.
+
+The gff output by exonerate is **not** gff like output by maker.  There's no
+mRNA line and there are extra lines marking introns, splice sites, etc.  This
+script is specific to exonerate's output (as of version 2.4.0)
+
+Derived from a script posted by Federico Giorgi <https://biostars.org/p/46281>
+to be a general GFF-to-protein script, with some modifications
+
+   - moved code into start_gene() and wrapup_gene()
+   - each sequence is tagged with `gene_<gene # from exonerate output>_query_<query name>`
+   - fixed last-gene-not-output bug
+
+
 fqSplit.pl
 ----------
 
