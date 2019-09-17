@@ -11,14 +11,15 @@ exonerate-protein2genome-gff-to-fasta.pl
 
 *Yes, the script name is ridiculously long, but ambiguity serves no one here.*
 
-Convert 'exonerate --model protein2genome --showfeaturegff true' output to CDS DNA sequence and translated protein.
+Convert [Exonerate](https://www.ebi.ac.uk/about/vertebrate-genomics/software/exonerate-manual) GFF output to CDS DNA sequences and translated proteins.
 
 The arguments are:
-    1. Genome fasta containing the genome DNA sequences referred to by the GFF
-    2. GFF produced by `exonerate --model protein2genome --showfeaturegff true`
-    3. prefix for the two output files:
-       1. concatenated DNA sequences from segments marked 'cds' in the GFF, named `prefix.cds.fasta`
-       2. translated version of this sequence, named `prefix.pep.fasta`
+
+  1. Genome fasta containing the genome DNA sequences referred to by the GFF
+  2. GFF produced by `exonerate --model protein2genome --showfeaturegff true`
+  3. prefix for the two output files:
+     1. concatenated DNA sequences from segments marked 'cds' in the GFF, named `prefix.cds.fasta`
+     2. translated version of this sequence, named `prefix.pep.fasta`
 
 Requires BioPerl.  BioPerl is used for indexing the genome fasta, extracting
 CDS segments from the genome fasta, doing reverse-complementing if required,
