@@ -47,6 +47,10 @@ Create templates for high-throughput genotyping platforms (iPlex, etc) from Stac
 
 A handful of bioinformatics scripts:
 
+**exonerate-protein2genome-gff-to-fasta.pl**
+ takes a genome file and `exonerate --model protein2genome --showfeaturegff true` output and produces DNA and protein sequences for each `gene` reported.
+ The GFF from exonerate is a bit different than standard GFFs, and this script handles those cases.
+
 **fqSplit.pl**
  splits a FastQ file into a selected number of files, each named with a given prefix.  Does not handle compressed input or output, see its help (run with no options) for how to handle compressed input/output.
 
