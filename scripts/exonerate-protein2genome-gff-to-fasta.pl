@@ -20,6 +20,8 @@
 #   - moved code into start_gene() and wrapup_gene()
 #   - each sequence is tagged with gene_<gene # from exonerate output>_query_<query name>
 #   - fixed last-gene-not-output bug
+#   - fixed wrong-orientation-of-CDS-segments-with-neg-orientation bug
+#   - fixed relying-on-gene-attributes-instead-of-column-7-for-orientation bug
 
 
 use strict;
@@ -34,8 +36,8 @@ if (! $ARGV[0]) {
     exit 1;
 }
 
-my $file_fasta = $ARGV[0];
-my $file_gff = $ARGV[1];
+my $file_fasta    = $ARGV[0];
+my $file_gff      = $ARGV[1];
 my $output_prefix = $ARGV[2];
 
 $| = 1;    # Flush output
@@ -51,28 +53,32 @@ open GFF, "<$file_gff" or die $!;
 ### Second, parse the GFF3
 my @mRNA;
 my $mRNA_name;
-my $frame;
+my $orientation;
 
 sub start_gene(@) {
     my @array = @_;
+    $orientation = $array[6];
+    die "unknown orientation '$orientation'" if not ($orientation eq '+' or $orientation eq '-');
     # Now initialize the next mRNA
     my @attrs = split( " ; ", $array[8] );
     $attrs[0] =~ s/gene_id //;
     $attrs[1] =~ s/sequence //;
-    $attrs[2] =~ s/gene_orientation //;
     $mRNA_name = "gene_$attrs[0]_query_$attrs[1]";
-    $frame = $attrs[2];
     @mRNA = (); # Empty the mRNA
 }
 
 sub wrapup_gene {
     my @array = @_;
     # Collect CDSs and extract sequence of the previous mRNA
-    my $mRNA_seq;
+    my $mRNA_seq = "";
     foreach my $coord (@mRNA) {
         my @cds_coord = split( " ", $coord );
         my $cds_seq = $db->seq( $cds_coord[0], $cds_coord[1], $cds_coord[2] );
-        $mRNA_seq .= $cds_seq;
+        if ($orientation eq '+') {
+            $mRNA_seq = "${mRNA_seq}${cds_seq}";  # append to end
+        } else {
+            $mRNA_seq = "${cds_seq}${mRNA_seq}";  # prepend to beginning
+        }
     }
 
     my $output_nucleotide = Bio::Seq->new(
@@ -81,22 +87,14 @@ sub wrapup_gene {
         -display_id => $mRNA_name,
         -alphabet   => 'dna',
     );
-    if ($frame eq '-') {
+    if ($orientation eq '-') {
         $output_nucleotide = $output_nucleotide->revcom();
     }
     my $output_protein = $output_nucleotide->translate();
     $outfile_cds->write_seq($output_nucleotide);
     $outfile_pep->write_seq($output_protein);
 
-    # Now initialize the next mRNA
     start_gene(@array) if @array;
-    #my @attrs = split( ";", $array[8] );
-    #$attrs[0] =~ s/gene_id //;
-    #$attrs[1] =~ s/sequence //;
-    #$attrs[2] =~ s/gene_orientation //;
-    #$mRNA_name = $attrs[1];
-    #$frame=$array[2];
-    #@mRNA = (); # Empty the mRNA
 }
 
 while ( my $line = <GFF> ) {
