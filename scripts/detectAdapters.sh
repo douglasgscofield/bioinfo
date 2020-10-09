@@ -14,6 +14,7 @@ Read1=$1
 Read2=$2
 ADAPTERS=${3:-$DEFAULT_ADAPTERS}
 SUBSET=${4:-2000000}
+TMP=.
 
 set +x
 if [[ -z "$Read1" || -z "$Read2" || -z "$ADAPTERS" || -z "$TMP" || -z "$SUBSET" ]] ; then
