@@ -2,8 +2,6 @@
 
 set -e
 
-#Project=b2012190/nobackup/private
-
 FULL_ADAPTERS_FILENAME="complete-illumina-adapters-v4.conf"
 cutadapt="cutadapt"
 
@@ -14,7 +12,6 @@ SUBSET=${4:-1000000}
 CORES=${5:-10}
 TMP=.
 OUTPUTDIR=.
-
 
 set +x
 if [[ -z "$Read1" || -z "$Read2" || -z "$ADAPTERS" || -z "$TMP" || -z "$SUBSET" || -z "$CORES" ]] ; then
