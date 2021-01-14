@@ -51,7 +51,6 @@
 
 use strict;
 use warnings;
-use POSIX qw/isdigit/;
 use Getopt::Long;
 
 my $in_file;

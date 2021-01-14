@@ -1,0 +1,10 @@
+# stringtie --merge cuttrim2_SF-2243-GB-12-13_S47_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-12-15_S48_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-12-5_S44_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-12-6_S45_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-18-1_S41_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-18-2_S42_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-18-3_S43_L002_masked_renamed.gtf cuttrim2_SF-2243-GB-18-8_S46_L002_masked_renamed.gtf
+# StringTie version 2.1.4
+ScyVXgK_1005_HRSCAF_1067	StringTie	transcript	761	964	1000	-	.	gene_id "MSTRG.1"; transcript_id "MSTRG.1.1"; 
+ScyVXgK_1005_HRSCAF_1067	StringTie	exon	761	964	1000	-	.	gene_id "MSTRG.1"; transcript_id "MSTRG.1.1"; exon_number "1"; 
+ScyVXgK_1006_HRSCAF_1068	StringTie	transcript	1	1389	1000	+	.	gene_id "MSTRG.2"; transcript_id "MSTRG.2.1"; 
+ScyVXgK_1006_HRSCAF_1068	StringTie	exon	1	1389	1000	+	.	gene_id "MSTRG.2"; transcript_id "MSTRG.2.1"; exon_number "1"; 
+ScyVXgK_1006_HRSCAF_1068	StringTie	transcript	3147	3572	1000	+	.	gene_id "MSTRG.3"; transcript_id "MSTRG.3.1"; 
+ScyVXgK_1006_HRSCAF_1068	StringTie	exon	3147	3572	1000	+	.	gene_id "MSTRG.3"; transcript_id "MSTRG.3.1"; exon_number "1"; 
+ScyVXgK_1007_HRSCAF_1069	StringTie	transcript	300	654	1000	-	.	gene_id "MSTRG.4"; transcript_id "MSTRG.4.1"; 
+ScyVXgK_1007_HRSCAF_1069	StringTie	exon	300	654	1000	-	.	gene_id "MSTRG.4"; transcript_id "MSTRG.4.1"; exon_number "1"; 

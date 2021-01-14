@@ -1,0 +1,8 @@
+ScyVXgK_1005_HRSCAF_1067	b2h	transcript	761	964	1000	-	.	gene_id=MSTRG.1;transcript_id=MSTRG.1.1;src=E
+ScyVXgK_1005_HRSCAF_1067	b2h	exon	761	964	1000	-	.	gene_id=MSTRG.1;transcript_id=MSTRG.1.1;exon_number=1;src=E
+ScyVXgK_1006_HRSCAF_1068	b2h	transcript	1	1389	1000	+	.	gene_id=MSTRG.2;transcript_id=MSTRG.2.1;src=E
+ScyVXgK_1006_HRSCAF_1068	b2h	exon	1	1389	1000	+	.	gene_id=MSTRG.2;transcript_id=MSTRG.2.1;exon_number=1;src=E
+ScyVXgK_1006_HRSCAF_1068	b2h	transcript	3147	3572	1000	+	.	gene_id=MSTRG.3;transcript_id=MSTRG.3.1;src=E
+ScyVXgK_1006_HRSCAF_1068	b2h	exon	3147	3572	1000	+	.	gene_id=MSTRG.3;transcript_id=MSTRG.3.1;exon_number=1;src=E
+ScyVXgK_1007_HRSCAF_1069	b2h	transcript	300	654	1000	-	.	gene_id=MSTRG.4;transcript_id=MSTRG.4.1;src=E
+ScyVXgK_1007_HRSCAF_1069	b2h	exon	300	654	1000	-	.	gene_id=MSTRG.4;transcript_id=MSTRG.4.1;exon_number=1;src=E

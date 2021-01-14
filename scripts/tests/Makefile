@@ -3,6 +3,7 @@ TESTDIR = .
 all: tests
 
 tests:
+	$(TESTDIR)/braker_RNAseq_gtf_test.sh
 	$(TESTDIR)/intervalBed_test.sh
 	$(TESTDIR)/mergePileupColumns_test.sh
 	$(TESTDIR)/pileup2pro_test.sh

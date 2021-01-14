@@ -1,4 +1,4 @@
-track name=intervalBed description="intervals of column 3 greater than or equal to 19"
+track name="intervalBed" description="intervals of column 3 greater than or equal to 19"
 MA_20601	71	104
 MA_20601	150	157
 MA_20601	255	999

@@ -1,4 +1,4 @@
-track name=intervalBed description="intervals of column 4 equal to 1"
+track name="intervalBed" description="intervals of column 4 equal to 1"
 MA_20601	17	36
 MA_20601	82	104
 MA_20601	171	226
