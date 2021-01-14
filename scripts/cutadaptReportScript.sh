@@ -17,6 +17,14 @@
 #     
 #     Sequence: ACACTCTTTCCCTACACGACGCTGTTCCATCT; Type: variable 5'/3'; Length: 32; Trimmed: 12 times.
 #
+# With paired-read unique dual UD adapters, these include 'First read: ' and 'Second read: ' in the headers,
+# and do not include the single quotes around the adapter names.  I call this "UD" format:
+#
+#     === First read: Adapter Adapter_1_Illumina ===
+#     === Second read: Adapter Adapter_1_Illumina ===
+#     
+#     Sequence: ACACTCTTTCCCTACACGACGCTGTTCCATCT; Type: variable 5'/3'; Length: 32; Trimmed: 12 times.
+#
 
 first=$1
 
@@ -31,6 +39,9 @@ Version=
 if grep -q '^Adapter.*, was trimmed ' "$first"
 then
     Version="pre"
+elif grep -q '^=== First read: ' "$first"
+then
+    Version="UD"
 elif grep -q '^Sequence.*; Trimmed: ' "$first"
 then
     Version="1.8"
@@ -56,12 +67,23 @@ function extract_18()
     done < <(grep -A 2 '^=== Adapter ' $report | grep -v '^--$')
 }
 
+function extract_UD()
+{
+    report=$1
+    while read line1; do
+        read line2; read line3;
+        echo "$line1 $line3" | cut -d' ' -f5,13,15 | sed -e "s/[';]//g" -e 's/ /\t/g'
+    done < <(grep -P -A 2 '^=== (First|Second) read: Adapter ' $report | grep -v '^--$')
+}
+
 function extract()
 {
     if [[ "$Version" = "pre" ]] ; then
         extract_pre $1
     elif [[ "$Version" = "1.8" ]] ; then
         extract_18 $1
+    elif [[ "$Version" = "UD" ]] ; then
+        extract_UD $1
     fi
 }
 
