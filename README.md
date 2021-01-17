@@ -47,9 +47,6 @@ Create templates for high-throughput genotyping platforms (iPlex, etc) from Stac
 
 A handful of bioinformatics scripts:
 
-**braker_RNAseq_gtf.pl**
- takes a GTF file produced by StringTie and converts it to a GFF1 file ready for use as an RNA-seq hints file in Braker.
-
 **exonerate-protein2genome-gff-to-fasta.pl**
  takes a genome file and `exonerate --model protein2genome --showfeaturegff true` output and produces DNA and protein sequences for each `gene` reported.
  The GFF from exonerate is a bit different than standard GFFs, and this script handles those cases.

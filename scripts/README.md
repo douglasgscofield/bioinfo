@@ -3,20 +3,6 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
-braker_RNAseq_gtf.pl
----------
-
-    USAGE :  ./braker_RNAseq_gtf.pl StringTie.gtf > braker_hints.gff
-
-Convert a GTF file produced by StringTie to a GFF1 file ready for use as an RNA-seq hints file in Braker.
-This involves
-
-   1. Removing comment and blank lines
-   2. Changing `StringTie` in the second column to `b2h`
-   3. Converting the tags in column nine to GFF format: `gene_id "ID"; tag "TAG";` to `gene_id=ID;tag-TAG`
-   4. add tag `src=E`
-
-
 exonerate-protein2genome-gff-to-fasta.pl
 ---------
 

@@ -1,5 +1,3 @@
-./braker_RNAseq_gtf_test.sh
-braker_RNAseq_gtf_test_01 - general test of script operation - PASSED
 ./intervalBed_test.sh
 intervalBed_test_01 - col=4 intervalBed_test.input - PASSED
 intervalBed_test_02 - col=4 strict=1 intervalBed_test.input - PASSED
