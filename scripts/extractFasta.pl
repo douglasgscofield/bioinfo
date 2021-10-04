@@ -23,7 +23,9 @@ First build the blast database using
 with -dbtype dependent upon your input data.
 
 Then you can extract the (sub)sequence of interest.  This is printed
-to stdout in Fasta format.  If a subsequence is requested, the range
+to stdout in Fasta format.
+
+If a subsequence is requested with the --range option, the range
 of the subsequence is added to the sequence identifier in the output.
 
 OPTIONS:
@@ -42,8 +44,7 @@ GetOptions("db=s"    => \$o_db,
            "entry=s" => \$o_entry,
            "range=s" => \$o_range,
            "help"    => \$o_help) or die $USAGE;
-if ($o_help) { print STDERR $USAGE; exit 0; }
-die "must supply --db and --entry, optionally --range, try $0 --help" if not $o_db or not $o_entry;
+if ($o_help or not $o_db or not $o_entry) { print STDERR $USAGE; exit 0; }
 
 my ($start, $end);
 if ($o_range) {

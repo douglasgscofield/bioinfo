@@ -6,20 +6,27 @@ use Getopt::Long;
 use Bio::SeqIO;
 
 my $o_one;
+my $o_min = 0;
 my $usage = "
-USAGE:  $0  [ -1 ] file.fa  >  output.fa
+USAGE:  $0  [ -1 ] [ --min L ] file.fa  >  output.fa
 
     Prints all sequences from file.fa as single lines.  The output is Fasta
-    format (unless -1 is used), but there is no wrapping of sequence lines.
+    format (unless -1 is used) with no wrapping of sequence lines.
     This can be useful for grep and count operations.
+
+    The --min L option removes all sequences shorter than L bp.
 
 OPTIONS
 
-    -1     Truly a single line: sequence-name <TAB> sequence <NEWLINE>
+    -1        Truly a single line: sequence-name <TAB> sequence <NEWLINE>
+    --min L   Only output sequences at least L bp long
 
 ";
 
-GetOptions("1" => \$o_one) or die $usage;
+GetOptions(
+    "1"     => \$o_one,
+    "min=i" => \$o_min,
+) or die $usage;
 
 my $f = shift @ARGV;
 
@@ -33,6 +40,7 @@ my $IN = Bio::SeqIO->new(-file => "<$f", -format => 'fasta');
 while (my $seq = $IN->next_seq()) {
     my $n = $seq->display_id();
     my $s = $seq->seq();
+    next if $o_min && $seq->length() < $o_min;
     if ($o_one) {
         print STDOUT "$n\t$s\n";
     } else {

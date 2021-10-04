@@ -17,7 +17,7 @@ my $o_infile = "";
 my $o_outfile = "";
 my $o_header = 0;
 my $o_inverse = 0;
-my $o_quitonseen = 0;
+my $o_noquitonseen = 0;
 my $o_stdio;
 my $o_help;
 my @o_names;
@@ -37,11 +37,17 @@ NAME
 
 SYNOPSIS
 
-    extractFastaSeqs.pl -n seq1 -n seq2 --in full.fa --out subset.fa
-    extractFastaSeqs.pl --namesfile subset-names.txt --in full.fa --out subset.fa
-    extractFastaSeqs.pl -nf subset-names.txt -i full.fa - > subset.fa
-    cat full.fa | extractFastaSeqs.pl -nf subset-names.txt - > subset.fa
-    extractFastaSeqs.pl subset-names.txt full.fa subset.fa
+    Uses only standard Perl modules, neither Blast nor BioPerl.
+
+        extractFastaSeqs.pl -n seq1 -n seq2 --in full.fa --out subset.fa
+
+        extractFastaSeqs.pl --namesfile subset-names.txt --in full.fa --out subset.fa
+
+        extractFastaSeqs.pl -nf subset-names.txt -i full.fa - > subset.fa
+
+        cat full.fa | extractFastaSeqs.pl -nf subset-names.txt - > subset.fa
+
+        extractFastaSeqs.pl subset-names.txt full.fa subset.fa
 
     For the -nf/--namesfile options, names must be given one per line in the
     names file.  Names of sequences in the FASTA file are any characters after the
@@ -65,7 +71,8 @@ OPTIONS
     -H, --header             match entire contents of the FASTA header
     -v, --inverse            output FASTA sequences that _do not match_ any of
                              names given.
-    --quit-on-seen           quit once all sequences in the names file are seen
+    --no-quit-on-seen        do not quit once all sequences in the names file are seen;
+                             the default is to do so
 
     -?, --help               help message
 ";
@@ -86,7 +93,7 @@ GetOptions(
     "n|name=s" => \@o_names,
     "H|header" => \$o_header,
     "v|inverse" => \$o_inverse,
-    "quit-on-seen" => \$o_quitonseen,
+    "no-quit-on-seen" => \$o_noquitonseen,
     "help|?" => \$o_help,
 ) or print_usage_and_exit(1);
 
@@ -145,7 +152,7 @@ while (<$FASTA>) {
             ++$NAMES{$name_to_match};
         } else {
             $contigmatched = 0;
-            if ($o_quitonseen and $Nnames_seen == $Nnames) {
+            if (! $o_noquitonseen and $Nnames_seen == $Nnames) {
                 --$Nlines;  # take back this line
                 last;
             }
@@ -163,5 +170,5 @@ while (<$FASTA>) {
 say STDERR "$Nseqs FASTA sequences in $Nlines lines, total length $Nletters bp";
 say STDERR "$Nnames unique names, and these matched $Nmatched FASTA sequences";
 say STDERR "Output $Nletters_output bp";
-say STDERR "Quit after seeing all $Nnames_seen names" if $o_quitonseen;
+say STDERR "Kept going even after seeing all $Nnames_seen names" if $o_noquitonseen;
 
