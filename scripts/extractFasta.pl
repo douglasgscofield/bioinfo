@@ -56,7 +56,7 @@ print STDERR "Looking for sequence named '$o_entry' in blast database '$o_db'...
 
 my $output = Bio::SeqIO->new(-fh => \*STDOUT, -format => 'Fasta');
 
-my @seq = qx/blastdbcmd -db $o_db -entry $o_entry/;
+my @seq = qx/blastdbcmd -db $o_db -entry '$o_entry'/;
 
 die "blastdbcmd could not find entry '$o_entry' in DB $o_db" if not scalar(@seq);
 print STDERR " found it!\n";
