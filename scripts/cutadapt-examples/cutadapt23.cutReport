@@ -1,0 +1,1349 @@
+This is cutadapt 2.3 with Python 3.7.2
+Command line parameters: -b cloning_vector=ATACGACTCACTATAGGGAGAAG -b Adapter_1_Illumina=ACACTCTTTCCCTACACGACGCTGTTCCATCT -b Adapter_2_Illumina=CAAGCAGAAGACGGCATACGAGCTCTTCCGATC -b Adapter_3_Illumina=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_4_Illumina=CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT -b Adapter_5_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_6_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_7_Illumina=CAAGCAGAAGACGGCATACGAGCTCTTCCGATC -b Adapter_8_Illumina=CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -b Adapter_9_Illumina=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_10_Illumina=CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -b Adapter_11_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_12_Illumina=CGGTCTCGGCATTCCTACTGAACCGCTCTTCCGATCT -b Adapter_13_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_14_Illumina=CGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -b Adapter_15_Illumina=ACAGGTTCAGAGTTCTACAGTCCGAC -b Adapter_16_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_17_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_18_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_19_Illumina=CGACAGGTTCAGAGTTCTACAGTCCGACGATC -b Adapter_20_Illumina=ACAGGTTCAGAGTTCTACAGTCCGACATG -b Adapter_21_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_22_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_23_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_24_Illumina=CCGACAGGTTCAGAGTTCTACAGTCCGACATG -b Adapter_25_Illumina=GTTCAGAGTTCTACAGTCCGACGATC -b Adapter_26_Illumina=TCGTATGCCGTCTTCTGCTTGT -b Adapter_27_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_28_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_29_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_30_Illumina=CGACAGGTTCAGAGTTCTACAGTCCGACGATC -b Adapter_31_Illumina=GTTCAGAGTTCTACAGTCCGACGATC -b Adapter_32_Illumina=TGGAATTCTCGGGTGCCAAGG -b Adapter_33_Illumina=GATCGGAAGAGCACACGTCT -b Adapter_34_Illumina=AGACGTGTGCTCTTCCGATC -b Adapter_35_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_36_Illumina=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_37_Illumina=GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT -b Adapter_38_Illumina=ACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_39_Illumina=GATCGGAAGAGCACACGTCTGAACTCCAGTCAC -b Adapter_40_Illumina=GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT -b Adapter_41_Illumina=CAAGCAGAAGACGGCATACGAGATCGTGATGTGACTGGAGTTC -b Adapter_42_Illumina=CAAGCAGAAGACGGCATACGAGATACATCGGTGACTGGAGTTC -b Adapter_43_Illumina=CAAGCAGAAGACGGCATACGAGATGCCTAAGTGACTGGAGTTC -b Adapter_44_Illumina=CAAGCAGAAGACGGCATACGAGATTGGTCAGTGACTGGAGTTC -b Adapter_45_Illumina=CAAGCAGAAGACGGCATACGAGATCACTGTGTGACTGGAGTTC -b Adapter_46_Illumina=CAAGCAGAAGACGGCATACGAGATATTGGCGTGACTGGAGTTC -b Adapter_47_Illumina=CAAGCAGAAGACGGCATACGAGATGATCTGGTGACTGGAGTTC -b Adapter_48_Illumina=CAAGCAGAAGACGGCATACGAGATTCAAGTGTGACTGGAGTTC -b Adapter_49_Illumina=CAAGCAGAAGACGGCATACGAGATCTGATCGTGACTGGAGTTC -b Adapter_50_Illumina=CAAGCAGAAGACGGCATACGAGATAAGCTAGTGACTGGAGTTC -b Adapter_51_Illumina=CAAGCAGAAGACGGCATACGAGATGTAGCCGTGACTGGAGTTC -b Adapter_52_Illumina=CAAGCAGAAGACGGCATACGAGATTACAAGGTGACTGGAGTTC -b Adapter_53_Illumina=GATCGTCGGACTGTAGAACTCTGAAC -b Adapter_54_Illumina=ACAGGTTCAGAGTTCTACAGTCCGAC -b Adapter_55_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_56_Illumina=TCGTATGCCGTCTTCTGCTTG -b Adapter_57_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_58_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_59_Illumina=CGACAGGTTCAGAGTTCTACAGTCCGACGATC -b Adapter_60_Illumina=TCGGACTGTAGAACTCTGAAC -b Adapter_61_Illumina=ACAGGTTCAGAGTTCTACAGTCCGACATG -b Adapter_62_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_63_Illumina=TCGTATGCCGTCTTCTGCTTG -b Adapter_64_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_65_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_66_Illumina=CCGACAGGTTCAGAGTTCTACAGTCCGACATG -b Adapter_67_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_68_Illumina=GTTCAGAGTTCTACAGTCCGACGATC -b Adapter_69_Illumina=TCGTATGCCGTCTTCTGCTTGT -b Adapter_70_Illumina=ATCTCGTATGCCGTCTTCTGCTTG -b Adapter_71_Illumina=CAAGCAGAAGACGGCATACGA -b Adapter_72_Illumina=AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA -b Adapter_73_Illumina=CGACAGGTTCAGAGTTCTACAGTCCGACGATC -b Adapter_74_TruSeq=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_75_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_76_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_77_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG -b Adapter_78_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_79_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_80_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG -b Adapter_81_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG -b Adapter_82_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_83_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_84_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_85_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG -b Adapter_86_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_87_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTCAACAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_88_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTTCCGTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_89_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGTCAGAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_90_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCCGTCCCGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_91_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCCGCACATCTCGTATGCCGTCTTCTGCTTG -b Adapter_92_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGAAACGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_93_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGGCCTTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_94_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTTTCGGAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_95_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGTACGTAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_96_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTGGATATCTCGTATGCCGTCTTCTGCTTG -b Adapter_97_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTGATATATCTCGTATGCCGTCTTCTGCTTG -b Adapter_98_TruSeq=GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTCCTTTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_99_Illumina=GCCTTGGCACCCGAGAATTCCA -b Adapter_100_Illumina=AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGA -b Adapter_101_TruSeqD701=GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTACTCGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_102_TruSeqD702=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCCGGAGAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_103_TruSeqD703=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGCTCATTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_104_TruSeqD704=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGATTCCATCTCGTATGCCGTCTTCTGCTTG -b Adapter_105_TruSeqD705=GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTCAGAAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_106_TruSeqD706=GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAATTCGTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_107_TruSeqD707=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTGAAGCTATCTCGTATGCCGTCTTCTGCTTG -b Adapter_108_TruSeqD708=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAATGCGCATCTCGTATGCCGTCTTCTGCTTG -b Adapter_109_TruSeqD709=GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGGCTATGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_110_TruSeqD710=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCCGCGAAATCTCGTATGCCGTCTTCTGCTTG -b Adapter_111_TruSeqD711=GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCTCGCGCATCTCGTATGCCGTCTTCTGCTTG -b Adapter_112_TruSeqD712=GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGCGATAGATCTCGTATGCCGTCTTCTGCTTG -b Adapter_113_TruSeqD501=AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_114_TruSeqD502=AATGATACGGCGACCACCGAGATCTACACATAGAGGCACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_115_TruSeqD503=AATGATACGGCGACCACCGAGATCTACACCCTATCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_116_TruSeqD504=AATGATACGGCGACCACCGAGATCTACACGGCTCTGAACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_117_TruSeqD505=AATGATACGGCGACCACCGAGATCTACACAGGCGAAGACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_118_TruSeqD506=AATGATACGGCGACCACCGAGATCTACACTAATCTTAACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_119_TruSeqD507=AATGATACGGCGACCACCGAGATCTACACCAGGACGTACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_120_TruSeqD508=AATGATACGGCGACCACCGAGATCTACACGTACTGACACACTCTTTCCCTACACGACGCTCTTCCGATCT -b Adapter_149_PCR_Primer1v2=AGATCGGAAGAGCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT -b Adapter_150_PCR_Primer1v3=GATCGGAAGAGCGTCGTGTAGGGGAAGAGGGTAGATCTCGGGGGGCGCCG -O 12 -n 2 -o /scratch/10674905/HI.1481.003.Index_3.8M71910_R1.cutadapt.i.fq.gz /scratch/10674905/HI.1481.003.Index_3.8M71910_R1.subset.i.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 4616.25 s (1154 us/read; 0.05 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:               4,000,000
+Reads with adapters:                     9,667 (0.2%)
+Reads written (passing filters):     4,000,000 (100.0%)
+
+Total basepairs processed:   400,000,000 bp
+Total written (filtered):    399,828,171 bp (100.0%)
+
+=== Adapter cloning_vector ===
+
+Sequence: ATACGACTCACTATAGGGAGAAG; Type: variable 5'/3'; Length: 23; Trimmed: 38 times.
+31 times, it overlapped the 5' end of a read
+7 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-23 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	15	1.0	1	0 15
+12	8	0.2	1	0 8
+13	5	0.1	1	0 5
+14	3	0.0	1	0 3
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	4	0.2	1	0 4
+13	1	0.1	1	0 1
+
+
+=== Adapter Adapter_1_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTGTTCCATCT; Type: variable 5'/3'; Length: 32; Trimmed: 83 times.
+29 times, it overlapped the 5' end of a read
+54 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-32 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	16	1.0	1	0 16
+12	8	0.2	1	0 8
+13	5	0.1	1	0 5
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	12	1.0	1	0 12
+12	17	0.2	1	0 17
+13	17	0.1	1	2 15
+14	5	0.0	1	0 5
+15	3	0.0	1	0 3
+
+
+=== Adapter Adapter_2_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGCTCTTCCGATC; Type: variable 5'/3'; Length: 33; Trimmed: 56 times.
+8 times, it overlapped the 5' end of a read
+48 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-33 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	4	0.2	1	0 4
+13	2	0.1	1	0 2
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	23	1.0	1	0 23
+12	19	0.2	1	0 19
+13	6	0.1	1	0 6
+
+
+=== Adapter Adapter_3_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 58; Trimmed: 15 times.
+14 times, it overlapped the 5' end of a read
+1 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-58 bp: 5
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	5	1.0	1	0 5
+12	6	0.2	1	1 5
+13	3	0.1	1	1 2
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+12	1	0.2	1	0 1
+
+
+=== Adapter Adapter_4_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT; Type: variable 5'/3'; Length: 34; Trimmed: 0 times.
+
+=== Adapter Adapter_5_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_6_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_7_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGCTCTTCCGATC; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_8_Illumina ===
+
+Sequence: CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 18 times.
+0 times, it overlapped the 5' end of a read
+18 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-33 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	6	1.0	1	0 6
+12	7	0.2	1	0 7
+13	5	0.1	1	0 5
+
+
+=== Adapter Adapter_9_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 58; Trimmed: 0 times.
+
+=== Adapter Adapter_10_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT; Type: variable 5'/3'; Length: 61; Trimmed: 0 times.
+
+=== Adapter Adapter_11_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_12_Illumina ===
+
+Sequence: CGGTCTCGGCATTCCTACTGAACCGCTCTTCCGATCT; Type: variable 5'/3'; Length: 37; Trimmed: 2 times.
+0 times, it overlapped the 5' end of a read
+2 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-37 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+12	1	0.2	1	0 1
+
+
+=== Adapter Adapter_13_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_14_Illumina ===
+
+Sequence: CGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT; Type: variable 5'/3'; Length: 37; Trimmed: 0 times.
+
+=== Adapter Adapter_15_Illumina ===
+
+Sequence: ACAGGTTCAGAGTTCTACAGTCCGAC; Type: variable 5'/3'; Length: 26; Trimmed: 58 times.
+1 times, it overlapped the 5' end of a read
+57 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-26 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	22	1.0	1	0 22
+12	20	0.2	1	0 20
+13	10	0.1	1	0 10
+14	1	0.0	1	0 1
+15	1	0.0	1	0 1
+16	1	0.0	1	0 1
+19	1	0.0	1	0 0 1
+20	1	0.0	2	0 0 1
+
+
+=== Adapter Adapter_16_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 3 times.
+1 times, it overlapped the 5' end of a read
+2 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-21 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+44	1	0.0	2	0 0 1
+95	1	0.0	2	0 0 1
+
+
+=== Adapter Adapter_17_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_18_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 4 times.
+4 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-44 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+13	2	0.1	1	0 2
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_19_Illumina ===
+
+Sequence: CGACAGGTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 32; Trimmed: 9 times.
+1 times, it overlapped the 5' end of a read
+8 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-32 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+12	1	0.2	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	5	0.2	1	0 5
+13	1	0.1	1	0 1
+
+
+=== Adapter Adapter_20_Illumina ===
+
+Sequence: ACAGGTTCAGAGTTCTACAGTCCGACATG; Type: variable 5'/3'; Length: 29; Trimmed: 4 times.
+4 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+12	3	0.2	1	0 3
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_21_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_22_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_23_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 0 times.
+
+=== Adapter Adapter_24_Illumina ===
+
+Sequence: CCGACAGGTTCAGAGTTCTACAGTCCGACATG; Type: variable 5'/3'; Length: 32; Trimmed: 7 times.
+0 times, it overlapped the 5' end of a read
+7 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-32 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	4	0.2	1	0 4
+13	1	0.1	1	0 1
+
+
+=== Adapter Adapter_25_Illumina ===
+
+Sequence: GTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 26; Trimmed: 43 times.
+0 times, it overlapped the 5' end of a read
+43 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-26 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	17	1.0	1	0 17
+12	14	0.2	1	2 12
+13	8	0.1	1	0 8
+14	3	0.0	1	1 2
+18	1	0.0	1	0 1
+
+
+=== Adapter Adapter_26_Illumina ===
+
+Sequence: TCGTATGCCGTCTTCTGCTTGT; Type: variable 5'/3'; Length: 22; Trimmed: 70 times.
+70 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-22 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	24	1.0	1	0 24
+12	32	0.2	1	1 31
+13	11	0.1	1	1 10
+14	2	0.0	1	0 2
+15	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_27_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_28_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_29_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 0 times.
+
+=== Adapter Adapter_30_Illumina ===
+
+Sequence: CGACAGGTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 32; Trimmed: 0 times.
+
+=== Adapter Adapter_31_Illumina ===
+
+Sequence: GTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 26; Trimmed: 0 times.
+
+=== Adapter Adapter_32_Illumina ===
+
+Sequence: TGGAATTCTCGGGTGCCAAGG; Type: variable 5'/3'; Length: 21; Trimmed: 17 times.
+11 times, it overlapped the 5' end of a read
+6 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-21 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	8	0.2	1	0 8
+13	1	0.1	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	2	1.0	1	0 2
+12	1	0.2	1	0 1
+13	1	0.1	1	0 1
+14	1	0.0	1	0 1
+29	1	0.0	2	0 0 1
+
+
+=== Adapter Adapter_33_Illumina ===
+
+Sequence: GATCGGAAGAGCACACGTCT; Type: variable 5'/3'; Length: 20; Trimmed: 2077 times.
+15 times, it overlapped the 5' end of a read
+2062 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	4	1.0	1	0 4
+12	8	0.2	1	0 8
+13	2	0.1	1	0 2
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	7	1.0	1	0 7
+12	9	0.2	1	0 9
+13	359	0.1	1	344 15
+14	347	0.0	1	331 16
+15	278	0.0	1	266 12
+16	248	0.0	1	243 5
+17	233	0.0	1	222 11
+18	219	0.0	1	207 12
+19	203	0.0	1	200 3
+20	149	0.0	2	137 7 5
+23	2	0.0	2	0 0 2
+27	2	0.0	2	0 1 1
+29	1	0.0	2	0 0 1
+31	1	0.0	2	0 0 1
+44	1	0.0	2	0 0 1
+46	1	0.0	2	0 0 1
+55	1	0.0	2	0 0 1
+57	1	0.0	2	0 0 1
+
+
+=== Adapter Adapter_34_Illumina ===
+
+Sequence: AGACGTGTGCTCTTCCGATC; Type: variable 5'/3'; Length: 20; Trimmed: 15 times.
+1 times, it overlapped the 5' end of a read
+14 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+13	1	0.1	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	4	1.0	1	0 4
+12	7	0.2	1	0 7
+13	2	0.1	1	0 2
+14	1	0.0	1	0 1
+
+
+=== Adapter Adapter_35_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_36_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 58; Trimmed: 0 times.
+
+=== Adapter Adapter_37_Illumina ===
+
+Sequence: GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT; Type: variable 5'/3'; Length: 34; Trimmed: 29 times.
+1 times, it overlapped the 5' end of a read
+28 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-34 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+22	1	0.0	2	1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	7	1.0	1	0 7
+12	13	0.2	1	0 13
+13	4	0.1	1	0 4
+15	3	0.0	1	0 3
+16	1	0.0	1	0 1
+
+
+=== Adapter Adapter_38_Illumina ===
+
+Sequence: ACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 33; Trimmed: 0 times.
+
+=== Adapter Adapter_39_Illumina ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCAC; Type: variable 5'/3'; Length: 33; Trimmed: 951 times.
+34 times, it overlapped the 5' end of a read
+917 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-33 bp: 3
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	14	1.0	1	0 14
+12	15	0.2	1	0 15
+13	4	0.1	1	0 4
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 2
+21	139	0.0	2	131 8
+22	114	0.0	2	107 4 3
+23	95	0.0	2	90 5
+24	85	0.0	2	81 2 2
+25	83	0.0	2	77 6
+26	77	0.0	2	75 1 1
+27	62	0.0	2	58 4
+28	53	0.0	2	52 1
+29	52	0.0	2	47 2 3
+30	49	0.0	3	43 5 1
+31	44	0.0	3	36 8
+32	36	0.0	3	33 1 2
+33	24	0.0	3	23 1
+37	1	0.0	3	0 0 0 1
+54	1	0.0	3	0 0 1
+
+
+=== Adapter Adapter_40_Illumina ===
+
+Sequence: GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT; Type: variable 5'/3'; Length: 34; Trimmed: 0 times.
+
+=== Adapter Adapter_41_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATCGTGATGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 31 times.
+31 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	8	1.0	1	0 8
+12	17	0.2	1	1 16
+13	5	0.1	1	0 5
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_42_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATACATCGGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 0 times.
+
+=== Adapter Adapter_43_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATGCCTAAGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 5 times.
+5 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+13	1	0.1	1	0 1
+14	3	0.0	1	0 3
+16	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_44_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATTGGTCAGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 2 times.
+2 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+14	1	0.0	1	0 1
+15	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_45_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATCACTGTGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 0 times.
+
+=== Adapter Adapter_46_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATATTGGCGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 0 times.
+
+=== Adapter Adapter_47_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATGATCTGGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 1 times.
+1 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+15	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_48_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATTCAAGTGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 1 times.
+1 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+16	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_49_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATCTGATCGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 0 times.
+
+=== Adapter Adapter_50_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATAAGCTAGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 2 times.
+2 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+14	1	0.0	1	0 1
+15	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_51_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATGTAGCCGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 0 times.
+
+=== Adapter Adapter_52_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGAGATTACAAGGTGACTGGAGTTC; Type: variable 5'/3'; Length: 43; Trimmed: 1 times.
+1 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-43 bp: 4
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+16	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_53_Illumina ===
+
+Sequence: GATCGTCGGACTGTAGAACTCTGAAC; Type: variable 5'/3'; Length: 26; Trimmed: 40 times.
+38 times, it overlapped the 5' end of a read
+2 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-26 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	13	1.0	1	0 13
+12	14	0.2	1	0 14
+13	10	0.1	1	0 10
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+12	1	0.2	1	0 1
+
+
+=== Adapter Adapter_54_Illumina ===
+
+Sequence: ACAGGTTCAGAGTTCTACAGTCCGAC; Type: variable 5'/3'; Length: 26; Trimmed: 0 times.
+
+=== Adapter Adapter_55_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_56_Illumina ===
+
+Sequence: TCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 21; Trimmed: 12 times.
+12 times, it overlapped the 5' end of a read
+0 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-21 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	5	1.0	1	0 5
+12	5	0.2	1	0 5
+13	1	0.1	1	0 1
+14	1	0.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+
+
+=== Adapter Adapter_57_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_58_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 0 times.
+
+=== Adapter Adapter_59_Illumina ===
+
+Sequence: CGACAGGTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 32; Trimmed: 0 times.
+
+=== Adapter Adapter_60_Illumina ===
+
+Sequence: TCGGACTGTAGAACTCTGAAC; Type: variable 5'/3'; Length: 21; Trimmed: 9 times.
+0 times, it overlapped the 5' end of a read
+9 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-21 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	3	1.0	1	0 3
+12	4	0.2	1	0 4
+13	1	0.1	1	0 1
+14	1	0.0	1	0 1
+
+
+=== Adapter Adapter_61_Illumina ===
+
+Sequence: ACAGGTTCAGAGTTCTACAGTCCGACATG; Type: variable 5'/3'; Length: 29; Trimmed: 0 times.
+
+=== Adapter Adapter_62_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_63_Illumina ===
+
+Sequence: TCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_64_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_65_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 0 times.
+
+=== Adapter Adapter_66_Illumina ===
+
+Sequence: CCGACAGGTTCAGAGTTCTACAGTCCGACATG; Type: variable 5'/3'; Length: 32; Trimmed: 0 times.
+
+=== Adapter Adapter_67_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_68_Illumina ===
+
+Sequence: GTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 26; Trimmed: 0 times.
+
+=== Adapter Adapter_69_Illumina ===
+
+Sequence: TCGTATGCCGTCTTCTGCTTGT; Type: variable 5'/3'; Length: 22; Trimmed: 0 times.
+
+=== Adapter Adapter_70_Illumina ===
+
+Sequence: ATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 24; Trimmed: 13 times.
+0 times, it overlapped the 5' end of a read
+13 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-24 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+12	2	0.2	1	0 2
+15	1	0.0	1	0 1
+22	1	0.0	2	1
+24	1	0.0	2	1
+31	1	0.0	2	0 1
+33	1	0.0	2	0 1
+34	1	0.0	2	1
+38	1	0.0	2	0 0 1
+40	1	0.0	2	0 1
+67	1	0.0	2	1
+72	1	0.0	2	1
+80	1	0.0	2	1
+
+
+=== Adapter Adapter_71_Illumina ===
+
+Sequence: CAAGCAGAAGACGGCATACGA; Type: variable 5'/3'; Length: 21; Trimmed: 0 times.
+
+=== Adapter Adapter_72_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 44; Trimmed: 0 times.
+
+=== Adapter Adapter_73_Illumina ===
+
+Sequence: CGACAGGTTCAGAGTTCTACAGTCCGACGATC; Type: variable 5'/3'; Length: 32; Trimmed: 0 times.
+
+=== Adapter Adapter_74_TruSeq ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 58; Trimmed: 0 times.
+
+=== Adapter Adapter_75_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 30 times.
+0 times, it overlapped the 5' end of a read
+30 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-63 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+32	1	0.0	3	0 0 0 1
+33	1	0.0	3	0 0 1
+34	28	0.0	3	0 26 2
+
+
+=== Adapter Adapter_76_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 16 times.
+0 times, it overlapped the 5' end of a read
+16 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-63 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+36	16	0.0	3	0 0 0 0 16
+
+
+=== Adapter Adapter_77_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 174 times.
+12 times, it overlapped the 5' end of a read
+162 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-63 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+37	1	0.0	3	0 0 1
+63	11	0.0	6	10 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+35	23	0.0	3	22 1
+36	2	0.0	3	0 1 0 1
+37	15	0.0	3	14 0 1
+38	16	0.0	3	15 1
+39	14	0.0	3	12 2
+40	7	0.0	4	7
+41	7	0.0	4	5 1 1
+42	10	0.0	4	10
+43	5	0.0	4	5
+44	12	0.0	4	10 2
+45	3	0.0	4	3
+46	6	0.0	4	3 2 0 1
+47	3	0.0	4	3
+48	7	0.0	4	6 0 0 0 1
+49	4	0.0	4	3 0 0 0 1
+50	1	0.0	5	1
+51	5	0.0	5	5
+52	5	0.0	5	5
+54	2	0.0	5	2
+55	1	0.0	5	1
+56	1	0.0	5	1
+58	1	0.0	5	1
+59	1	0.0	5	1
+61	1	0.0	6	1
+63	1	0.0	6	1
+65	1	0.0	6	0 0 1
+66	1	0.0	6	1
+68	1	0.0	6	0 1
+69	1	0.0	6	1
+70	1	0.0	6	0 0 1
+73	1	0.0	6	1
+79	1	0.0	6	1
+84	1	0.0	6	1
+86	1	0.0	6	1
+
+
+=== Adapter Adapter_78_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_79_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 1 times.
+0 times, it overlapped the 5' end of a read
+1 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-63 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+47	1	0.0	4	0 1
+
+
+=== Adapter Adapter_80_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_81_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_82_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_83_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_84_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_85_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_86_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 63; Trimmed: 0 times.
+
+=== Adapter Adapter_87_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTCAACAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_88_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTTCCGTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_89_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGTCAGAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_90_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCCGTCCCGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_91_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCCGCACATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_92_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGAAACGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_93_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGGCCTTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_94_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTTTCGGAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_95_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGTACGTAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_96_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTGGATATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_97_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTGATATATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_98_TruSeq ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTCCTTTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_99_Illumina ===
+
+Sequence: GCCTTGGCACCCGAGAATTCCA; Type: variable 5'/3'; Length: 22; Trimmed: 21 times.
+13 times, it overlapped the 5' end of a read
+8 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-22 bp: 2
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	3	1.0	1	0 3
+12	9	0.2	1	0 9
+13	1	0.1	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+12	6	0.2	1	0 6
+13	1	0.1	1	0 1
+15	1	0.0	1	0 1
+
+
+=== Adapter Adapter_100_Illumina ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGA; Type: variable 5'/3'; Length: 50; Trimmed: 0 times.
+
+=== Adapter Adapter_101_TruSeqD701 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTACTCGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 1 times.
+0 times, it overlapped the 5' end of a read
+1 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-65 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+58	1	0.0	5	0 0 0 0 0 0 1
+
+
+=== Adapter Adapter_102_TruSeqD702 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCCGGAGAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_103_TruSeqD703 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGCTCATTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_104_TruSeqD704 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGATTCCATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_105_TruSeqD705 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTCAGAAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_106_TruSeqD706 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAATTCGTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_107_TruSeqD707 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTGAAGCTATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_108_TruSeqD708 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAATGCGCATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 1 times.
+0 times, it overlapped the 5' end of a read
+1 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-59 bp: 5; 60-65 bp: 6
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+38	1	0.0	3	0 0 0 1
+
+
+=== Adapter Adapter_109_TruSeqD709 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGGCTATGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_110_TruSeqD710 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCCGCGAAATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_111_TruSeqD711 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACTCTCGCGCATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_112_TruSeqD712 ===
+
+Sequence: GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGCGATAGATCTCGTATGCCGTCTTCTGCTTG; Type: variable 5'/3'; Length: 65; Trimmed: 0 times.
+
+=== Adapter Adapter_113_TruSeqD501 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTATAGCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_114_TruSeqD502 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACATAGAGGCACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_115_TruSeqD503 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACCCTATCCTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_116_TruSeqD504 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACGGCTCTGAACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_117_TruSeqD505 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACAGGCGAAGACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_118_TruSeqD506 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACTAATCTTAACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_119_TruSeqD507 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACCAGGACGTACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_120_TruSeqD508 ===
+
+Sequence: AATGATACGGCGACCACCGAGATCTACACGTACTGACACACTCTTTCCCTACACGACGCTCTTCCGATCT; Type: variable 5'/3'; Length: 70; Trimmed: 0 times.
+
+=== Adapter Adapter_149_PCR_Primer1v2 ===
+
+Sequence: AGATCGGAAGAGCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT; Type: variable 5'/3'; Length: 55; Trimmed: 4311 times.
+1 times, it overlapped the 5' end of a read
+4310 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50-55 bp: 5
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+11	1	1.0	1	0 1
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+11	994	1.0	1	0 994
+12	871	0.2	1	836 35
+13	793	0.1	1	769 24
+14	358	0.0	1	351 7
+15	340	0.0	1	319 21
+16	262	0.0	1	2 260
+17	242	0.0	1	0 242
+18	211	0.0	1	0 211
+20	3	0.0	2	0 0 3
+26	1	0.0	2	0 0 1
+29	1	0.0	2	0 0 1
+33	31	0.0	3	0 0 0 31
+34	21	0.0	3	0 0 0 21
+35	25	0.0	3	0 0 0 25
+36	19	0.0	3	0 0 0 19
+37	16	0.0	3	0 0 0 16
+38	13	0.0	3	0 0 0 13
+39	12	0.0	3	0 0 0 12
+40	13	0.0	4	0 0 0 13
+41	4	0.0	4	0 0 0 4
+42	6	0.0	4	0 0 0 6
+43	7	0.0	4	0 0 0 6 1
+44	5	0.0	4	0 0 0 4 1
+45	12	0.0	4	0 0 0 11 1
+46	3	0.0	4	0 0 0 2 1
+47	5	0.0	4	0 0 0 3 2
+48	3	0.0	4	0 0 0 2 1
+49	6	0.0	4	0 0 0 6
+50	4	0.0	5	0 0 0 4
+51	1	0.0	5	0 0 0 1
+52	3	0.0	5	0 0 0 3
+53	5	0.0	5	0 0 0 5
+54	1	0.0	5	0 0 0 0 0 1
+55	2	0.0	5	0 0 0 1 1
+56	1	0.0	5	0 0 0 1
+57	1	0.0	5	0 0 0 0 1
+59	2	0.0	5	0 0 0 1 1
+60	1	0.0	5	0 0 0 1
+62	1	0.0	5	0 0 0 1
+64	1	0.0	5	0 0 0 1
+67	1	0.0	5	0 0 0 1
+69	1	0.0	5	0 0 0 1
+70	1	0.0	5	0 0 0 1
+71	2	0.0	5	0 0 0 1 0 1
+74	1	0.0	5	0 0 0 0 0 1
+80	1	0.0	5	0 0 0 1
+85	1	0.0	5	0 0 0 1
+87	2	0.0	5	0 0 0 2
+
+
+=== Adapter Adapter_150_PCR_Primer1v3 ===
+
+Sequence: GATCGGAAGAGCGTCGTGTAGGGGAAGAGGGTAGATCTCGGGGGGCGCCG; Type: variable 5'/3'; Length: 50; Trimmed: 1498 times.
+6 times, it overlapped the 5' end of a read
+1492 times, it overlapped the 3' end or was within the read
+
+No. of allowed errors:
+0-9 bp: 0; 10-19 bp: 1; 20-29 bp: 2; 30-39 bp: 3; 40-49 bp: 4; 50 bp: 5
+
+Overview of removed sequences (5')
+length	count	expect	max.err	error counts
+12	6	0.2	1	0 6
+
+
+
+Overview of removed sequences (3' or within)
+length	count	expect	max.err	error counts
+13	1	0.1	1	0 1
+14	3	0.0	1	0 3
+15	6	0.0	1	2 4
+16	8	0.0	1	0 8
+17	25	0.0	1	1 24
+18	216	0.0	1	205 11
+19	199	0.0	1	193 6
+20	152	0.0	2	131 17 4
+21	138	0.0	2	128 8 2
+22	114	0.0	2	107 5 2
+23	97	0.0	2	89 6 2
+24	82	0.0	2	0 80 2
+25	79	0.0	2	2 74 3
+26	79	0.0	2	0 0 79
+27	64	0.0	2	0 1 63
+28	51	0.0	2	0 50 1
+29	53	0.0	2	0 50 3
+30	48	0.0	3	1 23 1 23
+31	41	0.0	3	0 3 34 4
+32	5	0.0	3	0 0 1 4
+33	4	0.0	3	0 0 1 3
+34	3	0.0	3	0 1 1 1
+35	4	0.0	3	0 2 1 1
+36	2	0.0	3	0 0 0 2
+37	2	0.0	3	0 1 0 1
+38	4	0.0	3	0 0 1 3
+40	3	0.0	4	0 1 0 2
+41	1	0.0	4	0 0 1
+42	2	0.0	4	0 0 2
+44	1	0.0	4	0 0 1
+46	1	0.0	4	0 0 0 1
+51	1	0.0	5	0 0 0 0 1
+55	1	0.0	5	0 0 0 0 0 1
+56	1	0.0	5	0 0 0 1
+81	1	0.0	5	0 0 0 1
