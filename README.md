@@ -76,7 +76,7 @@ A handful of bioinformatics scripts:
  sorts a file of Fasta sequences by identifier name, naturally, so that `ìd_1` is followed by `id_2`, rather than `id_10`.  Requires BioPerl and the Perl module `Sort::Naturally`.
 
 **gffSort**
- is a small Bash script that sorts a GFF file first by sequence name in column 1, and then by position numerically in column 4.  It assumes you might have generated this GFF with MAKER, so it removes the `###` lines between gene models if they are present.
+ is a small Bash script that sorts a GFF file first by sequence name in column 1, and then by position numerically in column 4.  It assumes you might have generated this GFF with MAKER, so it removes the `###` lines between gene models if they are present.  **NOTE** this is a very crude wrapper around `gsort` and makes no effort to keep entries in their appropriate hierarchy.  Much better to use [GenomeTools'](http://genometools.org/) `gt gff3 -sort -addids no -retainids ...` or the [GFF3toolkit](https://github.com/NAL-i5K/GFF3toolkit), which both know what a GFF file is supposed to look like.
 
 **stacksExtractStats.pl**
 reads a [Stacks][] log file and produce a table summarizing sample-specific statistics.  It currently prints number of RAD-Tags, number of stacks and mean stack coverage, and it is written so that other statistics can easily be harvested from the output.

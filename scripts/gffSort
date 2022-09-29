@@ -1,2 +1,6 @@
 #!/bin/bash
+echo "NOTE: This is a very crude wrapper around gsort and makes no effort to keep entries in their appropriate hierarchy."           >&2
+echo "      It would be much better to use GenomeTools' (http://genometools.org/) 'gt gff3 -sort -addids no -retainids ...'"         >&2
+echo "      or the GFF3toolkit (https://github.com/NAL-i5K/GFF3toolkit), which both know what a GFF file is supposed to look like."  >&2
+echo ""
 sort -k1,1 -k4,4n "$1" | grep -v '^###' 
