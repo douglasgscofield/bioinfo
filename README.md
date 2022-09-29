@@ -5,9 +5,11 @@ More details are provided within each subfolder.
 
 ### [MLGtest](https://github.com/douglasgscofield/MLGtest)
 
+**Moved to separate repository**
+
 **MLGtest** tests for the occurrence of asexual reproduction in a population
 based on the number of unique multilocus genotypes observed.  It is quite
-conservative, see its README for several cautions.  **Moved to separate repository**
+conservative, see its README for several cautions.
 
 
 ### [pileVar](https://github.com/douglasgscofield/bioinfo/tree/master/pileVar)
@@ -35,12 +37,16 @@ A handful of bioinformatics scripts in R.
 
 ### [rhoIntervals](https://github.com/douglasgscofield/rhoIntervals)
 
-Calculate weighted recombination rate (*&rho;*) estimates over given intervals.  **Moved to separate repository**
+**Moved to separate repository**
+
+Calculate weighted recombination rate (*&rho;*) estimates over given intervals.
 
 
 ### [stacksTemplates](https://github.com/douglasgscofield/stacksTemplates)
 
-Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.  **Moved to separate repository**
+**Moved to separate repository**
+
+Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.
 
 
 ### [scripts](https://github.com/douglasgscofield/bioinfo/tree/master/scripts)
