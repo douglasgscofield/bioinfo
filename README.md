@@ -3,11 +3,11 @@ Bioinformatics tools
 
 More details are provided within each subfolder.
 
-### [MLGtest](https://github.com/douglasgscofield/bioinfo/tree/master/MLGtest)
+### [MLGtest](https://github.com/douglasgscofield/MLGtest)
 
-**MLGtest.R** tests for the occurrence of asexual reproduction in a population
+**MLGtest** tests for the occurrence of asexual reproduction in a population
 based on the number of unique multilocus genotypes observed.  It is quite
-conservative, see its README for several cautions.
+conservative, see its README for several cautions.  **Moved to separate repository**
 
 
 ### [pileVar](https://github.com/douglasgscofield/bioinfo/tree/master/pileVar)
@@ -33,14 +33,14 @@ Plot spatially-distributed pie charts.
 A handful of bioinformatics scripts in R.
 
 
-### [rhoIntervals](https://github.com/douglasgscofield/bioinfo/tree/master/rhoIntervals)
+### [rhoIntervals](https://github.com/douglasgscofield/rhoIntervals)
 
-Calculate weighted recombination rate (*&rho;*) estimates over given intervals.
+Calculate weighted recombination rate (*&rho;*) estimates over given intervals.  **Moved to separate repository**
 
 
-### [stacksTemplates](https://github.com/douglasgscofield/bioinfo/tree/master/stacksTemplates)
+### [stacksTemplates](https://github.com/douglasgscofield/stacksTemplates)
 
-Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.
+Create templates for high-throughput genotyping platforms (iPlex, etc) from Stacks consensus sequences.  **Moved to separate repository**
 
 
 ### [scripts](https://github.com/douglasgscofield/bioinfo/tree/master/scripts)
