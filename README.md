@@ -1,7 +1,7 @@
 Bioinformatics tools
 ====================
 
-More details are provided within each subfolder.
+Details are provided within each subfolder.
 
 **Note:** [stacksTemplates](https://github.com/douglasgscofield/stacksTemplates), [rhoIntervals](https://github.com/douglasgscofield/rhoIntervals) and [MLGtest](https://github.com/douglasgscofield/MLGtest) have all been moved to separate repositories.
 
