@@ -1,0 +1,1 @@
+genex xnt2h CDSpart 5231111 5234643 . + . src=YNT;grp=gene-ara_004913800_1;pri=6
