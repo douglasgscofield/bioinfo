@@ -3,6 +3,48 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+duplicated_md5.pl
+---------
+
+    USAGE:   duplicated_md5.pl  [ --single-line ]  [ --noinclude-md5 ]  [ --noinclude-count ]  [ --duplicated-md5 ]  [ --duplicated-files ]  file1.md5  [ file2.md5 ... ]
+
+Scan .md5 lines -- the output of md5sum -- for duplicated MD5 checksums and
+report the files having duplicated checksums.  Multiple .md5 files can be
+provided on the command line, or on standard input. Output is to standard
+output, with informational messages on standard error.
+
+This requires `Sort::Naturally` for sorting the filenames.
+
+The default output format is multiline, with each set of duplicated files on
+separate lines and each block of duplicates separated by one line of ----
+
+    MD5-checksum
+    count-of-duplicates
+    file1
+    file2
+    [ ... ]
+    ----
+    MD5-checksum
+    count-of-duplicates
+    file1
+    file2
+    [ ... ]
+    ----
+
+OPTIONS
+
+    --single-line      Single-line format: each line contains one set of
+                       files sharing the same MD5 checksum, tab separated:
+
+         MD5-checksum <tab> count-of-duplicates <tab> file1 <tab> file2 [ <tab> file3 ... ]
+
+    --noinclude-md5    Do not include the MD5-checksum in the output
+    --noinclude-count  Do not include the count of duplicated files in the output
+
+    --quiet            Do not produce informational messages
+    --help             This help
+
+
 exonerate-protein2genome-gff-to-fasta.pl
 ---------
 
