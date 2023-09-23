@@ -3,8 +3,17 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+s3fetch.pl
+----------
+
+Convert direct https:// prefix from S3 URLs, convert to s3:// and use awscli to
+download the file(s).
+
+    USAGE:  cat url-list.txt | ./s3fetch.pl
+
+
 duplicated_md5.pl
----------
+-----------------
 
     USAGE:   duplicated_md5.pl  [ --single-line ]  [ --noinclude-md5 ]  [ --noinclude-count ]  [ --duplicated-md5 ]  [ --duplicated-files ]  file1.md5  [ file2.md5 ... ]
 

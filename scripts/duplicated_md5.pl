@@ -10,7 +10,7 @@ use Getopt::Long;
 use Sort::Naturally;
 
 my $USAGE = "
-USAGE:   $0  [ --single-line ]  [ --noinclude-md5 ]  [ --noinclude-count ]  [ --duplicated-md5 ]  [ --duplicated-files ]  file1.md5  [ file2.md5 ... ]
+USAGE:   $0  [ --single-line ]  [ --noinclude-md5 ]  [ --noinclude-count ]  [ other options ]  file1.md5  [ file2.md5 ... ]
 
 Scan .md5 lines -- the output of md5sum -- for duplicated MD5 checksums and
 report the files having duplicated checksums.  Multiple .md5 files can be
@@ -43,7 +43,7 @@ OPTIONS
     --noinclude-md5    Do not include the MD5-checksum in the output
     --noinclude-count  Do not include the count of duplicated files in the output
 
-    --quiet            Do not produce informational messages
+    --noquiet          Produce informational messages
     --help             This help
 ";
 
@@ -51,7 +51,7 @@ my $o_single_line = 0;
 my $o_include_md5 = 1;
 my $o_include_count = 1;
 my $o_help = 0;
-my $o_quiet = 0;
+my $o_quiet = 1;
 
 GetOptions("single-line"     => \$o_single_line,
            "include-md5!"    => \$o_include_md5,
