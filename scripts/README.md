@@ -766,12 +766,18 @@ done
 fai2Bed.pl
 ----------
 
-Identical in operation to `samHeader2Bed.pl` immediately above, except instead
+Similar in operation to `samHeader2Bed.pl` immediately above, except instead
 of a SAM header the script creates a BED file from a Fasta index file in .fai
 format.  Such a file is produced with `samtools faidx file.fa`, in this case
 it would be named `file.fa.fai`.
 
-All options are identical to `samHeader2Bed.pl`.
+All options are identical to `samHeader2Bed.pl`, except for this additional
+option which allows naming the sequences to be included:
+
+
+    -L FILE, --list FILE  Include the sequences listed in FILE in the BED and no
+                          others. Cannot be used with other selection options.
+
 
 
 

@@ -30,6 +30,8 @@ my $this_chunk_seqs = 0; # the total number of sequences in this chunk
 
 my $in_file;
 my $out_file;
+my $list_file;
+my $N_list;
 my $stdio;
 my $o_quiet = 0;
 my $help;
@@ -45,27 +47,35 @@ SYNOPSIS
 
   fai2Bed.pl --min-length 1000 fasta.fa.fai > min1000.bed
 
+  fai2Bed.pl --list seqs.txt fasta.fa.fai > seqs-from-fasta.bed
+
 EXAMPLE
 
 OPTIONS
 
-    -                     read .fai file from stdin, write to stdout
-    -i FILE, --in FILE    read .fai file from FILE, else from stdin
-    -o FILE, --out FILE   write BED output to FILE, else to stdout
-    --num INT             include just the first INT sequences
-    --chunk-size INT      produce separate BED files each containing sequences
+    -                     Read .fai file from stdin, write to stdout
+    -i FILE, --in FILE    Read .fai file from FILE, else from stdin
+    -o FILE, --out FILE   Write BED output to FILE, else to stdout
+
+    --num INT             Include just the first INT sequences
+    --chunk-size INT      Produce separate BED files each containing sequences
                           representing approximately INT bp; reference sequences
                           are only described complete, so each BED is likely to 
                           describe more than INT bp.  Individual BED files are
                           named FILE.xx.bed where FILE is specified with --out,
                           which is required, and x is the integer sequence of 
-                          file creation
-    --min-length INT      do not include reference sequences shorter than INT
-    --max-length INT      do not include reference sequences longer than INT
-    --header              include a BED header line in BED output
-    -q, --quiet           do not produce informational messages to stderr
+                          file creation.
+    --min-length INT      Do not include reference sequences shorter than INT
+    --max-length INT      Do not include reference sequences longer than INT
 
-    -?, --help            help message
+    -L FILE, --list FILE  Include the sequences listed in FILE in the BED and no
+                          others. Cannot be used with other selection options.
+
+    --header              Include a BED header line in BED output
+
+    -q, --quiet           Do not produce informational messages to stderr
+
+    -?, --help            Help message
 
 ";
 
@@ -81,9 +91,10 @@ GetOptions(
     "in=s" => \$in_file,
     "out=s" => \$out_file,
     "num=f" => \$num,
-    "chunk-size=f" => \$opt_chunksize,
+    "chunk-size|chunksize=f" => \$opt_chunksize,
     "min-length|minlength=f" => \$min_length,
     "max-length|maxlength=f" => \$max_length,
+    "L|list=s" => \$list_file,
     "header" => \$o_header,
     "q|quiet" => \$o_quiet,
     "help|?" => \$help,
@@ -93,6 +104,7 @@ print_usage_and_exit("") if $help;
 print_usage_and_exit("") if $opt_chunksize < 0;
 print_usage_and_exit("") if $opt_chunksize and not $out_file;
 print_usage_and_exit("") if $min_length > $max_length;
+print_usage_and_exit("") if $list_file and ($min_length || $max_length != 9.99e12 || $num || $opt_chunksize);
 
 my $IN = FileHandle->new;
 $in_file = $ARGV[0] if $ARGV[0] and ! $in_file;
@@ -112,6 +124,20 @@ if ($opt_chunksize) {
 $OUT->open("> $out_file") or die "Cannot open $out_file: $!\n";
 print $OUT "#chrom\tchromStart\tchromEnd\n" if $o_header;
 
+my $LIST = FileHandle->new;
+my %LIST;
+if ($list_file) {
+    $LIST->open("< $list_file") or die "Cannot open $list_file: $!\n";
+    while (<$LIST>) {
+        next if /^#/;
+        chomp;
+        $LIST{$_}++;
+    }
+    undef $LIST;
+    $N_list = scalar keys %LIST;
+    die "no sequences in list file '$list_file'" if $N_list == 0;
+}
+
 while (<$IN>) {
     # Format of an .fai line is (https://www.biostars.org/p/11523/#11524)
     # 1. sequence name
@@ -124,7 +150,11 @@ while (<$IN>) {
     my $ref = $fields[0];
     my $length = $fields[1];
 
-    next if $length < $min_length or $length > $max_length;
+    if ($list_file && ! defined $LIST{$ref}) {
+        next;
+    } elsif ($length < $min_length or $length > $max_length) {
+        next;
+    }
 
     ++$N_references;
 
@@ -145,14 +175,15 @@ while (<$IN>) {
     print $OUT "$ref\t0\t$length\n";
 
     if ($opt_chunksize and $this_chunk_size > $opt_chunksize) {
-        print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet;
+        print STDERR "$out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet;
         $OUT->close();
         $this_chunk_size = $this_chunk_seqs = 0;
         $must_open_chunk = 1;  # open a new bed file
     }
 }
 
-print STDERR "chunk $out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet && ! $must_open_chunk;
+print STDERR "$out_file represents $this_chunk_seqs sequences containing $this_chunk_size bp\n" if ! $o_quiet && ! $must_open_chunk;
+print STDERR "$list_file contained $N_list sequence names\n" if $list_file;
 
 undef $OUT;
 undef $IN;
