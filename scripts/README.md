@@ -3,6 +3,84 @@ Bioinformatics scripts
 
 These have been useful to me, I hope they can be useful to you!
 
+
+fastaRename.pl
+--------------
+
+NAME
+
+    fastaRename.pl - Rename fasta sequences using simple prefix-number scheme
+
+SYNOPSIS
+
+    Uses only standard Perl modules.
+
+    Fasta sequences are renamed to PREFIX###### where ###### is a zero-padded
+    sequence number, starting with 1.  PREFIX is specified with the --prefix
+    option.  The number of digits is specified with --width or, if it is not
+    specified and the input is a file and not stdin, the number of sequences
+    in the input file is counted and the value is calculated as the minimum
+    number of zero-padded digits required to number all sequences.
+
+    If --no-zero-pad is specified, then --width is not required, the sequences
+    are not pre-counted, and the sequence number is suffixed to PREFIX without
+    padding.
+
+    The --prefix option must be specified.
+
+        fastaRename.pl --prefix metascaffold --in fasta.fa --out fasta.renamed.fa --map fasta.renamed.map.txt
+
+        fastaRename.pl --prefix metascaffold -w 10 --in fasta.fa --out fasta.renamed.fa
+
+        fastaRename.pl --prefix seq --no-zero-pad - < fasta.fa > fasta.renamed.fa
+
+        cat fasta.fa | fastaRename.pl --prefix Trebouxia --width 5 - --out renamed.fa
+
+OPTIONS
+
+    -p PREFIX, --prefix PREFIX   REQUIRED. Use PREFIX in the names of the renamed
+                                 sequences.
+
+    -w WIDTH, --width WIDTH      Use WIDTH zero-padded digits to number the
+                                 renamed sequences. If WIDTH is not specified and
+                                 the input is a file, then the sequences are
+                                 pre-counted from the file and WIDTH is calculated
+                                 from the sequence count; this requires a bit of
+                                 time to complete.
+
+    -n, --no-zero-pad            Do not zero-pad sequence numbers.  Sequence numbers
+                                 are not pre-counted, and --width is not allowed.
+
+    -d ACTION, --description ACTION
+                                 ACTION describes how to handle the current sequence
+                                 '>name description'. A fasta description is
+                                 everything on the name line after the first
+                                 whitespace. The options are case-insensitive.
+
+                          Default -> SHIFT : Shift 'name description' to become the
+                                             description for the new sequence. This
+                                             keeps the old name next to the new name:
+                                             '>newname###### name description'
+                                     KEEP  : Keep the description as the description
+                                             for the renamed sequence. Discard the
+                                             old name:
+                                             '>newname###### description'
+                                     STRIP : Strip all description information from
+                                             the renamed sequence:
+                                             '>newname######'
+
+    -m FILE, --map FILE          Write a sequence name map to FILE containing lines
+                                 of the format:
+                                 'newname###### TAB name'
+
+    -                            Read FASTA sequences from stdin and/or write
+                                 extracted sequences to stdout
+    -i FILE, --in FILE           File for input FASTA sequences
+    -o FILE, --out FILE          File to output FASTA sequences
+
+    -?, --help                   This help message
+
+
 s3fetch.pl
 ----------
 
